@@ -164,6 +164,56 @@
 		document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
 	}
 
+	function getSkillColors(iconName: string): { default: string; hover: string } {
+		const colorMap: Record<string, { default: string; hover: string }> = {
+			flutter: { default: 'bg-blue-100', hover: 'group-hover:bg-blue-200' },
+			dart: { default: 'bg-cyan-100', hover: 'group-hover:bg-cyan-200' },
+			android: { default: 'bg-green-100', hover: 'group-hover:bg-green-200' },
+			ios: { default: 'bg-gray-100', hover: 'group-hover:bg-gray-200' },
+			svelte: { default: 'bg-orange-100', hover: 'group-hover:bg-orange-200' },
+			typescript: { default: 'bg-blue-100', hover: 'group-hover:bg-blue-200' },
+			tailwind: { default: 'bg-teal-100', hover: 'group-hover:bg-teal-200' },
+			laravel: { default: 'bg-red-100', hover: 'group-hover:bg-red-200' },
+			php: { default: 'bg-purple-100', hover: 'group-hover:bg-purple-200' },
+			postgresql: { default: 'bg-blue-100', hover: 'group-hover:bg-blue-200' },
+			laragon: { default: 'bg-indigo-100', hover: 'group-hover:bg-indigo-200' },
+			git: { default: 'bg-orange-100', hover: 'group-hover:bg-orange-200' },
+			vscode: { default: 'bg-blue-100', hover: 'group-hover:bg-blue-200' },
+			camera: { default: 'bg-gray-100', hover: 'group-hover:bg-gray-200' },
+			edit: { default: 'bg-green-100', hover: 'group-hover:bg-green-200' },
+			lightroom: { default: 'bg-blue-100', hover: 'group-hover:bg-blue-200' },
+			photoshop: { default: 'bg-indigo-100', hover: 'group-hover:bg-indigo-200' },
+			coffee: { default: 'bg-amber-100', hover: 'group-hover:bg-amber-200' }
+		};
+		return colorMap[iconName] || { default: 'bg-gray-100', hover: 'group-hover:bg-gray-200' };
+	}
+
+	function getSkillIconColors(iconName: string): { default: string; hover: string } {
+		const iconColorMap: Record<string, { default: string; hover: string }> = {
+			flutter: { default: 'text-blue-600', hover: 'group-hover:text-blue-700' },
+			dart: { default: 'text-cyan-600', hover: 'group-hover:text-cyan-700' },
+			android: { default: 'text-green-600', hover: 'group-hover:text-green-700' },
+			ios: { default: 'text-gray-600', hover: 'group-hover:text-gray-700' },
+			svelte: { default: 'text-orange-600', hover: 'group-hover:text-orange-700' },
+			typescript: { default: 'text-blue-600', hover: 'group-hover:text-blue-700' },
+			tailwind: { default: 'text-teal-600', hover: 'group-hover:text-teal-700' },
+			laravel: { default: 'text-red-600', hover: 'group-hover:text-red-700' },
+			php: { default: 'text-purple-600', hover: 'group-hover:text-purple-700' },
+			postgresql: { default: 'text-blue-600', hover: 'group-hover:text-blue-700' },
+			laragon: { default: 'text-indigo-600', hover: 'group-hover:text-indigo-700' },
+			git: { default: 'text-orange-600', hover: 'group-hover:text-orange-700' },
+			vscode: { default: 'text-blue-600', hover: 'group-hover:text-blue-700' },
+			camera: { default: 'text-gray-600', hover: 'group-hover:text-gray-700' },
+			edit: { default: 'text-green-600', hover: 'group-hover:text-green-700' },
+			lightroom: { default: 'text-blue-600', hover: 'group-hover:text-blue-700' },
+			photoshop: { default: 'text-indigo-600', hover: 'group-hover:text-indigo-700' },
+			coffee: { default: 'text-amber-600', hover: 'group-hover:text-amber-700' }
+		};
+		return (
+			iconColorMap[iconName] || { default: 'text-gray-600', hover: 'group-hover:text-gray-700' }
+		);
+	}
+
 	function getSkillIcon(iconName: string): string {
 		const icons: Record<string, string> = {
 			flutter:
@@ -269,13 +319,14 @@
 <!-- Hero Section -->
 <section
 	id="hero"
-	class="flex min-h-screen items-center justify-center bg-gradient-to-br from-blue-50 via-white to-indigo-50 pt-16"
+	class="flex min-h-screen items-center justify-center bg-gradient-to-br from-orange-50 via-white to-amber-50 pt-16"
 >
 	<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
 		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
 			<div class="text-center lg:text-left {mounted ? 'animate-fade-in-up' : 'opacity-0'}">
 				<h1 class="mb-6 text-4xl leading-tight font-bold text-gray-900 md:text-5xl lg:text-6xl">
-					Hello, I'm <span class="text-blue-600 transition-colors duration-300 hover:text-blue-700"
+					Hello, I'm <span
+						class="text-orange-500 transition-colors duration-300 hover:text-orange-700"
 						>{profileData.name}</span
 					>
 				</h1>
@@ -288,13 +339,13 @@
 				<div class="flex flex-col justify-center gap-4 sm:flex-row lg:justify-start">
 					<button
 						on:click={() => scrollToSection('websites')}
-						class="rounded-full bg-blue-600 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-blue-700 hover:shadow-xl"
+						class="rounded-full bg-orange-500 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-orange-700 hover:shadow-xl"
 					>
 						View My Work
 					</button>
 					<button
 						on:click={() => scrollToSection('contact')}
-						class="rounded-full border-2 border-blue-600 px-8 py-4 font-semibold text-blue-600 transition-all duration-300 hover:scale-105 hover:bg-blue-600 hover:text-white"
+						class="rounded-full border-2 border-orange-500 px-8 py-4 font-semibold text-orange-600 transition-all duration-300 hover:scale-105 hover:bg-orange-600 hover:text-white"
 					>
 						Get In Touch
 					</button>
@@ -312,10 +363,10 @@
 					</div>
 					<!-- Floating elements -->
 					<div
-						class="animate-bounce-slow absolute -top-4 -right-4 h-20 w-20 rounded-full bg-blue-200 opacity-80"
+						class="animate-bounce-slow absolute -top-4 -right-4 h-20 w-20 rounded-full bg-orange-200 opacity-80"
 					></div>
 					<div
-						class="animate-bounce-slow absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-indigo-200 opacity-80"
+						class="animate-bounce-slow absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-amber-200 opacity-80"
 						style="animation-delay: 1s;"
 					></div>
 				</div>
@@ -566,24 +617,27 @@
 			<div class="mx-auto h-1 w-24 bg-blue-600"></div>
 		</div>
 
-		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+		<div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4">
 			{#each skills as skillGroup}
 				<div
-					class="rounded-xl bg-gray-50 p-8 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+					class="rounded-xl bg-gradient-to-br from-gray-50 to-gray-100 p-8 shadow-lg transition-all duration-300 hover:scale-105 hover:from-blue-50 hover:to-indigo-50 hover:shadow-xl"
 				>
 					<h3 class="mb-6 text-center text-xl font-semibold text-gray-900">
 						{skillGroup.category}
 					</h3>
-					<div class="space-y-4">
+					<div class="grid grid-cols-2 gap-3">
 						{#each skillGroup.items as skill}
 							<div
-								class="group flex items-center rounded-lg bg-white p-4 transition-all duration-300 hover:scale-105 hover:shadow-md"
+								class="group flex flex-col items-center rounded-lg bg-white p-4 transition-all duration-300 hover:scale-105 hover:bg-gradient-to-br hover:from-blue-50 hover:to-indigo-50 hover:shadow-md"
 							>
 								<div
-									class="mr-4 flex h-10 w-10 items-center justify-center rounded-lg bg-gray-100 transition-colors duration-300 group-hover:bg-blue-100"
+									class="mb-3 flex h-12 w-12 items-center justify-center rounded-lg transition-all duration-300 {getSkillColors(
+										skill.icon
+									).default} {getSkillColors(skill.icon).hover}"
 								>
 									<svg
-										class="h-6 w-6 text-gray-600 transition-colors duration-300 group-hover:text-blue-600"
+										class="h-7 w-7 transition-colors duration-300 {getSkillIconColors(skill.icon)
+											.default} {getSkillIconColors(skill.icon).hover}"
 										fill="currentColor"
 										viewBox="0 0 24 24"
 									>
@@ -591,7 +645,7 @@
 									</svg>
 								</div>
 								<span
-									class="font-medium text-gray-700 transition-colors duration-300 group-hover:text-blue-600"
+									class="text-center text-sm font-medium text-gray-700 transition-colors duration-300 group-hover:text-blue-700"
 									>{skill.name}</span
 								>
 							</div>
@@ -696,42 +750,6 @@
 						</a>
 					</div>
 				</div>
-			</div>
-
-			<!-- Contact Form -->
-			<div>
-				<form class="space-y-6">
-					<div>
-						<label class="mb-2 block text-sm font-medium">Name</label>
-						<input
-							type="text"
-							class="w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-							placeholder="Your Name"
-						/>
-					</div>
-					<div>
-						<label class="mb-2 block text-sm font-medium">Email</label>
-						<input
-							type="email"
-							class="w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-							placeholder="your.email@example.com"
-						/>
-					</div>
-					<div>
-						<label class="mb-2 block text-sm font-medium">Message</label>
-						<textarea
-							rows="4"
-							class="w-full rounded-lg bg-gray-800 px-4 py-3 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:outline-none"
-							placeholder="Tell me about your project..."
-						></textarea>
-					</div>
-					<button
-						type="submit"
-						class="w-full rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition-colors duration-300 hover:bg-blue-700"
-					>
-						Send Message
-					</button>
-				</form>
 			</div>
 		</div>
 	</div>
