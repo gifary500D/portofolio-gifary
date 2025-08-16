@@ -530,6 +530,137 @@
 	</div>
 </section>
 
+<!-- Photography Section -->
+<section id="photography" class="relative bg-black">
+	<!-- Curved top border -->
+	<div class="absolute top-0 left-0 w-full overflow-hidden">
+		<svg
+			viewBox="0 0 1200 120"
+			preserveAspectRatio="none"
+			class="relative block h-16 w-full fill-current text-white"
+		>
+			<path
+				d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
+			></path>
+		</svg>
+	</div>
+
+	<div class="mx-auto max-w-6xl px-4 py-32 sm:px-6 lg:px-8">
+		<div class="mb-16 text-center">
+			<h2 class="mb-4 text-4xl font-bold text-white">Photography</h2>
+			<p class="mb-8 text-xl text-gray-300">
+				Capturing moments through my lens - explore my visual journey
+			</p>
+			<div class="mx-auto h-1 w-24 bg-red-600"></div>
+		</div>
+
+		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+			<!-- Featured Photo 1 -->
+			<div
+				class="group relative overflow-hidden rounded-2xl border border-gray-800 md:col-span-2 md:row-span-2"
+			>
+				<img
+					src="/api/placeholder/600/400"
+					alt="Featured graduation photography"
+					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+				/>
+				<div
+					class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+				>
+					<div class="absolute bottom-6 left-6 text-white">
+						<span class="mb-2 block text-sm font-medium text-red-400">Graduation</span>
+						<h3 class="text-2xl font-bold">Special Moments</h3>
+					</div>
+				</div>
+			</div>
+
+			<!-- Small Photos -->
+			<div class="group relative overflow-hidden rounded-2xl border border-gray-800">
+				<img
+					src="/api/placeholder/300/300"
+					alt="Cosplayer photography"
+					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+				/>
+				<div
+					class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+				>
+					<div class="absolute bottom-4 left-4 text-white">
+						<span class="text-sm text-red-400">Cosplayer</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="group relative overflow-hidden rounded-2xl border border-gray-800">
+				<img
+					src="/api/placeholder/300/300"
+					alt="Models photography"
+					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+				/>
+				<div
+					class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+				>
+					<div class="absolute bottom-4 left-4 text-white">
+						<span class="text-sm text-red-400">Models</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="group relative overflow-hidden rounded-2xl border border-gray-800">
+				<img
+					src="/api/placeholder/300/300"
+					alt="Other photography"
+					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+				/>
+				<div
+					class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+				>
+					<div class="absolute bottom-4 left-4 text-white">
+						<span class="text-sm text-red-400">Others</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="group relative overflow-hidden rounded-2xl border border-gray-800">
+				<img
+					src="/api/placeholder/300/300"
+					alt="Graduation ceremony"
+					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+				/>
+				<div
+					class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+				>
+					<div class="absolute bottom-4 left-4 text-white">
+						<span class="text-sm text-red-400">Graduation</span>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- View Gallery Button -->
+		<div class="mt-12 text-center">
+			<a
+				href="/photography"
+				class="group inline-flex items-center gap-3 rounded-full bg-red-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-red-700 hover:shadow-2xl"
+			>
+				<span>View Full Gallery</span>
+				<svg
+					class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M13 7l5 5m0 0l-5 5m5-5H6"
+					/>
+				</svg>
+			</a>
+		</div>
+	</div>
+</section>
+
 <!-- Coffee Gallery Section -->
 <section id="coffee" class="bg-white py-20">
 	<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
