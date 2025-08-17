@@ -8,49 +8,58 @@
 		alt: string;
 		title: string;
 		category: string;
+		orientation: 'portrait' | 'landscape';
 		description: string;
 		location?: string;
 		camera?: string;
 		lens?: string;
 		settings?: string;
 		date?: string;
+		personName?: string;
+		instagram?: string;
 	}
 
-	// Sample photo data - ganti dengan data foto Anda yang sebenarnya
 	let photos: Photo[] = [
 		{
 			id: 1,
-			src: '/api/placeholder/800/600',
-			alt: 'Golden Hour Mountain',
-			title: 'Golden Hour Mountain',
-			category: 'Landscape',
-			description: 'Breathtaking sunrise over the mountain ranges',
-			location: 'Mount Bromo, Indonesia',
+			src: '/images/foto.JPG',
+			alt: 'Portrait Model',
+			title: 'Urban Fashion',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Professional portrait session in urban setting',
+			location: 'Jakarta, Indonesia',
 			camera: 'Sony A7R IV',
-			lens: '24-70mm f/2.8',
-			settings: 'f/8, 1/125s, ISO 100',
-			date: '2024-01-15'
+			lens: '85mm f/1.4',
+			settings: 'f/2.8, 1/160s, ISO 320',
+			date: '2024-01-15',
+			personName: 'Sarah Indira',
+			instagram: '@sarahindira'
 		},
 		{
 			id: 2,
-			src: '/api/placeholder/600/800',
-			alt: 'Urban Portrait',
-			title: 'City Streets',
-			category: 'Portrait',
-			description: 'Candid moment in the bustling city life',
-			location: 'Jakarta, Indonesia',
+			src: '/images/foto.JPG',
+			alt: 'Anime Cosplay',
+			title: 'Naruto Cosplay',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Amazing Naruto character cosplay with detailed costume',
+			location: 'Comic Con Jakarta',
 			camera: 'Canon R5',
-			lens: '85mm f/1.4',
+			lens: '50mm f/1.4',
 			settings: 'f/2.0, 1/250s, ISO 400',
-			date: '2024-02-08'
+			date: '2024-02-08',
+			personName: 'Riko Tanaka',
+			instagram: '@rikocosplay'
 		},
 		{
 			id: 3,
-			src: '/api/placeholder/800/800',
-			alt: 'Street Art',
-			title: 'Colors of the Street',
-			category: 'Street',
-			description: 'Vibrant street art telling urban stories',
+			src: '/images/foto.JPG',
+			alt: 'Street Photography',
+			title: 'Morning Market',
+			category: 'Others',
+			orientation: 'landscape',
+			description: 'Vibrant morning market scene with local vendors',
 			location: 'Yogyakarta, Indonesia',
 			camera: 'Fujifilm X-T5',
 			lens: '35mm f/1.4',
@@ -59,97 +68,160 @@
 		},
 		{
 			id: 4,
-			src: '/api/placeholder/700/500',
-			alt: 'Ocean Waves',
-			title: 'Dancing Waves',
-			category: 'Nature',
-			description: 'Powerful waves meeting the rocky shore',
-			location: 'Tanah Lot, Bali',
+			src: '/images/foto.JPG',
+			alt: 'Business Portrait',
+			title: 'Professional Headshot',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Corporate headshot for business profile',
+			location: 'Studio Jakarta',
 			camera: 'Sony A7R IV',
-			lens: '70-200mm f/2.8',
-			settings: 'f/11, 1/500s, ISO 200',
-			date: '2024-03-10'
+			lens: '85mm f/1.4',
+			settings: 'f/2.8, 1/160s, ISO 200',
+			date: '2024-03-10',
+			personName: 'Ahmad Pratama',
+			instagram: '@ahmadpratama'
 		},
 		{
 			id: 5,
-			src: '/api/placeholder/600/900',
-			alt: 'Modern Architecture',
-			title: 'Geometric Dreams',
-			category: 'Architecture',
-			description: 'Clean lines and modern architectural design',
-			location: 'Singapore',
+			src: '/images/foto.JPG',
+			alt: 'Demon Slayer Cosplay',
+			title: 'Tanjiro Kamado',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Detailed Demon Slayer cosplay with authentic props',
+			location: 'Anime Festival Bandung',
 			camera: 'Canon R5',
-			lens: '16-35mm f/2.8',
-			settings: 'f/8, 1/200s, ISO 100',
-			date: '2024-02-28'
+			lens: '85mm f/1.4',
+			settings: 'f/2.8, 1/200s, ISO 320',
+			date: '2024-02-28',
+			personName: 'Deni Wijaya',
+			instagram: '@denianimecosplay'
 		},
 		{
 			id: 6,
-			src: '/api/placeholder/800/600',
-			alt: 'Forest Path',
-			title: 'Mystical Forest',
-			category: 'Nature',
-			description: 'Sunlight filtering through ancient trees',
-			location: 'Bogor Botanical Garden',
+			src: '/images/foto.JPG',
+			alt: 'Nature Landscape',
+			title: 'Mountain Vista',
+			category: 'Others',
+			orientation: 'landscape',
+			description: 'Stunning mountain landscape at golden hour',
+			location: 'Mount Bromo, Indonesia',
 			camera: 'Fujifilm X-T5',
 			lens: '16mm f/1.4',
-			settings: 'f/5.6, 1/30s, ISO 400',
+			settings: 'f/8, 1/125s, ISO 100',
 			date: '2024-03-05'
 		},
 		{
 			id: 7,
-			src: '/api/placeholder/600/800',
-			alt: 'Cultural Portrait',
-			title: 'Traditional Beauty',
-			category: 'Portrait',
-			description: 'Celebrating Indonesian traditional culture',
-			location: 'Solo, Indonesia',
+			src: '/images/foto.JPG',
+			alt: 'Fashion Portrait',
+			title: 'Editorial Fashion',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'High fashion editorial portrait session',
+			location: 'Studio Surabaya',
 			camera: 'Sony A7R IV',
 			lens: '85mm f/1.4',
 			settings: 'f/2.8, 1/160s, ISO 320',
-			date: '2024-01-30'
+			date: '2024-01-30',
+			personName: 'Maya Sari',
+			instagram: '@mayasarimodel'
 		},
 		{
 			id: 8,
-			src: '/api/placeholder/800/500',
-			alt: 'Night Cityscape',
-			title: 'City Lights',
-			category: 'Street',
-			description: 'Urban landscape illuminated by night lights',
-			location: 'Jakarta, Indonesia',
+			src: '/images/foto.JPG',
+			alt: 'Attack on Titan Cosplay',
+			title: 'Survey Corps',
+			category: 'Cosplay',
+			orientation: 'landscape',
+			description: 'Epic Attack on Titan Survey Corps group cosplay',
+			location: 'Taman Mini Indonesia',
 			camera: 'Canon R5',
 			lens: '24-70mm f/2.8',
-			settings: 'f/8, 30s, ISO 100',
-			date: '2024-02-14'
+			settings: 'f/5.6, 1/200s, ISO 400',
+			date: '2024-02-14',
+			personName: 'Cosplay Team Alpha',
+			instagram: '@teamalphacosplay'
 		},
 		{
 			id: 9,
-			src: '/api/placeholder/700/700',
-			alt: 'Minimalist Architecture',
-			title: 'Pure Form',
-			category: 'Architecture',
-			description: 'Minimalist design emphasizing space and light',
-			location: 'Museum MACAN, Jakarta',
+			src: '/images/foto.JPG',
+			alt: 'Architecture',
+			title: 'Modern Building',
+			category: 'Others',
+			orientation: 'portrait',
+			description: 'Contemporary architecture with geometric patterns',
+			location: 'Jakarta CBD',
 			camera: 'Fujifilm X-T5',
 			lens: '23mm f/1.4',
-			settings: 'f/4, 1/125s, ISO 200',
+			settings: 'f/8, 1/125s, ISO 200',
 			date: '2024-03-12'
+		},
+		{
+			id: 10,
+			src: '/images/foto.JPG',
+			alt: 'Wedding Portrait',
+			title: 'Bride Portrait',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Beautiful bridal portrait on wedding day',
+			location: 'Bali Wedding Venue',
+			camera: 'Sony A7R IV',
+			lens: '85mm f/1.4',
+			settings: 'f/2.0, 1/250s, ISO 320',
+			date: '2024-03-18',
+			personName: 'Lisa Permata',
+			instagram: '@lisapermata'
+		},
+		{
+			id: 11,
+			src: '/images/foto.JPG',
+			alt: 'Genshin Impact Cosplay',
+			title: 'Raiden Shogun',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Stunning Raiden Shogun cosplay from Genshin Impact',
+			location: 'Comic Con Surabaya',
+			camera: 'Canon R5',
+			lens: '50mm f/1.4',
+			settings: 'f/2.8, 1/200s, ISO 400',
+			date: '2024-03-20',
+			personName: 'Anita Kusuma',
+			instagram: '@anitacosplay'
+		},
+		{
+			id: 12,
+			src: '/images/foto.JPG',
+			alt: 'City Landscape',
+			title: 'Jakarta Skyline',
+			category: 'Others',
+			orientation: 'landscape',
+			description: 'Jakarta city skyline during blue hour',
+			location: 'Monas Area, Jakarta',
+			camera: 'Fujifilm X-T5',
+			lens: '16-35mm f/2.8',
+			settings: 'f/8, 10s, ISO 100',
+			date: '2024-03-25'
 		}
 	];
 
 	let selectedCategory = 'All';
+	let selectedOrientation = 'All';
 	let selectedPhoto: Photo | null = null;
 	let filteredPhotos: Photo[] = photos;
-	let categories = ['All', 'Landscape', 'Portrait', 'Street', 'Nature', 'Architecture'];
+	let categories = ['All', 'People', 'Cosplay', 'Others'];
+	let orientations = ['All', 'Portrait', 'Landscape'];
 	let isLoading = true;
 
-	// Filter photos based on category
+	// Filter photos based on category and orientation
 	$: {
-		if (selectedCategory === 'All') {
-			filteredPhotos = photos;
-		} else {
-			filteredPhotos = photos.filter((photo) => photo.category === selectedCategory);
-		}
+		filteredPhotos = photos.filter((photo) => {
+			const categoryMatch = selectedCategory === 'All' || photo.category === selectedCategory;
+			const orientationMatch =
+				selectedOrientation === 'All' || photo.orientation === selectedOrientation.toLowerCase();
+			return categoryMatch && orientationMatch;
+		});
 	}
 
 	onMount(() => {
@@ -177,25 +249,27 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
 	<!-- Hero Section -->
-	<section class="relative overflow-hidden py-20">
+	<section class="relative overflow-hidden py-12 md:py-20">
 		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 			<div class="text-center">
 				{#if !isLoading}
 					<div in:fly={{ y: 30, duration: 800 }}>
-						<h1 class="mb-6 text-5xl font-bold text-white md:text-6xl">
+						<h1 class="mb-4 text-3xl font-bold text-gray-900 md:mb-6 md:text-5xl lg:text-6xl">
 							Photography
 							<span
-								class="bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
+								class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
 							>
 								Gallery
 							</span>
 						</h1>
-						<p class="mb-8 text-xl text-gray-300 md:text-2xl">
+						<p class="mb-6 text-lg text-gray-700 md:mb-8 md:text-xl lg:text-2xl">
 							Capturing life's beautiful moments through my lens
 						</p>
-						<div class="mx-auto h-1 w-32 bg-gradient-to-r from-purple-500 to-pink-500"></div>
+						<div
+							class="mx-auto h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-500 md:w-32"
+						></div>
 					</div>
 				{:else}
 					<div class="flex items-center justify-center">
@@ -209,21 +283,43 @@
 	</section>
 
 	{#if !isLoading}
-		<!-- Category Filter -->
-		<section class="px-4 pb-12 sm:px-6 lg:px-8" in:fade={{ duration: 600, delay: 200 }}>
+		<!-- Filters -->
+		<section class="px-4 pb-8 sm:px-6 lg:px-8" in:fade={{ duration: 600, delay: 200 }}>
 			<div class="mx-auto max-w-6xl">
-				<div class="flex flex-wrap justify-center gap-4">
-					{#each categories as category}
-						<button
-							class="rounded-full px-6 py-3 text-sm font-semibold transition-all duration-300 {selectedCategory ===
-							category
-								? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg'
-								: 'bg-white/10 text-gray-300 hover:bg-white/20 hover:text-white'}"
-							on:click={() => (selectedCategory = category)}
-						>
-							{category}
-						</button>
-					{/each}
+				<!-- Category Filter -->
+				<div class="mb-6">
+					<h3 class="mb-3 text-center text-sm font-semibold text-gray-600">Categories</h3>
+					<div class="flex flex-wrap justify-center gap-2 md:gap-4">
+						{#each categories as category}
+							<button
+								class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedCategory ===
+								category
+									? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25'
+									: 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
+								on:click={() => (selectedCategory = category)}
+							>
+								{category}
+							</button>
+						{/each}
+					</div>
+				</div>
+
+				<!-- Orientation Filter -->
+				<div class="mb-4">
+					<h3 class="mb-3 text-center text-sm font-semibold text-gray-600">Orientation</h3>
+					<div class="flex flex-wrap justify-center gap-2 md:gap-4">
+						{#each orientations as orientation}
+							<button
+								class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedOrientation ===
+								orientation
+									? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/25'
+									: 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
+								on:click={() => (selectedOrientation = orientation)}
+							>
+								{orientation}
+							</button>
+						{/each}
+					</div>
 				</div>
 			</div>
 		</section>
@@ -231,32 +327,47 @@
 		<!-- Photo Grid -->
 		<section class="px-4 pb-20 sm:px-6 lg:px-8">
 			<div class="mx-auto max-w-7xl">
-				<div class="masonry-grid">
+				<div class="photo-grid">
 					{#each filteredPhotos as photo, index (photo.id)}
 						<div
-							class="masonry-item group cursor-pointer overflow-hidden rounded-2xl bg-white/5 backdrop-blur-sm transition-all duration-500 hover:scale-[1.02] hover:bg-white/10 hover:shadow-2xl"
-							in:fly={{ y: 50, duration: 600, delay: index * 100 }}
+							class="photo-item group relative cursor-pointer overflow-hidden rounded-xl bg-white shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-xl {photo.orientation ===
+							'portrait'
+								? 'aspect-[3/4]'
+								: 'aspect-[4/3]'}"
+							in:fly={{ y: 30, duration: 600, delay: index * 50 }}
 							on:click={() => openModal(photo)}
 						>
-							<div class="relative overflow-hidden">
-								<img
-									src={photo.src}
-									alt={photo.alt}
-									class="h-auto w-full object-cover transition-transform duration-700 group-hover:scale-110"
-									loading="lazy"
-								/>
-								<div
-									class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+							<img
+								src={photo.src}
+								alt={photo.alt}
+								class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+								loading="lazy"
+							/>
+
+							<!-- Category Badge -->
+							<div class="absolute top-3 left-3">
+								<span
+									class="rounded-full bg-white/90 px-2 py-1 text-xs font-medium text-gray-800 backdrop-blur-sm md:px-3 md:text-sm"
 								>
-									<div class="absolute right-4 bottom-4 left-4 text-white">
-										<span
-											class="mb-2 inline-block rounded-full bg-white/20 px-3 py-1 text-xs font-medium backdrop-blur-sm"
-										>
-											{photo.category}
-										</span>
-										<h3 class="text-lg font-bold">{photo.title}</h3>
-										<p class="text-sm text-gray-200">{photo.location || ''}</p>
-									</div>
+									{photo.category}
+								</span>
+							</div>
+
+							<!-- Hover Overlay -->
+							<div
+								class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+							>
+								<div class="absolute right-3 bottom-3 left-3 text-white">
+									<h3 class="mb-1 text-sm font-bold md:text-lg">{photo.title}</h3>
+									{#if photo.personName}
+										<p class="mb-1 text-xs text-gray-200 md:text-sm">{photo.personName}</p>
+									{/if}
+									{#if photo.instagram}
+										<p class="text-xs text-purple-300 md:text-sm">{photo.instagram}</p>
+									{/if}
+									{#if photo.location && !photo.personName}
+										<p class="text-xs text-gray-200 md:text-sm">{photo.location}</p>
+									{/if}
 								</div>
 							</div>
 						</div>
@@ -274,11 +385,11 @@
 			on:click={closeModal}
 		>
 			<div
-				class="relative max-h-[90vh] max-w-6xl overflow-auto rounded-2xl bg-gray-900 shadow-2xl"
+				class="relative max-h-[90vh] max-w-5xl overflow-auto rounded-2xl bg-white shadow-2xl"
 				on:click|stopPropagation
 			>
 				<button
-					class="absolute top-4 right-4 z-10 rounded-full bg-black/50 p-2 text-white transition-colors hover:bg-black/70"
+					class="absolute top-4 right-4 z-10 rounded-full bg-gray-900/80 p-2 text-white transition-colors hover:bg-gray-900"
 					on:click={closeModal}
 				>
 					<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -302,48 +413,62 @@
 					</div>
 
 					<!-- Details -->
-					<div class="p-6 text-white lg:p-8">
+					<div class="p-4 text-gray-800 lg:p-8">
 						<span
-							class="mb-3 inline-block rounded-full bg-purple-600 px-3 py-1 text-sm font-medium"
+							class="mb-3 inline-block rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-3 py-1 text-sm font-medium text-white"
 						>
-							{selectedPhoto.category}
+							{selectedPhoto.category} • {selectedPhoto.orientation}
 						</span>
 
-						<h2 class="mb-4 text-2xl font-bold">{selectedPhoto.title}</h2>
-						<p class="mb-6 text-gray-300">{selectedPhoto.description}</p>
+						<h2 class="mb-4 text-xl font-bold text-gray-900 lg:text-2xl">{selectedPhoto.title}</h2>
+						<p class="mb-6 text-sm text-gray-600 lg:text-base">{selectedPhoto.description}</p>
+
+						{#if selectedPhoto.personName}
+							<div class="mb-4">
+								<h3 class="mb-2 text-sm font-semibold text-purple-600">Subject</h3>
+								<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.personName}</p>
+							</div>
+						{/if}
+
+						{#if selectedPhoto.instagram}
+							<div class="mb-4">
+								<h3 class="mb-2 text-sm font-semibold text-purple-600">Instagram</h3>
+								<p class="text-sm text-purple-600 lg:text-base">{selectedPhoto.instagram}</p>
+							</div>
+						{/if}
 
 						{#if selectedPhoto.location}
 							<div class="mb-4">
-								<h3 class="mb-2 text-sm font-semibold text-purple-300">Location</h3>
-								<p class="text-gray-300">{selectedPhoto.location}</p>
+								<h3 class="mb-2 text-sm font-semibold text-purple-600">Location</h3>
+								<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.location}</p>
 							</div>
 						{/if}
 
 						{#if selectedPhoto.date}
 							<div class="mb-4">
-								<h3 class="mb-2 text-sm font-semibold text-purple-300">Date</h3>
-								<p class="text-gray-300">{selectedPhoto.date}</p>
+								<h3 class="mb-2 text-sm font-semibold text-purple-600">Date</h3>
+								<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.date}</p>
 							</div>
 						{/if}
 
 						{#if selectedPhoto.camera}
 							<div class="mb-4">
-								<h3 class="mb-2 text-sm font-semibold text-purple-300">Camera</h3>
-								<p class="text-gray-300">{selectedPhoto.camera}</p>
+								<h3 class="mb-2 text-sm font-semibold text-purple-600">Camera</h3>
+								<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.camera}</p>
 							</div>
 						{/if}
 
 						{#if selectedPhoto.lens}
 							<div class="mb-4">
-								<h3 class="mb-2 text-sm font-semibold text-purple-300">Lens</h3>
-								<p class="text-gray-300">{selectedPhoto.lens}</p>
+								<h3 class="mb-2 text-sm font-semibold text-purple-600">Lens</h3>
+								<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.lens}</p>
 							</div>
 						{/if}
 
 						{#if selectedPhoto.settings}
 							<div class="mb-4">
-								<h3 class="mb-2 text-sm font-semibold text-purple-300">Settings</h3>
-								<p class="text-gray-300">{selectedPhoto.settings}</p>
+								<h3 class="mb-2 text-sm font-semibold text-purple-600">Settings</h3>
+								<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.settings}</p>
 							</div>
 						{/if}
 					</div>
@@ -354,21 +479,40 @@
 </div>
 
 <style>
-	.masonry-grid {
+	.photo-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-		grid-gap: 1.5rem;
-		grid-auto-rows: max-content;
+		grid-template-columns: repeat(2, 1fr);
+		gap: 0.75rem;
 	}
 
-	@media (min-width: 768px) {
-		.masonry-grid {
-			grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+	@media (min-width: 640px) {
+		.photo-grid {
+			grid-template-columns: repeat(2, 1fr);
+			gap: 1rem;
 		}
 	}
 
-	.masonry-item {
-		break-inside: avoid;
-		margin-bottom: 1.5rem;
+	@media (min-width: 768px) {
+		.photo-grid {
+			grid-template-columns: repeat(3, 1fr);
+			gap: 1.25rem;
+		}
+	}
+
+	@media (min-width: 1024px) {
+		.photo-grid {
+			grid-template-columns: repeat(4, 1fr);
+			gap: 1.5rem;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.photo-grid {
+			grid-template-columns: repeat(5, 1fr);
+		}
+	}
+
+	.photo-item {
+		width: 100%;
 	}
 </style>

@@ -45,30 +45,33 @@
 	const websites = [
 		{
 			id: 1,
-			title: 'E-Commerce Platform',
-			description: 'Modern e-commerce solution with Flutter mobile app and Laravel backend',
-			image: '/images/ecommerce-preview.jpg',
-			technologies: ['Flutter', 'Laravel', 'PostgreSQL', 'Tailwind CSS'],
-			liveUrl: 'https://example-ecommerce.com',
-			category: 'Full Stack'
-		},
-		{
-			id: 2,
-			title: 'Coffee Shop Management',
-			description: 'Complete POS system for coffee shop with inventory management',
-			image: '/images/coffee-pos.jpg',
-			technologies: ['SvelteKit', 'TypeScript', 'PostgreSQL'],
-			liveUrl: 'https://coffee-pos.com',
+			title: 'Undangan Pernikahan Digital',
+			description:
+				'Digital wedding invitation with elegant design, countdown timer, and Google Maps integration.',
+			image: '/images/web-undangan-digital.png',
+			technologies: ['SvelteKit', 'TypeScript', 'Tailwind CSS'],
+			liveUrl: 'https://undangan-digital-topaz.vercel.app',
 			category: 'Web App'
 		},
 		{
+			id: 2,
+			title: 'AM Sports Flooring Company',
+			description:
+				'Company profile website for sports flooring business with modern responsive design.',
+			image: '/images/amflooring-web.png',
+			technologies: ['SvelteKit', 'TypeScript', 'Tailwind CSS'],
+			liveUrl: 'https://amflooring.vercel.app',
+			category: 'Company Profile'
+		},
+		{
 			id: 3,
-			title: 'Photography Portfolio',
-			description: 'Responsive portfolio website for professional photographers',
-			image: '/images/photo-portfolio.jpg',
+			title: 'Warkop TVB',
+			description: 'Coffee shop website – currently under maintenance.',
+			image: '/images/tvb-web.png',
 			technologies: ['SvelteKit', 'Tailwind CSS', 'TypeScript'],
-			liveUrl: 'https://photo-portfolio.com',
-			category: 'Portfolio'
+			liveUrl: '', // kosong biar tidak bisa diklik
+			category: 'Web App',
+			maintenance: true // flag tambahan
 		}
 	];
 
@@ -496,14 +499,22 @@
 							class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						>
 							<div class="absolute right-4 bottom-4 left-4">
-								<a
-									href={website.liveUrl}
-									target="_blank"
-									rel="noopener noreferrer"
-									class="block w-full rounded-lg bg-white/20 px-4 py-2 text-center text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/30"
-								>
-									View Live
-								</a>
+								{#if website.maintenance}
+									<span
+										class="block w-full rounded-lg bg-yellow-600/80 px-4 py-2 text-center text-white backdrop-blur-sm"
+									>
+										Under Maintenance
+									</span>
+								{:else}
+									<a
+										href={website.liveUrl}
+										target="_blank"
+										rel="noopener noreferrer"
+										class="block w-full rounded-lg bg-white/20 px-4 py-2 text-center text-white backdrop-blur-sm transition-all duration-300 hover:bg-white/30"
+									>
+										View Live
+									</a>
+								{/if}
 							</div>
 						</div>
 					</div>
@@ -531,13 +542,13 @@
 </section>
 
 <!-- Photography Section -->
-<section id="photography" class="relative bg-black">
+<section id="photography" class="relative bg-[#000035]">
 	<!-- Curved top border -->
 	<div class="absolute top-0 left-0 w-full overflow-hidden">
 		<svg
 			viewBox="0 0 1200 120"
 			preserveAspectRatio="none"
-			class="relative block h-16 w-full fill-current text-white"
+			class="relative block h-12 w-full fill-current text-white sm:h-16"
 		>
 			<path
 				d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
@@ -545,106 +556,212 @@
 		</svg>
 	</div>
 
-	<div class="mx-auto max-w-6xl px-4 py-32 sm:px-6 lg:px-8">
-		<div class="mb-16 text-center">
-			<h2 class="mb-4 text-4xl font-bold text-white">Photography</h2>
-			<p class="mb-8 text-xl text-gray-300">
+	<div class="mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-32 lg:px-8">
+		<div class="mb-12 text-center sm:mb-16">
+			<h2 class="mb-4 text-3xl font-bold text-white sm:text-4xl">Photography</h2>
+			<p class="mb-6 text-lg text-gray-300 sm:mb-8 sm:text-xl">
 				Capturing moments through my lens - explore my visual journey
 			</p>
-			<div class="mx-auto h-1 w-24 bg-red-600"></div>
+			<div class="mx-auto h-1 w-20 bg-red-600 sm:w-24"></div>
 		</div>
 
-		<div class="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-			<!-- Featured Photo 1 -->
-			<div
-				class="group relative overflow-hidden rounded-2xl border border-gray-800 md:col-span-2 md:row-span-2"
-			>
-				<img
-					src="/api/placeholder/600/400"
-					alt="Featured graduation photography"
-					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
-				/>
+		<!-- Responsive grid - Always 1 large + 4 small photos -->
+		<div class="grid auto-rows-fr gap-3 sm:gap-4 md:gap-6">
+			<!-- Mobile: 2 columns, Desktop: Flexbox approach for better control -->
+			<div class="grid grid-cols-2 gap-3 sm:gap-4 md:hidden">
+				<!-- Mobile layout - unchanged -->
 				<div
-					class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+					class="group relative col-span-2 aspect-[4/3] overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
 				>
-					<div class="absolute bottom-6 left-6 text-white">
-						<span class="mb-2 block text-sm font-medium text-red-400">Graduation</span>
-						<h3 class="text-2xl font-bold">Special Moments</h3>
+					<img
+						src="/images/foto.JPG"
+						alt="Featured graduation photography"
+						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+					>
+						<div class="absolute bottom-4 left-4 text-white sm:bottom-6 sm:left-6">
+							<span class="mb-1 block text-xs font-medium text-red-400 sm:mb-2 sm:text-sm"
+								>Graduation</span
+							>
+							<h3 class="text-lg font-bold sm:text-2xl">Special Moments</h3>
+						</div>
+					</div>
+				</div>
+
+				<div
+					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
+				>
+					<img
+						src="/images/foto.JPG"
+						alt="Cosplayer photography"
+						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+					>
+						<div class="absolute bottom-2 left-2 text-white sm:bottom-3 sm:left-3">
+							<span class="text-xs text-red-400 sm:text-sm">Cosplayer</span>
+						</div>
+					</div>
+				</div>
+
+				<div
+					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
+				>
+					<img
+						src="/images/foto.JPG"
+						alt="People photography"
+						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+					>
+						<div class="absolute bottom-2 left-2 text-white sm:bottom-3 sm:left-3">
+							<span class="text-xs text-red-400 sm:text-sm">People</span>
+						</div>
+					</div>
+				</div>
+
+				<div
+					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
+				>
+					<img
+						src="/images/foto.JPG"
+						alt="Other photography"
+						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+					>
+						<div class="absolute bottom-2 left-2 text-white sm:bottom-3 sm:left-3">
+							<span class="text-xs text-red-400 sm:text-sm">Others</span>
+						</div>
+					</div>
+				</div>
+
+				<div
+					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
+				>
+					<img
+						src="/images/foto.JPG"
+						alt="Graduation ceremony"
+						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+					>
+						<div class="absolute bottom-2 left-2 text-white sm:bottom-3 sm:left-3">
+							<span class="text-xs text-red-400 sm:text-sm">Events</span>
+						</div>
 					</div>
 				</div>
 			</div>
 
-			<!-- Small Photos -->
-			<div class="group relative overflow-hidden rounded-2xl border border-gray-800">
-				<img
-					src="/api/placeholder/300/300"
-					alt="Cosplayer photography"
-					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
-				/>
-				<div
-					class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
-				>
-					<div class="absolute bottom-4 left-4 text-white">
-						<span class="text-sm text-red-400">Cosplayer</span>
+			<!-- Desktop layout - Clean and organized -->
+			<div class="hidden md:flex md:gap-6 lg:gap-8">
+				<!-- Large featured photo -->
+				<div class="group relative flex-[1.2] overflow-hidden rounded-2xl border border-gray-800">
+					<img
+						src="/images/foto.JPG"
+						alt="Featured graduation photography"
+						class="aspect-[4/3] h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+					/>
+					<div
+						class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+					>
+						<div class="absolute bottom-6 left-6 text-white">
+							<span class="mb-2 block text-sm font-medium text-red-400 lg:text-base">
+								Graduation
+							</span>
+							<h3 class="text-2xl font-bold lg:text-3xl">Special Moments</h3>
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div class="group relative overflow-hidden rounded-2xl border border-gray-800">
-				<img
-					src="/api/placeholder/300/300"
-					alt="Models photography"
-					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
-				/>
-				<div
-					class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
-				>
-					<div class="absolute bottom-4 left-4 text-white">
-						<span class="text-sm text-red-400">Models</span>
+				<!-- Small photos grid -->
+				<div class="grid flex-1 grid-cols-2 gap-4 lg:gap-6">
+					<div
+						class="group relative aspect-square overflow-hidden rounded-2xl border border-gray-800"
+					>
+						<img
+							src="/images/foto.JPG"
+							alt="Cosplayer photography"
+							class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+						/>
+						<div
+							class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+						>
+							<div class="absolute bottom-3 left-3 text-white lg:bottom-4 lg:left-4">
+								<span class="text-sm text-red-400 lg:text-base">Cosplayer</span>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
 
-			<div class="group relative overflow-hidden rounded-2xl border border-gray-800">
-				<img
-					src="/api/placeholder/300/300"
-					alt="Other photography"
-					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
-				/>
-				<div
-					class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
-				>
-					<div class="absolute bottom-4 left-4 text-white">
-						<span class="text-sm text-red-400">Others</span>
+					<div
+						class="group relative aspect-square overflow-hidden rounded-2xl border border-gray-800"
+					>
+						<img
+							src="/images/foto.JPG"
+							alt="People photography"
+							class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+						/>
+						<div
+							class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+						>
+							<div class="absolute bottom-3 left-3 text-white lg:bottom-4 lg:left-4">
+								<span class="text-sm text-red-400 lg:text-base">People</span>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>
 
-			<div class="group relative overflow-hidden rounded-2xl border border-gray-800">
-				<img
-					src="/api/placeholder/300/300"
-					alt="Graduation ceremony"
-					class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
-				/>
-				<div
-					class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
-				>
-					<div class="absolute bottom-4 left-4 text-white">
-						<span class="text-sm text-red-400">Graduation</span>
+					<div
+						class="group relative aspect-square overflow-hidden rounded-2xl border border-gray-800"
+					>
+						<img
+							src="/images/foto.JPG"
+							alt="Other photography"
+							class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+						/>
+						<div
+							class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+						>
+							<div class="absolute bottom-3 left-3 text-white lg:bottom-4 lg:left-4">
+								<span class="text-sm text-red-400 lg:text-base">Others</span>
+							</div>
+						</div>
+					</div>
+
+					<div
+						class="group relative aspect-square overflow-hidden rounded-2xl border border-gray-800"
+					>
+						<img
+							src="/images/foto.JPG"
+							alt="Graduation ceremony"
+							class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
+						/>
+						<div
+							class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-all duration-500 group-hover:opacity-100"
+						>
+							<div class="absolute bottom-3 left-3 text-white lg:bottom-4 lg:left-4">
+								<span class="text-sm text-red-400 lg:text-base">Events</span>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 
 		<!-- View Gallery Button -->
-		<div class="mt-12 text-center">
+		<div class="mt-8 text-center sm:mt-12">
 			<a
 				href="/photography"
-				class="group inline-flex items-center gap-3 rounded-full bg-red-600 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-red-700 hover:shadow-2xl"
+				class="group inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-3 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-red-700 hover:shadow-2xl sm:gap-3 sm:px-8 sm:py-4 sm:text-lg"
 			>
 				<span>View Full Gallery</span>
 				<svg
-					class="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1"
+					class="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 sm:h-5 sm:w-5"
 					fill="none"
 					stroke="currentColor"
 					viewBox="0 0 24 24"
