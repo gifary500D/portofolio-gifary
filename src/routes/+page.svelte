@@ -68,7 +68,7 @@
 			title: 'Warkop TVB',
 			description: 'Coffee shop website – currently under maintenance.',
 			image: '/images/tvb-web.png',
-			technologies: ['SvelteKit', 'Tailwind CSS', 'TypeScript'],
+			technologies: ['Bootstrap', 'CSS', 'MySql', 'PHP'],
 			liveUrl: '', // kosong biar tidak bisa diklik
 			category: 'Web App',
 			maintenance: true // flag tambahan
@@ -611,7 +611,7 @@
 					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
 				>
 					<img
-						src="/images/foto.JPG"
+						src="/images/photography/cosplay1.jpeg"
 						alt="People photography"
 						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 					/>

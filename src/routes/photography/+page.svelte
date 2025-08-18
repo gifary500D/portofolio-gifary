@@ -18,191 +18,261 @@
 		personName?: string;
 		instagram?: string;
 	}
+	// utils untuk buat ID random
+	function randomId() {
+		return Math.floor(Math.random() * 10000);
+	}
 
 	let photos: Photo[] = [
+		// People
 		{
 			id: 1,
-			src: '/images/foto.JPG',
-			alt: 'Portrait Model',
-			title: 'Urban Fashion',
+			src: '/images/photography/people1.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 1',
 			category: 'People',
-			orientation: 'portrait',
-			description: 'Professional portrait session in urban setting',
-			location: 'Jakarta, Indonesia',
-			camera: 'Sony A7R IV',
-			lens: '85mm f/1.4',
-			settings: 'f/2.8, 1/160s, ISO 320',
-			date: '2024-01-15',
-			personName: 'Sarah Indira',
-			instagram: '@sarahindira'
+			orientation: 'landscape',
+			description: 'Foto candid outdoor'
 		},
 		{
 			id: 2,
-			src: '/images/foto.JPG',
-			alt: 'Anime Cosplay',
-			title: 'Naruto Cosplay',
-			category: 'Cosplay',
-			orientation: 'portrait',
-			description: 'Amazing Naruto character cosplay with detailed costume',
-			location: 'Comic Con Jakarta',
-			camera: 'Canon R5',
-			lens: '50mm f/1.4',
-			settings: 'f/2.0, 1/250s, ISO 400',
-			date: '2024-02-08',
-			personName: 'Riko Tanaka',
-			instagram: '@rikocosplay'
+			src: '/images/photography/people2.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 2',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Potret suasana santai'
 		},
 		{
 			id: 3,
-			src: '/images/foto.JPG',
-			alt: 'Street Photography',
-			title: 'Morning Market',
-			category: 'Others',
-			orientation: 'landscape',
-			description: 'Vibrant morning market scene with local vendors',
-			location: 'Yogyakarta, Indonesia',
-			camera: 'Fujifilm X-T5',
-			lens: '35mm f/1.4',
-			settings: 'f/4, 1/60s, ISO 800',
-			date: '2024-01-22'
+			src: '/images/photography/people3.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 3',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Foto portrait dengan pose'
 		},
 		{
 			id: 4,
-			src: '/images/foto.JPG',
-			alt: 'Business Portrait',
-			title: 'Professional Headshot',
+			src: '/images/photography/people4.jpeg',
+			alt: 'People Group',
+			title: 'Friends Gathering',
 			category: 'People',
-			orientation: 'portrait',
-			description: 'Corporate headshot for business profile',
-			location: 'Studio Jakarta',
-			camera: 'Sony A7R IV',
-			lens: '85mm f/1.4',
-			settings: 'f/2.8, 1/160s, ISO 200',
-			date: '2024-03-10',
-			personName: 'Ahmad Pratama',
-			instagram: '@ahmadpratama'
+			orientation: 'landscape',
+			description: 'Foto bersama teman'
 		},
 		{
 			id: 5,
-			src: '/images/foto.JPG',
-			alt: 'Demon Slayer Cosplay',
-			title: 'Tanjiro Kamado',
-			category: 'Cosplay',
+			src: '/images/photography/people5.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 5',
+			category: 'People',
 			orientation: 'portrait',
-			description: 'Detailed Demon Slayer cosplay with authentic props',
-			location: 'Anime Festival Bandung',
-			camera: 'Canon R5',
-			lens: '85mm f/1.4',
-			settings: 'f/2.8, 1/200s, ISO 320',
-			date: '2024-02-28',
-			personName: 'Deni Wijaya',
-			instagram: '@denianimecosplay'
+			description: 'Potret candid di event'
 		},
 		{
 			id: 6,
-			src: '/images/foto.JPG',
-			alt: 'Nature Landscape',
-			title: 'Mountain Vista',
-			category: 'Others',
-			orientation: 'landscape',
-			description: 'Stunning mountain landscape at golden hour',
-			location: 'Mount Bromo, Indonesia',
-			camera: 'Fujifilm X-T5',
-			lens: '16mm f/1.4',
-			settings: 'f/8, 1/125s, ISO 100',
-			date: '2024-03-05'
+			src: '/images/photography/people6.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 6',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Foto portrait casual'
 		},
 		{
 			id: 7,
-			src: '/images/foto.JPG',
-			alt: 'Fashion Portrait',
-			title: 'Editorial Fashion',
+			src: '/images/photography/people7.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 7',
 			category: 'People',
 			orientation: 'portrait',
-			description: 'High fashion editorial portrait session',
-			location: 'Studio Surabaya',
-			camera: 'Sony A7R IV',
-			lens: '85mm f/1.4',
-			settings: 'f/2.8, 1/160s, ISO 320',
-			date: '2024-01-30',
-			personName: 'Maya Sari',
-			instagram: '@mayasarimodel'
+			description: 'Potret santai outdoor'
 		},
 		{
 			id: 8,
-			src: '/images/foto.JPG',
-			alt: 'Attack on Titan Cosplay',
-			title: 'Survey Corps',
-			category: 'Cosplay',
-			orientation: 'landscape',
-			description: 'Epic Attack on Titan Survey Corps group cosplay',
-			location: 'Taman Mini Indonesia',
-			camera: 'Canon R5',
-			lens: '24-70mm f/2.8',
-			settings: 'f/5.6, 1/200s, ISO 400',
-			date: '2024-02-14',
-			personName: 'Cosplay Team Alpha',
-			instagram: '@teamalphacosplay'
+			src: '/images/photography/people8.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 8',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Potret candid dengan background hijau'
 		},
 		{
 			id: 9,
-			src: '/images/foto.JPG',
-			alt: 'Architecture',
-			title: 'Modern Building',
-			category: 'Others',
+			src: '/images/photography/people9.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 9',
+			category: 'People',
 			orientation: 'portrait',
-			description: 'Contemporary architecture with geometric patterns',
-			location: 'Jakarta CBD',
-			camera: 'Fujifilm X-T5',
-			lens: '23mm f/1.4',
-			settings: 'f/8, 1/125s, ISO 200',
-			date: '2024-03-12'
+			description: 'Potret candid dengan balon background'
 		},
 		{
 			id: 10,
-			src: '/images/foto.JPG',
-			alt: 'Wedding Portrait',
-			title: 'Bride Portrait',
+			src: '/images/photography/people10.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 10',
 			category: 'People',
 			orientation: 'portrait',
-			description: 'Beautiful bridal portrait on wedding day',
-			location: 'Bali Wedding Venue',
-			camera: 'Sony A7R IV',
-			lens: '85mm f/1.4',
-			settings: 'f/2.0, 1/250s, ISO 320',
-			date: '2024-03-18',
-			personName: 'Lisa Permata',
-			instagram: '@lisapermata'
+			description: 'Potret orang di pantai'
 		},
 		{
 			id: 11,
-			src: '/images/foto.JPG',
-			alt: 'Genshin Impact Cosplay',
-			title: 'Raiden Shogun',
-			category: 'Cosplay',
-			orientation: 'portrait',
-			description: 'Stunning Raiden Shogun cosplay from Genshin Impact',
-			location: 'Comic Con Surabaya',
-			camera: 'Canon R5',
-			lens: '50mm f/1.4',
-			settings: 'f/2.8, 1/200s, ISO 400',
-			date: '2024-03-20',
-			personName: 'Anita Kusuma',
-			instagram: '@anitacosplay'
+			src: '/images/photography/people11.jpeg',
+			alt: 'People Group',
+			title: 'Group Portrait',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Foto bareng sekelompok teman'
 		},
+
+		// Cosplay
 		{
 			id: 12,
-			src: '/images/foto.JPG',
-			alt: 'City Landscape',
-			title: 'Jakarta Skyline',
+			src: '/images/photography/cosplay1.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 1',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay di event mall'
+		},
+		{
+			id: 13,
+			src: '/images/photography/cosplay2.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 2',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay karakter anime'
+		},
+		{
+			id: 14,
+			src: '/images/photography/cosplay3.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 3',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay dengan pose'
+		},
+		{
+			id: 15,
+			src: '/images/photography/cosplay4.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 4',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay colorful di event mall'
+		},
+		{
+			id: 16,
+			src: '/images/photography/cosplay5.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 5',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay karakter dengan topeng'
+		},
+		{
+			id: 17,
+			src: '/images/photography/cosplay6.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 6',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay karakter anime'
+		},
+		{
+			id: 18,
+			src: '/images/photography/cosplay7.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 7',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay dengan properti lengkap'
+		},
+		{
+			id: 19,
+			src: '/images/photography/cosplay8.jpeg',
+			alt: 'Cosplay Group',
+			title: 'Cosplay 8',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Foto cosplay bersama teman'
+		},
+		{
+			id: 20,
+			src: '/images/photography/cosplay9.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 9',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay dengan gaya unik'
+		},
+
+		// Others (kucing)
+		{
+			id: 21,
+			src: '/images/photography/others1.jpeg',
+			alt: 'Cat Photo',
+			title: 'Cat 1',
 			category: 'Others',
+			orientation: 'portrait',
+			description: 'Foto kucing peliharaan'
+		},
+		{
+			id: 22,
+			src: '/images/photography/others2.jpeg',
+			alt: 'Cat Photo',
+			title: 'Cat 2',
+			category: 'Others',
+			orientation: 'portrait',
+			description: 'Foto kucing lucu'
+		},
+		{
+			id: 23,
+			src: '/images/photography/others3.jpeg',
+			alt: 'Cat Photo',
+			title: 'Cat 3',
+			category: 'Others',
+			orientation: 'portrait',
+			description: 'Foto kucing di rumah'
+		},
+
+		// Graduation (dipindah ke paling bawah)
+		{
+			id: 26,
+			src: '/images/photography/graduation1.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation Day',
+			category: 'People',
 			orientation: 'landscape',
-			description: 'Jakarta city skyline during blue hour',
-			location: 'Monas Area, Jakarta',
-			camera: 'Fujifilm X-T5',
-			lens: '16-35mm f/2.8',
-			settings: 'f/8, 10s, ISO 100',
-			date: '2024-03-25'
+			description: 'Moment wisuda bersama teman-teman'
+		},
+		{
+			id: 27,
+			src: '/images/photography/graduation2.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation Celebration',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Perayaan wisuda dengan teman-teman'
+		},
+		{
+			id: 24,
+			src: '/images/photography/graduation3.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Group Graduation',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Foto bersama saat wisuda'
+		},
+		{
+			id: 25,
+			src: '/images/photography/graduation4.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation Friends',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Momen wisuda penuh kenangan'
 		}
 	];
 
