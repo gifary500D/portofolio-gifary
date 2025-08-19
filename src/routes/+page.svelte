@@ -362,7 +362,11 @@
 					<div
 						class="hover:shadow-3xl h-80 w-80 overflow-hidden rounded-full shadow-2xl transition-all duration-500 hover:scale-105 md:h-96 md:w-96"
 					>
-						<img src="/images/foto.JPG" alt="Profile" class="h-full w-full object-cover" />
+						<img
+							src="/images/foto.JPG"
+							alt="Profile"
+							class="h-full w-full object-cover object-[center_80%]"
+						/>
 					</div>
 					<!-- Floating elements -->
 					<div
@@ -574,7 +578,7 @@
 					class="group relative col-span-2 aspect-[4/3] overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
 				>
 					<img
-						src="/images/foto.JPG"
+						src="/images/photography/graduation5.jpeg"
 						alt="Featured graduation photography"
 						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 					/>
@@ -594,7 +598,7 @@
 					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
 				>
 					<img
-						src="/images/foto.JPG"
+						src="/images/photography/cosplay6.jpeg"
 						alt="Cosplayer photography"
 						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 					/>
@@ -611,7 +615,7 @@
 					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
 				>
 					<img
-						src="/images/photography/cosplay1.jpeg"
+						src="/images/photography/people2.jpeg"
 						alt="People photography"
 						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 					/>
@@ -628,7 +632,7 @@
 					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
 				>
 					<img
-						src="/images/foto.JPG"
+						src="/images/photography/others3.jpeg"
 						alt="Other photography"
 						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 					/>
@@ -645,8 +649,8 @@
 					class="group relative aspect-square overflow-hidden rounded-xl border border-gray-800 sm:rounded-2xl"
 				>
 					<img
-						src="/images/foto.JPG"
-						alt="Graduation ceremony"
+						src="/images/photography/cosplay2.jpeg"
+						alt="Event Cosplayer"
 						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 					/>
 					<div

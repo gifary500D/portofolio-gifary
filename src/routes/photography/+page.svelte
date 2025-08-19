@@ -40,7 +40,7 @@
 			alt: 'People Portrait',
 			title: 'Portrait 2',
 			category: 'People',
-			orientation: 'landscape',
+			orientation: 'portrait',
 			description: 'Potret suasana santai'
 		},
 		{
@@ -123,6 +123,24 @@
 			category: 'People',
 			orientation: 'landscape',
 			description: 'Foto bareng sekelompok teman'
+		},
+		{
+			id: 34,
+			src: '/images/photography/people12.jpeg',
+			alt: 'People Portrait',
+			title: 'Outdoor Portrait',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Potret candid cewek outdoor'
+		},
+		{
+			id: 35,
+			src: '/images/photography/people13.jpeg',
+			alt: 'People Portrait',
+			title: 'Lakeside Portrait',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Potret pria duduk di pinggir danau'
 		},
 
 		// Cosplay
@@ -207,8 +225,17 @@
 			orientation: 'portrait',
 			description: 'Cosplay dengan gaya unik'
 		},
+		{
+			id: 29,
+			src: '/images/photography/cosplay10.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay 10',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay anak-anak dengan kostum anime'
+		},
 
-		// Others (kucing)
+		// Others (kucing + lain-lain)
 		{
 			id: 21,
 			src: '/images/photography/others1.jpeg',
@@ -235,6 +262,42 @@
 			category: 'Others',
 			orientation: 'portrait',
 			description: 'Foto kucing di rumah'
+		},
+		{
+			id: 30,
+			src: '/images/photography/others5.jpeg',
+			alt: 'Nature Photo',
+			title: 'Nature Detail',
+			category: 'Others',
+			orientation: 'portrait',
+			description: 'Foto close-up dedaunan hijau'
+		},
+		{
+			id: 31,
+			src: '/images/photography/others6.jpeg',
+			alt: 'Toy Car Photo',
+			title: 'Mini Car 1',
+			category: 'Others',
+			orientation: 'landscape',
+			description: 'Mobil mainan hijau dengan bokeh'
+		},
+		{
+			id: 32,
+			src: '/images/photography/others4.jpeg',
+			alt: 'Toy Car Photo',
+			title: 'Mini Car 2',
+			category: 'Others',
+			orientation: 'landscape',
+			description: 'Mobil mainan oranye dengan bokeh malam'
+		},
+		{
+			id: 33,
+			src: '/images/photography/others7.jpeg',
+			alt: 'Phone Photo',
+			title: 'Phone on Floor',
+			category: 'Others',
+			orientation: 'portrait',
+			description: 'HP tergeletak di lantai kayu'
 		},
 
 		// Graduation (dipindah ke paling bawah)
@@ -273,6 +336,33 @@
 			category: 'People',
 			orientation: 'portrait',
 			description: 'Momen wisuda penuh kenangan'
+		},
+		{
+			id: 36,
+			src: '/images/photography/graduation5.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation with Family',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Anak wisuda bersama orang tua'
+		},
+		{
+			id: 37,
+			src: '/images/photography/graduation6.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Family Graduation',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Foto keluarga saat wisuda'
+		},
+		{
+			id: 38,
+			src: '/images/photography/graduation7.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation Kid',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Anak kecil dengan latar wisuda'
 		}
 	];
 
