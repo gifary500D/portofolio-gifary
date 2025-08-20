@@ -8,9 +8,9 @@
 	// Sample data - ganti dengan data Anda yang sebenarnya
 	const profileData = {
 		name: 'Muhammad Gifary',
-		title: 'Full Stack Developer • Barista • Photographer',
+		title: 'Web & Mobile Developer • Barista • Photographer',
 		description:
-			'A passionate full stack developer who creates innovative digital solutions, a skilled barista crafting the perfect cup, and a photographer who captures stories through every frame.',
+			'A passionate web & mobile developer who creates innovative digital solutions, a skilled barista crafting the perfect cup, and a photographer who captures stories through every frame.',
 		email: 'gifary024@email.com',
 		phone: '+62 851-8274-8023'
 	};
@@ -494,21 +494,51 @@
 							alt={website.title}
 							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
 						/>
-						<div
-							class="absolute top-4 right-4 rounded-full bg-blue-600 px-3 py-1 text-sm font-semibold text-white"
-						>
-							{website.category}
+						<div class="absolute top-4 right-4 flex flex-col items-end gap-2">
+							<!-- Kategori selalu tampil -->
+							<div class="rounded-full bg-blue-600 px-3 py-1 text-sm font-semibold text-white">
+								{website.category}
+							</div>
+
+							<!-- Marker Maintenance -->
+							{#if website.maintenance}
+								<div
+									class="animate-pulse rounded-full bg-red-600 px-3 py-1 text-xs font-semibold text-white shadow-md"
+								>
+									Maintenance
+								</div>
+							{/if}
 						</div>
+
 						<div
 							class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
 						>
 							<div class="absolute right-4 bottom-4 left-4">
 								{#if website.maintenance}
-									<span
-										class="block w-full rounded-lg bg-yellow-600/80 px-4 py-2 text-center text-white backdrop-blur-sm"
+									<button
+										on:click={() => alert('⚠️ This website is currently under maintenance')}
+										class="flex w-full animate-pulse items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-red-600 via-orange-500
+				       to-yellow-500 px-4 py-2 text-center font-semibold text-white
+				       shadow-md backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
 									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											class="h-5 w-5"
+											fill="none"
+											viewBox="0 0 24 24"
+											stroke="currentColor"
+										>
+											<path
+												stroke-linecap="round"
+												stroke-linejoin="round"
+												stroke-width="2"
+												d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 
+						   1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 
+						   0L4.34 16c-.77 1.333.192 3 1.732 3z"
+											/>
+										</svg>
 										Under Maintenance
-									</span>
+									</button>
 								{:else}
 									<a
 										href={website.liveUrl}

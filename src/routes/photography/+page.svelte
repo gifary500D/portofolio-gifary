@@ -234,7 +234,24 @@
 			orientation: 'portrait',
 			description: 'Cosplay anak-anak dengan kostum anime'
 		},
-
+		{
+			id: 40,
+			src: '/images/photography/cosplay11.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay Sucrose',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay Dari Anime Genshin Impact'
+		},
+		{
+			id: 41,
+			src: '/images/photography/cosplay12.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay Sucrose',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay Dari Anime Genshin Impact'
+		},
 		// Others (kucing + lain-lain)
 		{
 			id: 21,
@@ -409,52 +426,63 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+<!-- Wrapper dengan gradiasi langit dan awan background -->
+<div
+	class="relative min-h-screen bg-[linear-gradient(to_bottom,#3AA7E0_0%,#54C2F0_50%,#9EE7FF_100%)]"
+>
+	<!-- Background awan yang repeat -->
+	<div
+		class="absolute inset-0 opacity-50"
+		style="background-image: url('/images/awan-bg.png'); background-size: 1200px auto; background-position: center top; background-repeat: repeat;"
+	></div>
+
 	<!-- Hero Section -->
-	<section class="relative overflow-hidden py-12 md:py-20">
-		<div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-			<div class="text-center">
-				{#if !isLoading}
-					<div in:fly={{ y: 30, duration: 800 }}>
-						<h1 class="mb-4 text-3xl font-bold text-gray-900 md:mb-6 md:text-5xl lg:text-6xl">
-							Photography
-							<span
-								class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"
-							>
-								Gallery
-							</span>
-						</h1>
-						<p class="mb-6 text-lg text-gray-700 md:mb-8 md:text-xl lg:text-2xl">
-							Capturing life's beautiful moments through my lens
-						</p>
-						<div
-							class="mx-auto h-1 w-24 bg-gradient-to-r from-purple-500 to-pink-500 md:w-32"
-						></div>
-					</div>
-				{:else}
-					<div class="flex items-center justify-center">
-						<div
-							class="h-8 w-8 animate-spin rounded-full border-4 border-purple-500 border-t-transparent"
-						></div>
-					</div>
-				{/if}
-			</div>
+	<section class="relative z-10 overflow-hidden">
+		<div class="relative mx-auto max-w-7xl px-6 py-16 text-center lg:px-12 lg:py-28">
+			<!-- Judul Toy Story Style -->
+			<h1 class="mb-6 text-6xl leading-tight font-extrabold tracking-tight">
+				<!-- Photography dengan efek stroke biru yang lebih gelap -->
+				<span
+					class="block font-['Luckiest_Guy'] text-[#FFD12D]
+			[text-shadow:_-3px_3px_0_#1E3A8A,_3px_3px_0_#1E3A8A,_3px_-3px_0_#1E3A8A,_-3px_-3px_0_#1E3A8A]"
+				>
+					Photography
+				</span>
+
+				<!-- Gallery dalam kotak merah dengan border orange kemerahan -->
+				<span
+					class="mt-4 inline-block rounded-sm border-4 border-[#DC4C2A] bg-[#D62828] px-6 py-2 font-['Luckiest_Guy'] text-white drop-shadow-[4px_4px_0px_#00000055]"
+				>
+					Gallery
+				</span>
+			</h1>
+
+			<!-- Subtitle dengan warna yang cocok untuk background biru -->
+			<p
+				class="mx-auto max-w-xl text-lg text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] lg:text-xl"
+			>
+				Capturing life's beautiful moments through my lens. Explore portraits, landscapes, and
+				creative stories frozen in time.
+			</p>
 		</div>
 	</section>
 
 	{#if !isLoading}
 		<!-- Filters -->
-		<section class="px-4 pb-8 sm:px-6 lg:px-8" in:fade={{ duration: 600, delay: 200 }}>
-			<div class="mx-auto max-w-6xl">
+		<section
+			class="relative z-10 px-4 pb-8 sm:px-6 lg:px-8"
+			in:fade={{ duration: 600, delay: 200 }}
+		>
+			<div class="mx-auto max-w-6xl rounded-2xl bg-white/20 p-6 shadow-lg backdrop-blur-lg">
 				<!-- Category Filter -->
 				<div class="mb-6">
-					<h3 class="mb-3 text-center text-sm font-semibold text-gray-600">Categories</h3>
+					<h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Categories</h3>
 					<div class="flex flex-wrap justify-center gap-2 md:gap-4">
 						{#each categories as category}
 							<button
 								class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedCategory ===
 								category
-									? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-500/25'
+									? 'bg-gradient-to-r from-sky-600 to-cyan-500 text-white shadow-lg shadow-sky-500/25'
 									: 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
 								on:click={() => (selectedCategory = category)}
 							>
@@ -466,13 +494,13 @@
 
 				<!-- Orientation Filter -->
 				<div class="mb-4">
-					<h3 class="mb-3 text-center text-sm font-semibold text-gray-600">Orientation</h3>
+					<h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Orientation</h3>
 					<div class="flex flex-wrap justify-center gap-2 md:gap-4">
 						{#each orientations as orientation}
 							<button
 								class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedOrientation ===
 								orientation
-									? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-lg shadow-indigo-500/25'
+									? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-lg shadow-blue-500/25'
 									: 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
 								on:click={() => (selectedOrientation = orientation)}
 							>
@@ -485,7 +513,7 @@
 		</section>
 
 		<!-- Photo Grid -->
-		<section class="px-4 pb-20 sm:px-6 lg:px-8">
+		<section class="relative z-10 px-4 pb-20 sm:px-6 lg:px-8">
 			<div class="mx-auto max-w-7xl">
 				<div class="photo-grid">
 					{#each filteredPhotos as photo, index (photo.id)}
