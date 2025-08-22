@@ -38,10 +38,10 @@
 			id: 2,
 			src: '/images/photography/people2.jpeg',
 			alt: 'People Portrait',
-			title: 'Portrait 2',
+			title: 'Gym Potrait',
 			category: 'People',
 			orientation: 'portrait',
-			description: 'Potret suasana santai'
+			description: '@billiriziq'
 		},
 		{
 			id: 3,
