@@ -249,6 +249,16 @@
 		};
 		return icons[iconName] || icons.camera;
 	}
+	let mobileMenuOpen = false;
+
+	function toggleMobileMenu() {
+		mobileMenuOpen = !mobileMenuOpen;
+	}
+
+	function scrollToSectionMobile(sectionId) {
+		scrollToSection(sectionId);
+		mobileMenuOpen = false; // Close menu after clicking
+	}
 </script>
 
 <svelte:head>
@@ -270,6 +280,7 @@
 				</h1>
 			</div>
 
+			<!-- Desktop Navigation -->
 			<div class="hidden md:block">
 				<div class="ml-10 flex items-baseline space-x-8">
 					{#each ['hero', 'about', 'websites', 'coffee', 'certificates', 'skills', 'contact'] as section}
@@ -300,18 +311,69 @@
 
 			<!-- Mobile menu button -->
 			<div class="md:hidden">
-				<button class="text-gray-700 transition-colors duration-300 hover:text-blue-600">
-					<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M4 6h16M4 12h16M4 18h16"
-						/>
-					</svg>
+				<button
+					on:click={toggleMobileMenu}
+					class="rounded-md p-2 text-gray-700 transition-colors duration-300 hover:text-blue-600"
+					aria-label="Toggle mobile menu"
+				>
+					{#if mobileMenuOpen}
+						<!-- X Icon -->
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M6 18L18 6M6 6l12 12"
+							/>
+						</svg>
+					{:else}
+						<!-- Hamburger Icon -->
+						<svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M4 6h16M4 12h16M4 18h16"
+							/>
+						</svg>
+					{/if}
 				</button>
 			</div>
 		</div>
+
+		<!-- Mobile Navigation Menu -->
+		{#if mobileMenuOpen}
+			<div class="border-t border-gray-200 bg-white/95 backdrop-blur-md md:hidden">
+				<div class="space-y-1 px-2 pt-2 pb-3">
+					{#each ['hero', 'about', 'websites', 'coffee', 'certificates', 'skills', 'contact'] as section}
+						<button
+							on:click={() => scrollToSectionMobile(section)}
+							class="block w-full rounded-md px-3 py-2 text-left text-base font-medium transition-all duration-300 hover:bg-blue-50 hover:text-blue-600 {activeSection ===
+							section
+								? 'border-l-4 border-blue-600 bg-blue-50 text-blue-600'
+								: 'text-gray-700 hover:bg-gray-50'}"
+						>
+							{section === 'hero'
+								? 'Home'
+								: section === 'coffee'
+									? 'Coffee Gallery'
+									: section === 'websites'
+										? 'My Work'
+										: section.charAt(0).toUpperCase() + section.slice(1)}
+						</button>
+					{/each}
+					<button
+						on:click={() => {
+							goto('/photography');
+							mobileMenuOpen = false;
+						}}
+						class="block w-full rounded-md px-3 py-2 text-left text-base font-medium text-gray-700 transition-all duration-300 hover:bg-purple-50 hover:text-purple-600"
+					>
+						Photography
+					</button>
+				</div>
+			</div>
+		{/if}
 	</div>
 </nav>
 
@@ -1393,6 +1455,21 @@
 </footer>
 
 <style>
+	/* Smooth slide animation for mobile menu */
+	.md\:hidden div {
+		animation: slideDown 0.3s ease-out;
+	}
+
+	@keyframes slideDown {
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
 	:global(html) {
 		scroll-behavior: smooth;
 	}
