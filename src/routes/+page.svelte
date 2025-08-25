@@ -1,20 +1,17 @@
-<!-- src/routes/+page.svelte -->
-
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 
 	let activeSection = 'hero';
-
 	let mounted = false;
 	let container: HTMLDivElement | null = null;
 	let containerRect: DOMRect | null = null;
 
-	// Thunder positions
+	// Thunder positions - posisi awal yang aman dengan margin
 	let x1 = 50,
-		y1 = 20;
-	let x2 = 300,
-		y2 = 280;
+		y1 = 40;
+	let x2 = 350,
+		y2 = 240;
 
 	// Drag state
 	let offsetX1 = 0,
@@ -24,86 +21,227 @@
 		offsetY2 = 0,
 		dragging2 = false;
 
-	// Elastic effect state
-	let elasticMode1 = false;
-	let elasticMode2 = false;
+	// Photo drag state
+	let photoDragging = false;
+	let photoStartX = 0,
+		photoStartY = 0;
+	let photoOffsetX = 0,
+		photoOffsetY = 0;
+	// Ukuran elemen thunder (dengan margin safety)
+	const thunder1Size = 160; // sebelumnya 112px (w-40 h-40)
+	const thunder2Size = 128; // sebelumnya 96px (w-32 h-32)
+	const safetyMargin = 20; // margin agar tidak terpotong
+
+	function updateContainerRect() {
+		if (container) {
+			containerRect = container.getBoundingClientRect();
+			// Reset posisi jika melebihi batas container baru dengan safety margin
+			if (containerRect) {
+				const maxX1 = containerRect.width - thunder1Size - safetyMargin;
+				const maxY1 = containerRect.height - thunder1Size - safetyMargin;
+				const maxX2 = containerRect.width - thunder2Size - safetyMargin;
+				const maxY2 = containerRect.height - thunder2Size - safetyMargin;
+
+				x1 = Math.min(Math.max(x1, safetyMargin), maxX1);
+				y1 = Math.min(Math.max(y1, safetyMargin), maxY1);
+				x2 = Math.min(Math.max(x2, safetyMargin), maxX2);
+				y2 = Math.min(Math.max(y2, safetyMargin), maxY2);
+			}
+		}
+	}
 
 	function handleMouseDown1(event: MouseEvent) {
 		event.preventDefault();
+		event.stopPropagation();
 		dragging1 = true;
 
 		if (containerRect) {
 			offsetX1 = event.clientX - containerRect.left - x1;
 			offsetY1 = event.clientY - containerRect.top - y1;
 		}
-		elasticMode1 = true;
-		setTimeout(() => (elasticMode1 = false), 600);
 	}
 
 	function handleMouseDown2(event: MouseEvent) {
 		event.preventDefault();
+		event.stopPropagation();
 		dragging2 = true;
 
 		if (containerRect) {
 			offsetX2 = event.clientX - containerRect.left - x2;
 			offsetY2 = event.clientY - containerRect.top - y2;
 		}
-		elasticMode2 = true;
-		setTimeout(() => (elasticMode2 = false), 600);
 	}
 
-	// ✅ Handler khusus keyboard
+	// Touch events untuk mobile
+	function handleTouchStart1(event: TouchEvent) {
+		event.preventDefault();
+		event.stopPropagation();
+		dragging1 = true;
+
+		if (containerRect && event.touches[0]) {
+			const touch = event.touches[0];
+			offsetX1 = touch.clientX - containerRect.left - x1;
+			offsetY1 = touch.clientY - containerRect.top - y1;
+		}
+	}
+
+	function handleTouchStart2(event: TouchEvent) {
+		event.preventDefault();
+		event.stopPropagation();
+		dragging2 = true;
+
+		if (containerRect && event.touches[0]) {
+			const touch = event.touches[0];
+			offsetX2 = touch.clientX - containerRect.left - x2;
+			offsetY2 = touch.clientY - containerRect.top - y2;
+		}
+	}
+
+	// Photo drag handlers
+	function handlePhotoMouseDown(event: MouseEvent) {
+		event.preventDefault();
+		photoDragging = true;
+		photoStartX = event.clientX;
+		photoStartY = event.clientY;
+	}
+
+	function handlePhotoTouchStart(event: TouchEvent) {
+		event.preventDefault();
+		if (event.touches[0]) {
+			photoDragging = true;
+			photoStartX = event.touches[0].clientX;
+			photoStartY = event.touches[0].clientY;
+		}
+	}
 	function handleKeyDown1(event: KeyboardEvent) {
-		if (event.key === 'Enter') {
-			dragging1 = true;
-			offsetX1 = 0;
-			offsetY1 = 0;
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			dragging1 = !dragging1;
+		}
+
+		// Arrow keys untuk kontrol keyboard
+		if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+			event.preventDefault();
+			const step = 5;
+			if (containerRect) {
+				const maxX = containerRect.width - thunder1Size - safetyMargin;
+				const maxY = containerRect.height - thunder1Size - safetyMargin;
+
+				switch (event.key) {
+					case 'ArrowUp':
+						y1 = Math.max(safetyMargin, y1 - step);
+						break;
+					case 'ArrowDown':
+						y1 = Math.min(maxY, y1 + step);
+						break;
+					case 'ArrowLeft':
+						x1 = Math.max(safetyMargin, x1 - step);
+						break;
+					case 'ArrowRight':
+						x1 = Math.min(maxX, x1 + step);
+						break;
+				}
+			}
 		}
 	}
 
 	function handleKeyDown2(event: KeyboardEvent) {
-		if (event.key === 'Enter') {
-			dragging2 = true;
-			offsetX2 = 0;
-			offsetY2 = 0;
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			dragging2 = !dragging2;
+		}
+
+		if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
+			event.preventDefault();
+			const step = 5;
+			if (containerRect) {
+				const maxX = containerRect.width - thunder2Size - safetyMargin;
+				const maxY = containerRect.height - thunder2Size - safetyMargin;
+
+				switch (event.key) {
+					case 'ArrowUp':
+						y2 = Math.max(safetyMargin, y2 - step);
+						break;
+					case 'ArrowDown':
+						y2 = Math.min(maxY, y2 + step);
+						break;
+					case 'ArrowLeft':
+						x2 = Math.max(safetyMargin, x2 - step);
+						break;
+					case 'ArrowRight':
+						x2 = Math.min(maxX, x2 + step);
+						break;
+				}
+			}
 		}
 	}
 
 	function handleMouseMove(event: MouseEvent) {
 		if (!containerRect) return;
 
+		// Handle photo dragging (visual effect only)
+		if (photoDragging) {
+			const deltaX = event.clientX - photoStartX;
+			const deltaY = event.clientY - photoStartY;
+
+			// Limit movement to small range for elastic effect
+			photoOffsetX = Math.max(-10, Math.min(10, deltaX * 0.1));
+			photoOffsetY = Math.max(-10, Math.min(10, deltaY * 0.1));
+		}
+
+		updateDragPosition(event.clientX, event.clientY);
+	}
+
+	function handleTouchMove(event: TouchEvent) {
+		if (!containerRect || !event.touches[0]) return;
+		event.preventDefault(); // Prevent scrolling
+
+		const touch = event.touches[0];
+
+		// Handle photo dragging (visual effect only)
+		if (photoDragging) {
+			const deltaX = touch.clientX - photoStartX;
+			const deltaY = touch.clientY - photoStartY;
+
+			// Limit movement to small range for elastic effect
+			photoOffsetX = Math.max(-10, Math.min(10, deltaX * 0.1));
+			photoOffsetY = Math.max(-10, Math.min(10, deltaY * 0.1));
+		}
+
+		updateDragPosition(touch.clientX, touch.clientY);
+	}
+
+	function updateDragPosition(clientX: number, clientY: number) {
+		if (!containerRect) return;
+
 		const containerX = containerRect.left;
 		const containerY = containerRect.top;
 
 		if (dragging1) {
-			let newX = event.clientX - containerX - offsetX1;
-			let newY = event.clientY - containerY - offsetY1;
+			let newX = clientX - containerX - offsetX1;
+			let newY = clientY - containerY - offsetY1;
 
-			const maxX = containerRect.width - 112;
-			const maxY = containerRect.height - 112;
+			// Batasi dalam container bounds dengan safety margin
+			const maxX = containerRect.width - thunder1Size - safetyMargin;
+			const maxY = containerRect.height - thunder1Size - safetyMargin;
 
-			if (newX < 0) newX = Math.max(newX * 0.3, -20);
-			else if (newX > maxX) newX = Math.min(maxX + (newX - maxX) * 0.3, maxX + 20);
-
-			if (newY < 0) newY = Math.max(newY * 0.3, -20);
-			else if (newY > maxY) newY = Math.min(maxY + (newY - maxY) * 0.3, maxY + 20);
+			newX = Math.max(safetyMargin, Math.min(newX, maxX));
+			newY = Math.max(safetyMargin, Math.min(newY, maxY));
 
 			x1 = newX;
 			y1 = newY;
 		}
 
 		if (dragging2) {
-			let newX = event.clientX - containerX - offsetX2;
-			let newY = event.clientY - containerY - offsetY2;
+			let newX = clientX - containerX - offsetX2;
+			let newY = clientY - containerY - offsetY2;
 
-			const maxX = containerRect.width - 96;
-			const maxY = containerRect.height - 96;
+			// Batasi dalam container bounds dengan safety margin
+			const maxX = containerRect.width - thunder2Size - safetyMargin;
+			const maxY = containerRect.height - thunder2Size - safetyMargin;
 
-			if (newX < 0) newX = Math.max(newX * 0.3, -20);
-			else if (newX > maxX) newX = Math.min(maxX + (newX - maxX) * 0.3, maxX + 20);
-
-			if (newY < 0) newY = Math.max(newY * 0.3, -20);
-			else if (newY > maxY) newY = Math.min(maxY + (newY - maxY) * 0.3, maxY + 20);
+			newX = Math.max(safetyMargin, Math.min(newX, maxX));
+			newY = Math.max(safetyMargin, Math.min(newY, maxY));
 
 			x2 = newX;
 			y2 = newY;
@@ -111,25 +249,94 @@
 	}
 
 	function handleMouseUp() {
-		if (dragging1 && containerRect) {
-			x1 = Math.min(Math.max(x1, 0), containerRect.width - 112);
-			y1 = Math.min(Math.max(y1, 0), containerRect.height - 112);
-			dragging1 = false;
+		dragging1 = false;
+		dragging2 = false;
+
+		// Reset photo position with smooth animation
+		if (photoDragging) {
+			photoDragging = false;
+			// Smooth return to original position
+			const returnDuration = 300;
+			const startTime = Date.now();
+			const startX = photoOffsetX;
+			const startY = photoOffsetY;
+
+			const animateReturn = () => {
+				const elapsed = Date.now() - startTime;
+				const progress = Math.min(elapsed / returnDuration, 1);
+				const easeOut = 1 - Math.pow(1 - progress, 3);
+
+				photoOffsetX = startX * (1 - easeOut);
+				photoOffsetY = startY * (1 - easeOut);
+
+				if (progress < 1) {
+					requestAnimationFrame(animateReturn);
+				} else {
+					photoOffsetX = 0;
+					photoOffsetY = 0;
+				}
+			};
+
+			requestAnimationFrame(animateReturn);
 		}
-		if (dragging2 && containerRect) {
-			x2 = Math.min(Math.max(x2, 0), containerRect.width - 96);
-			y2 = Math.min(Math.max(y2, 0), containerRect.height - 96);
-			dragging2 = false;
+	}
+
+	function handleTouchEnd() {
+		dragging1 = false;
+		dragging2 = false;
+
+		// Reset photo position with smooth animation
+		if (photoDragging) {
+			photoDragging = false;
+			const returnDuration = 300;
+			const startTime = Date.now();
+			const startX = photoOffsetX;
+			const startY = photoOffsetY;
+
+			const animateReturn = () => {
+				const elapsed = Date.now() - startTime;
+				const progress = Math.min(elapsed / returnDuration, 1);
+				const easeOut = 1 - Math.pow(1 - progress, 3);
+
+				photoOffsetX = startX * (1 - easeOut);
+				photoOffsetY = startY * (1 - easeOut);
+
+				if (progress < 1) {
+					requestAnimationFrame(animateReturn);
+				} else {
+					photoOffsetX = 0;
+					photoOffsetY = 0;
+				}
+			};
+
+			requestAnimationFrame(animateReturn);
+		}
+	}
+
+	function scrollToSection(sectionId: string) {
+		const element = document.getElementById(sectionId);
+		if (element) {
+			element.scrollIntoView({ behavior: 'smooth' });
 		}
 	}
 
 	onMount(() => {
-		if (container) containerRect = container.getBoundingClientRect();
-		window.addEventListener('mousemove', handleMouseMove);
+		mounted = true;
+		updateContainerRect();
+
+		// Event listeners
+		window.addEventListener('mousemove', handleMouseMove, { passive: false });
 		window.addEventListener('mouseup', handleMouseUp);
+		window.addEventListener('touchmove', handleTouchMove, { passive: false });
+		window.addEventListener('touchend', handleTouchEnd);
+		window.addEventListener('resize', updateContainerRect);
+
 		return () => {
 			window.removeEventListener('mousemove', handleMouseMove);
 			window.removeEventListener('mouseup', handleMouseUp);
+			window.removeEventListener('touchmove', handleTouchMove);
+			window.removeEventListener('touchend', handleTouchEnd);
+			window.removeEventListener('resize', updateContainerRect);
 		};
 	});
 
@@ -321,10 +528,6 @@
 			observer.disconnect();
 		};
 	});
-
-	function scrollToSection(sectionId: string): void {
-		document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
-	}
 
 	function getSkillColors(iconName: string): { default: string; hover: string } {
 		const colorMap: Record<string, { default: string; hover: string }> = {
@@ -529,7 +732,7 @@
 <!-- Hero Section -->
 <section
 	id="hero"
-	class="flex min-h-screen items-center justify-center bg-gradient-to-br from-orange-50 via-white to-amber-50 pt-16"
+	class="flex min-h-screen items-center justify-center overflow-x-hidden bg-gradient-to-br from-orange-50 via-white to-amber-50 pt-16"
 >
 	<div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
 		<div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
@@ -563,67 +766,79 @@
 			</div>
 
 			<div class="flex justify-center lg:justify-end">
-				<div class="relative h-96 w-96 md:h-[450px] md:w-[450px]" bind:this={container}>
+				<!-- Container dengan padding internal untuk mencegah terpotong -->
+				<div class="relative h-96 w-96 max-w-full md:h-[450px] md:w-[450px]" bind:this={container}>
 					<!-- Background decorative elements -->
 					<div class="absolute inset-0">
 						<!-- Gradient rings behind photo -->
 						<div
-							class="absolute top-4 left-4 h-80 w-80 animate-pulse rounded-full bg-gradient-to-r from-orange-200/30 to-amber-200/30 md:h-96 md:w-96"
+							class="absolute top-4 left-4 h-80 w-80 animate-pulse rounded-full bg-gradient-to-r from-orange-400/70 to-amber-400/70 md:h-96 md:w-96"
 						></div>
 						<div
-							class="absolute top-8 left-8 h-72 w-72 animate-pulse rounded-full bg-gradient-to-r from-orange-300/20 to-amber-300/20 md:h-80 md:w-80"
+							class="absolute top-8 left-8 h-72 w-72 animate-pulse rounded-full bg-gradient-to-r from-orange-500/60 to-amber-500/60 md:h-80 md:w-80"
 							style="animation-delay: 0.5s;"
 						></div>
 
 						<!-- Floating particles -->
 						<div
-							class="absolute top-12 right-12 h-3 w-3 animate-bounce rounded-full bg-orange-400"
+							class="absolute top-12 right-12 h-3 w-3 animate-bounce rounded-full bg-orange-500"
 							style="animation-delay: 0.2s;"
 						></div>
 						<div
-							class="absolute bottom-16 left-8 h-2 w-2 animate-bounce rounded-full bg-amber-400"
+							class="absolute bottom-16 left-8 h-2 w-2 animate-bounce rounded-full bg-amber-500"
 							style="animation-delay: 0.8s;"
 						></div>
 						<div
-							class="absolute top-1/3 left-4 h-4 w-4 animate-bounce rounded-full bg-orange-300"
+							class="absolute top-1/3 left-4 h-4 w-4 animate-bounce rounded-full bg-orange-400"
 							style="animation-delay: 1.2s;"
 						></div>
 					</div>
 
-					<!-- Main photo with layered background -->
-					<div class="relative top-8 left-8 z-10">
+					<!-- Main photo with layered background and drag effect -->
+					<div
+						class="relative top-8 left-8 z-10"
+						style="transform: translate({photoOffsetX}px, {photoOffsetY}px);"
+					>
 						<!-- Shadow layer -->
 						<div
 							class="absolute -top-2 -left-2 h-80 w-80 rounded-full bg-gradient-to-br from-orange-400/20 to-amber-400/20 blur-xl md:h-96 md:w-96"
 						></div>
 
-						<!-- Photo container -->
+						<!-- Photo container dengan drag handlers -->
 						<div
-							class="hover:shadow-3xl relative h-80 w-80 overflow-hidden rounded-full bg-gradient-to-br from-orange-100 to-amber-100 p-1 shadow-2xl transition-all duration-500 hover:scale-105 md:h-96 md:w-96"
+							class="hover:shadow-3xl relative h-80 w-80 cursor-grab touch-none overflow-hidden rounded-full bg-gradient-to-br from-orange-100 to-amber-100 p-1 shadow-2xl transition-all duration-500 select-none hover:scale-105 active:cursor-grabbing md:h-96 md:w-96 {photoDragging
+								? 'scale-105'
+								: ''}"
+							on:mousedown={handlePhotoMouseDown}
+							on:touchstart={handlePhotoTouchStart}
+							role="button"
+							tabindex="0"
+							aria-label="Draggable profile photo"
 						>
 							<!-- Inner photo -->
 							<div class="h-full w-full overflow-hidden rounded-full">
 								<img
 									src="/images/foto.JPG"
 									alt="Profile"
-									class="h-full w-full object-cover object-[center_80%]"
+									class="pointer-events-none h-full w-full object-cover object-[center_80%]"
+									draggable="false"
 								/>
 							</div>
 						</div>
 					</div>
 
-					<!-- Draggable Thunder 1 - Larger -->
+					<!-- Draggable Thunder 1 - Dengan z-index tinggi agar bisa menimpa foto -->
 					<div
 						role="button"
 						tabindex="0"
 						on:mousedown={handleMouseDown1}
+						on:touchstart={handleTouchStart1}
 						on:keydown={handleKeyDown1}
-						class="absolute cursor-grab transition-all duration-300 ease-out hover:scale-110 active:cursor-grabbing {dragging1
-							? 'scale-110 rotate-12'
+						class="absolute z-30 cursor-grab touch-none transition-all duration-300 ease-out select-none hover:scale-110 active:cursor-grabbing {dragging1
+							? 'z-40 scale-110 rotate-12'
 							: ''}"
-						style="top: {y1}px; left: {x1}px; transform: {dragging1
-							? 'scale(1.1) rotate(12deg)'
-							: 'scale(1)'};"
+						style="top: {y1}px; left: {x1}px;"
+						aria-label="Draggable thunder icon 1"
 					>
 						<!-- Glow effect -->
 						<div class="absolute inset-0 animate-pulse rounded-full bg-yellow-400/30 blur-lg"></div>
@@ -635,23 +850,24 @@
 							<img
 								src="/images/thunder.png"
 								alt="Thunder Icon"
-								class="h-full w-full object-contain drop-shadow-lg"
+								class="pointer-events-none h-full w-full object-contain drop-shadow-lg"
+								draggable="false"
 							/>
 						</div>
 					</div>
 
-					<!-- Draggable Thunder 2 - Medium -->
+					<!-- Draggable Thunder 2 - Dengan z-index tinggi -->
 					<div
 						role="button"
 						tabindex="0"
 						on:mousedown={handleMouseDown2}
+						on:touchstart={handleTouchStart2}
 						on:keydown={handleKeyDown2}
-						class="absolute cursor-grab transition-all duration-300 ease-out hover:scale-110 active:cursor-grabbing {dragging2
-							? 'scale-110 rotate-12'
+						class="absolute z-30 cursor-grab touch-none transition-all duration-300 ease-out select-none hover:scale-110 active:cursor-grabbing {dragging2
+							? 'z-40 scale-110 rotate-12'
 							: ''}"
-						style="top: {y2}px; left: {x2}px; transform: {dragging2
-							? 'scale(1.1) rotate(12deg)'
-							: 'scale(1)'};"
+						style="top: {y2}px; left: {x2}px;"
+						aria-label="Draggable thunder icon 2"
 					>
 						<!-- Glow effect -->
 						<div
@@ -667,7 +883,8 @@
 							<img
 								src="/images/thunder.png"
 								alt="Thunder Icon"
-								class="h-full w-full object-contain drop-shadow-lg"
+								class="pointer-events-none h-full w-full object-contain drop-shadow-lg"
+								draggable="false"
 							/>
 						</div>
 					</div>
@@ -1823,6 +2040,17 @@
 		60% {
 			transform: translateY(-5px);
 		}
+	}
+	/* Prevent text selection and image dragging */
+	.select-none {
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+	}
+
+	.touch-none {
+		touch-action: none;
 	}
 
 	.animate-fade-in-up {
