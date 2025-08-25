@@ -1,9 +1,137 @@
 <!-- src/routes/+page.svelte -->
+
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	let mounted = false;
+
 	let activeSection = 'hero';
+
+	let mounted = false;
+	let container: HTMLDivElement | null = null;
+	let containerRect: DOMRect | null = null;
+
+	// Thunder positions
+	let x1 = 50,
+		y1 = 20;
+	let x2 = 300,
+		y2 = 280;
+
+	// Drag state
+	let offsetX1 = 0,
+		offsetY1 = 0,
+		dragging1 = false;
+	let offsetX2 = 0,
+		offsetY2 = 0,
+		dragging2 = false;
+
+	// Elastic effect state
+	let elasticMode1 = false;
+	let elasticMode2 = false;
+
+	function handleMouseDown1(event: MouseEvent) {
+		event.preventDefault();
+		dragging1 = true;
+
+		if (containerRect) {
+			offsetX1 = event.clientX - containerRect.left - x1;
+			offsetY1 = event.clientY - containerRect.top - y1;
+		}
+		elasticMode1 = true;
+		setTimeout(() => (elasticMode1 = false), 600);
+	}
+
+	function handleMouseDown2(event: MouseEvent) {
+		event.preventDefault();
+		dragging2 = true;
+
+		if (containerRect) {
+			offsetX2 = event.clientX - containerRect.left - x2;
+			offsetY2 = event.clientY - containerRect.top - y2;
+		}
+		elasticMode2 = true;
+		setTimeout(() => (elasticMode2 = false), 600);
+	}
+
+	// ✅ Handler khusus keyboard
+	function handleKeyDown1(event: KeyboardEvent) {
+		if (event.key === 'Enter') {
+			dragging1 = true;
+			offsetX1 = 0;
+			offsetY1 = 0;
+		}
+	}
+
+	function handleKeyDown2(event: KeyboardEvent) {
+		if (event.key === 'Enter') {
+			dragging2 = true;
+			offsetX2 = 0;
+			offsetY2 = 0;
+		}
+	}
+
+	function handleMouseMove(event: MouseEvent) {
+		if (!containerRect) return;
+
+		const containerX = containerRect.left;
+		const containerY = containerRect.top;
+
+		if (dragging1) {
+			let newX = event.clientX - containerX - offsetX1;
+			let newY = event.clientY - containerY - offsetY1;
+
+			const maxX = containerRect.width - 112;
+			const maxY = containerRect.height - 112;
+
+			if (newX < 0) newX = Math.max(newX * 0.3, -20);
+			else if (newX > maxX) newX = Math.min(maxX + (newX - maxX) * 0.3, maxX + 20);
+
+			if (newY < 0) newY = Math.max(newY * 0.3, -20);
+			else if (newY > maxY) newY = Math.min(maxY + (newY - maxY) * 0.3, maxY + 20);
+
+			x1 = newX;
+			y1 = newY;
+		}
+
+		if (dragging2) {
+			let newX = event.clientX - containerX - offsetX2;
+			let newY = event.clientY - containerY - offsetY2;
+
+			const maxX = containerRect.width - 96;
+			const maxY = containerRect.height - 96;
+
+			if (newX < 0) newX = Math.max(newX * 0.3, -20);
+			else if (newX > maxX) newX = Math.min(maxX + (newX - maxX) * 0.3, maxX + 20);
+
+			if (newY < 0) newY = Math.max(newY * 0.3, -20);
+			else if (newY > maxY) newY = Math.min(maxY + (newY - maxY) * 0.3, maxY + 20);
+
+			x2 = newX;
+			y2 = newY;
+		}
+	}
+
+	function handleMouseUp() {
+		if (dragging1 && containerRect) {
+			x1 = Math.min(Math.max(x1, 0), containerRect.width - 112);
+			y1 = Math.min(Math.max(y1, 0), containerRect.height - 112);
+			dragging1 = false;
+		}
+		if (dragging2 && containerRect) {
+			x2 = Math.min(Math.max(x2, 0), containerRect.width - 96);
+			y2 = Math.min(Math.max(y2, 0), containerRect.height - 96);
+			dragging2 = false;
+		}
+	}
+
+	onMount(() => {
+		if (container) containerRect = container.getBoundingClientRect();
+		window.addEventListener('mousemove', handleMouseMove);
+		window.addEventListener('mouseup', handleMouseUp);
+		return () => {
+			window.removeEventListener('mousemove', handleMouseMove);
+			window.removeEventListener('mouseup', handleMouseUp);
+		};
+	});
 
 	// Sample data - ganti dengan data Anda yang sebenarnya
 	const profileData = {
@@ -141,8 +269,33 @@
 		}
 	];
 
+	let mobileMenuOpen = false;
+
+	function toggleMobileMenu() {
+		mobileMenuOpen = !mobileMenuOpen;
+	}
+
+	function scrollToSectionMobile(sectionId: string): void {
+		scrollToSection(sectionId);
+		mobileMenuOpen = false; // Close menu after clicking
+	}
+
 	onMount(() => {
 		mounted = true;
+
+		// Update container bounds
+		function updateBounds() {
+			if (container) {
+				containerRect = container.getBoundingClientRect();
+			}
+		}
+
+		updateBounds();
+
+		// Add event listeners
+		window.addEventListener('mousemove', handleMouseMove);
+		window.addEventListener('mouseup', handleMouseUp);
+		window.addEventListener('resize', updateBounds);
 
 		// Intersection Observer untuk mendeteksi section yang aktif
 		const observer = new IntersectionObserver(
@@ -160,7 +313,13 @@
 			observer.observe(section);
 		});
 
-		return () => observer.disconnect();
+		// Cleanup
+		return () => {
+			window.removeEventListener('mousemove', handleMouseMove);
+			window.removeEventListener('mouseup', handleMouseUp);
+			window.removeEventListener('resize', updateBounds);
+			observer.disconnect();
+		};
 	});
 
 	function scrollToSection(sectionId: string): void {
@@ -248,16 +407,6 @@
 				'M18.5 3l-.16.02A4.48 4.48 0 0 0 15 7.5V9c0 .28.22.5.5.5s.5-.22.5-.5V7.5A3.5 3.5 0 0 1 19.5 4c.28 0 .5-.22.5-.5S19.78 3 19.5 3h-1z M4 5v6c0 2.55 1.92 4.63 4.39 4.94a5.01 5.01 0 0 0 7.22 0C18.08 15.63 20 13.55 20 11V5H4zm8 10c-1.66 0-3-1.34-3-3V7h6v5c0 1.66-1.34 3-3 3z'
 		};
 		return icons[iconName] || icons.camera;
-	}
-	let mobileMenuOpen = false;
-
-	function toggleMobileMenu() {
-		mobileMenuOpen = !mobileMenuOpen;
-	}
-
-	function scrollToSectionMobile(sectionId) {
-		scrollToSection(sectionId);
-		mobileMenuOpen = false; // Close menu after clicking
 	}
 </script>
 
@@ -413,27 +562,115 @@
 				</div>
 			</div>
 
-			<div
-				class="flex justify-center lg:justify-end {mounted ? 'animate-fade-in-right' : 'opacity-0'}"
-			>
-				<div class="relative">
-					<div
-						class="hover:shadow-3xl h-80 w-80 overflow-hidden rounded-full shadow-2xl transition-all duration-500 hover:scale-105 md:h-96 md:w-96"
-					>
-						<img
-							src="/images/foto.JPG"
-							alt="Profile"
-							class="h-full w-full object-cover object-[center_80%]"
-						/>
+			<div class="flex justify-center lg:justify-end">
+				<div class="relative h-96 w-96 md:h-[450px] md:w-[450px]" bind:this={container}>
+					<!-- Background decorative elements -->
+					<div class="absolute inset-0">
+						<!-- Gradient rings behind photo -->
+						<div
+							class="absolute top-4 left-4 h-80 w-80 animate-pulse rounded-full bg-gradient-to-r from-orange-200/30 to-amber-200/30 md:h-96 md:w-96"
+						></div>
+						<div
+							class="absolute top-8 left-8 h-72 w-72 animate-pulse rounded-full bg-gradient-to-r from-orange-300/20 to-amber-300/20 md:h-80 md:w-80"
+							style="animation-delay: 0.5s;"
+						></div>
+
+						<!-- Floating particles -->
+						<div
+							class="absolute top-12 right-12 h-3 w-3 animate-bounce rounded-full bg-orange-400"
+							style="animation-delay: 0.2s;"
+						></div>
+						<div
+							class="absolute bottom-16 left-8 h-2 w-2 animate-bounce rounded-full bg-amber-400"
+							style="animation-delay: 0.8s;"
+						></div>
+						<div
+							class="absolute top-1/3 left-4 h-4 w-4 animate-bounce rounded-full bg-orange-300"
+							style="animation-delay: 1.2s;"
+						></div>
 					</div>
-					<!-- Floating elements -->
+
+					<!-- Main photo with layered background -->
+					<div class="relative top-8 left-8 z-10">
+						<!-- Shadow layer -->
+						<div
+							class="absolute -top-2 -left-2 h-80 w-80 rounded-full bg-gradient-to-br from-orange-400/20 to-amber-400/20 blur-xl md:h-96 md:w-96"
+						></div>
+
+						<!-- Photo container -->
+						<div
+							class="hover:shadow-3xl relative h-80 w-80 overflow-hidden rounded-full bg-gradient-to-br from-orange-100 to-amber-100 p-1 shadow-2xl transition-all duration-500 hover:scale-105 md:h-96 md:w-96"
+						>
+							<!-- Inner photo -->
+							<div class="h-full w-full overflow-hidden rounded-full">
+								<img
+									src="/images/foto.JPG"
+									alt="Profile"
+									class="h-full w-full object-cover object-[center_80%]"
+								/>
+							</div>
+						</div>
+					</div>
+
+					<!-- Draggable Thunder 1 - Larger -->
 					<div
-						class="animate-bounce-slow absolute -top-4 -right-4 h-20 w-20 rounded-full bg-orange-200 opacity-80"
-					></div>
+						role="button"
+						tabindex="0"
+						on:mousedown={handleMouseDown1}
+						on:keydown={handleKeyDown1}
+						class="absolute cursor-grab transition-all duration-300 ease-out hover:scale-110 active:cursor-grabbing {dragging1
+							? 'scale-110 rotate-12'
+							: ''}"
+						style="top: {y1}px; left: {x1}px; transform: {dragging1
+							? 'scale(1.1) rotate(12deg)'
+							: 'scale(1)'};"
+					>
+						<!-- Glow effect -->
+						<div class="absolute inset-0 animate-pulse rounded-full bg-yellow-400/30 blur-lg"></div>
+
+						<!-- Thunder icon -->
+						<div
+							class="relative h-24 w-24 animate-bounce rounded-full bg-gradient-to-br from-yellow-400 to-orange-500 p-4 shadow-lg md:h-28 md:w-28"
+						>
+							<img
+								src="/images/thunder.png"
+								alt="Thunder Icon"
+								class="h-full w-full object-contain drop-shadow-lg"
+							/>
+						</div>
+					</div>
+
+					<!-- Draggable Thunder 2 - Medium -->
 					<div
-						class="animate-bounce-slow absolute -bottom-4 -left-4 h-16 w-16 rounded-full bg-amber-200 opacity-80"
-						style="animation-delay: 1s;"
-					></div>
+						role="button"
+						tabindex="0"
+						on:mousedown={handleMouseDown2}
+						on:keydown={handleKeyDown2}
+						class="absolute cursor-grab transition-all duration-300 ease-out hover:scale-110 active:cursor-grabbing {dragging2
+							? 'scale-110 rotate-12'
+							: ''}"
+						style="top: {y2}px; left: {x2}px; transform: {dragging2
+							? 'scale(1.1) rotate(12deg)'
+							: 'scale(1)'};"
+					>
+						<!-- Glow effect -->
+						<div
+							class="absolute inset-0 animate-pulse rounded-full bg-blue-400/30 blur-lg"
+							style="animation-delay: 0.7s;"
+						></div>
+
+						<!-- Thunder icon -->
+						<div
+							class="relative h-20 w-20 animate-bounce rounded-full bg-gradient-to-br from-blue-400 to-purple-500 p-3 shadow-lg md:h-24 md:w-24"
+							style="animation-delay: 0.5s;"
+						>
+							<img
+								src="/images/thunder.png"
+								alt="Thunder Icon"
+								class="h-full w-full object-contain drop-shadow-lg"
+							/>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -1455,6 +1692,72 @@
 </footer>
 
 <style>
+	@keyframes bounce-soft {
+		0%,
+		20%,
+		50%,
+		80%,
+		100% {
+			transform: translateY(0);
+		}
+		40% {
+			transform: translateY(-6px);
+		}
+		60% {
+			transform: translateY(-3px);
+		}
+	}
+
+	@keyframes elastic-bounce {
+		0% {
+			transform: scale(1);
+		}
+		20% {
+			transform: scale(1.1);
+		}
+		40% {
+			transform: scale(0.95);
+		}
+		60% {
+			transform: scale(1.05);
+		}
+		80% {
+			transform: scale(0.98);
+		}
+		100% {
+			transform: scale(1);
+		}
+	}
+
+	.animate-bounce-soft {
+		animation: bounce-soft 3s ease-in-out infinite;
+	}
+
+	.animate-elastic {
+		animation: elastic-bounce 0.6s ease-out;
+	}
+
+	/* Custom bounce animation for thunder elements */
+	.animate-bounce {
+		animation: bounce 2s infinite;
+	}
+
+	/* Fade in animation */
+	.animate-fade-in-up {
+		animation: fadeInUp 1s ease-out;
+	}
+
+	@keyframes fadeInUp {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+
 	/* Smooth slide animation for mobile menu */
 	.md\:hidden div {
 		animation: slideDown 0.3s ease-out;
