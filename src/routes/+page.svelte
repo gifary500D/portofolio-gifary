@@ -194,7 +194,11 @@
 
 	function handleTouchMove(event: TouchEvent) {
 		if (!containerRect || !event.touches[0]) return;
-		event.preventDefault(); // Prevent scrolling
+
+		// hanya block scroll kalau sedang drag
+		if (dragging1 || dragging2 || photoDragging) {
+			event.preventDefault();
+		}
 
 		const touch = event.touches[0];
 
