@@ -107,7 +107,7 @@
 			id: 8,
 			src: '/images/photography/people8.jpeg',
 			alt: 'People Portrait',
-			title: 'Random ',
+			title: 'Random',
 			category: 'People',
 			orientation: 'portrait',
 			description: 'Potret event Ultah Kota Binjai',
@@ -166,6 +166,17 @@
 			category: 'People',
 			orientation: 'portrait',
 			description: 'Potret pria duduk di pinggir danau',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 42,
+			src: '/images/photography/people14.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 14',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Potret casual outdoor',
 			personName: '',
 			instagram: ''
 		},
@@ -304,6 +315,206 @@
 			instagram: ''
 		},
 
+		// Graduation
+		{
+			id: 24,
+			src: '/images/photography/graduation3.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Group Graduation',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Foto bersama saat wisuda',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 25,
+			src: '/images/photography/graduation4.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation Friends',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Momen wisuda penuh kenangan',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 26,
+			src: '/images/photography/graduation1.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation Day',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Moment wisuda bersama teman-teman',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 27,
+			src: '/images/photography/graduation2.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation Celebration',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Perayaan wisuda dengan teman-teman',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 36,
+			src: '/images/photography/graduation5.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation with Family',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Anak wisuda bersama orang tua',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 37,
+			src: '/images/photography/graduation6.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Family Graduation',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Foto keluarga saat wisuda',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 38,
+			src: '/images/photography/graduation7.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation Kid',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Anak kecil dengan latar wisuda',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 43,
+			src: '/images/photography/graduation8.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 8',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Momen wisuda dengan kebanggaan',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 44,
+			src: '/images/photography/graduation9.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 9',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Potret wisuda dengan senyum bahagia',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 45,
+			src: '/images/photography/graduation10.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 10',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Moment wisuda penuh haru',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 46,
+			src: '/images/photography/graduation11.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 11',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Foto wisuda bersama keluarga',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 47,
+			src: '/images/photography/graduation12.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 12',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Perayaan wisuda dengan teman-teman',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 48,
+			src: '/images/photography/graduation13.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 13',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Wisuda dengan toga dan topi',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 49,
+			src: '/images/photography/graduation14.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 14',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Moment wisuda yang berkesan',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 50,
+			src: '/images/photography/graduation15.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 15',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Foto wisuda dengan keluarga',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 51,
+			src: '/images/photography/graduation16.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 16',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Wisuda dengan penuh emosi',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 52,
+			src: '/images/photography/graduation17.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 17',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Foto grup wisuda besar',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 53,
+			src: '/images/photography/graduation18.jpeg',
+			alt: 'Graduation Ceremony',
+			title: 'Graduation 18',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Momen wisuda yang tak terlupakan',
+			personName: '',
+			instagram: ''
+		},
+
 		// Others (kucing + lain-lain)
 		{
 			id: 21,
@@ -367,85 +578,6 @@
 			category: 'Others',
 			orientation: 'portrait',
 			description: 'HP tergeletak di lantai kayu'
-		},
-
-		// Graduation
-		{
-			id: 26,
-			src: '/images/photography/graduation1.jpeg',
-			alt: 'Graduation Ceremony',
-			title: 'Graduation Day',
-			category: 'People',
-			orientation: 'landscape',
-			description: 'Moment wisuda bersama teman-teman',
-			personName: '',
-			instagram: ''
-		},
-		{
-			id: 27,
-			src: '/images/photography/graduation2.jpeg',
-			alt: 'Graduation Ceremony',
-			title: 'Graduation Celebration',
-			category: 'People',
-			orientation: 'portrait',
-			description: 'Perayaan wisuda dengan teman-teman',
-			personName: '',
-			instagram: ''
-		},
-		{
-			id: 24,
-			src: '/images/photography/graduation3.jpeg',
-			alt: 'Graduation Ceremony',
-			title: 'Group Graduation',
-			category: 'People',
-			orientation: 'landscape',
-			description: 'Foto bersama saat wisuda',
-			personName: '',
-			instagram: ''
-		},
-		{
-			id: 25,
-			src: '/images/photography/graduation4.jpeg',
-			alt: 'Graduation Ceremony',
-			title: 'Graduation Friends',
-			category: 'People',
-			orientation: 'portrait',
-			description: 'Momen wisuda penuh kenangan',
-			personName: '',
-			instagram: ''
-		},
-		{
-			id: 36,
-			src: '/images/photography/graduation5.jpeg',
-			alt: 'Graduation Ceremony',
-			title: 'Graduation with Family',
-			category: 'People',
-			orientation: 'portrait',
-			description: 'Anak wisuda bersama orang tua',
-			personName: '',
-			instagram: ''
-		},
-		{
-			id: 37,
-			src: '/images/photography/graduation6.jpeg',
-			alt: 'Graduation Ceremony',
-			title: 'Family Graduation',
-			category: 'People',
-			orientation: 'landscape',
-			description: 'Foto keluarga saat wisuda',
-			personName: '',
-			instagram: ''
-		},
-		{
-			id: 38,
-			src: '/images/photography/graduation7.jpeg',
-			alt: 'Graduation Ceremony',
-			title: 'Graduation Kid',
-			category: 'People',
-			orientation: 'portrait',
-			description: 'Anak kecil dengan latar wisuda',
-			personName: '',
-			instagram: ''
 		}
 	];
 
