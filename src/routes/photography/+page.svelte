@@ -180,6 +180,41 @@
 			personName: '',
 			instagram: ''
 		},
+		{
+			id: 877,
+			src: '/images/photography/people15.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 14',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Potret casual indoor',
+			personName: '',
+			instagram: ''
+		},
+
+		{
+			id: 878,
+			src: '/images/photography/people16.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 14',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Potret casual indoor',
+			personName: '',
+			instagram: ''
+		},
+
+		{
+			id: 879,
+			src: '/images/photography/people17.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 14',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Potret casual indoor',
+			personName: '',
+			instagram: ''
+		},
 
 		// Cosplay
 		{
