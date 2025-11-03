@@ -405,7 +405,7 @@
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay Sucrose 2',
 			category: 'Cosplay',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Cosplay Dari Anime Genshin Impact',
 			personName: '',
 			instagram: ''
