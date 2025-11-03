@@ -49,7 +49,7 @@
 			alt: 'People Portrait',
 			title: 'Portrait 1',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Foto candid outdoor',
 			personName: '',
 			instagram: ''
@@ -82,7 +82,7 @@
 			alt: 'People Group',
 			title: 'Friends Gathering',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Foto bersama teman',
 			personName: '',
 			instagram: ''
@@ -159,7 +159,7 @@
 			alt: 'People Group',
 			title: 'Group Portrait',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Foto bareng sekelompok teman',
 			personName: '',
 			instagram: ''
@@ -170,7 +170,7 @@
 			alt: 'People Portrait',
 			title: 'Outdoor Portrait',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Potret candid cewek outdoor',
 			personName: '',
 			instagram: ''
@@ -225,7 +225,7 @@
 			alt: 'People Portrait',
 			title: 'Portrait 17',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Potret casual indoor',
 			personName: '',
 			instagram: ''
@@ -242,7 +242,7 @@
 			instagram: ''
 		},
 		{
-			id: 19,
+			id: 119,
 			src: '/images/photography/people19.jpeg',
 			alt: 'People Portrait',
 			title: 'Portrait 19',
@@ -253,7 +253,7 @@
 			instagram: ''
 		},
 		{
-			id: 20,
+			id: 120,
 			src: '/images/photography/people20.jpeg',
 			alt: 'People Portrait',
 			title: 'Portrait 20',
@@ -264,7 +264,7 @@
 			instagram: ''
 		},
 		{
-			id: 21,
+			id: 121,
 			src: '/images/photography/people21.jpeg',
 			alt: 'People Portrait',
 			title: 'Portrait 21',
@@ -275,7 +275,7 @@
 			instagram: ''
 		},
 		{
-			id: 22,
+			id: 122,
 			src: '/images/photography/people22.jpeg',
 			alt: 'People Portrait',
 			title: 'Portrait 22',
@@ -286,7 +286,7 @@
 			instagram: ''
 		},
 		{
-			id: 23,
+			id: 123,
 			src: '/images/photography/people23.jpeg',
 			alt: 'People Portrait',
 			title: 'Portrait 23',
@@ -301,7 +301,7 @@
 		// COSPLAY CATEGORY
 		// ========================
 		{
-			id: 111,
+			id: 20,
 			src: '/images/photography/cosplay1.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 1',
@@ -312,7 +312,7 @@
 			instagram: ''
 		},
 		{
-			id: 112,
+			id: 21,
 			src: '/images/photography/cosplay2.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 2',
@@ -323,7 +323,7 @@
 			instagram: ''
 		},
 		{
-			id: 113,
+			id: 22,
 			src: '/images/photography/cosplay3.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 3',
@@ -334,7 +334,7 @@
 			instagram: ''
 		},
 		{
-			id: 114,
+			id: 23,
 			src: '/images/photography/cosplay4.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 4',
@@ -345,7 +345,7 @@
 			instagram: ''
 		},
 		{
-			id: 115,
+			id: 24,
 			src: '/images/photography/cosplay5.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 5',
@@ -356,7 +356,7 @@
 			instagram: ''
 		},
 		{
-			id: 116,
+			id: 25,
 			src: '/images/photography/cosplay6.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 6',
@@ -367,7 +367,7 @@
 			instagram: ''
 		},
 		{
-			id: 117,
+			id: 26,
 			src: '/images/photography/cosplay7.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 7',
@@ -378,7 +378,7 @@
 			instagram: ''
 		},
 		{
-			id: 118,
+			id: 27,
 			src: '/images/photography/cosplay8.jpeg',
 			alt: 'Cosplay Group',
 			title: 'Cosplay 8',
@@ -389,7 +389,7 @@
 			instagram: ''
 		},
 		{
-			id: 119,
+			id: 28,
 			src: '/images/photography/cosplay9.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 9',
@@ -400,7 +400,7 @@
 			instagram: ''
 		},
 		{
-			id: 220,
+			id: 29,
 			src: '/images/photography/cosplay10.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay 10',
@@ -411,7 +411,7 @@
 			instagram: ''
 		},
 		{
-			id: 221,
+			id: 30,
 			src: '/images/photography/cosplay11.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay Sucrose 1',
@@ -422,7 +422,7 @@
 			instagram: ''
 		},
 		{
-			id: 222,
+			id: 31,
 			src: '/images/photography/cosplay12.jpeg',
 			alt: 'Cosplay Portrait',
 			title: 'Cosplay Sucrose 2',
@@ -433,10 +433,10 @@
 			instagram: ''
 		},
 		{
-			id: 223,
+			id: 57,
 			src: '/images/photography/cosplay13.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay Sucrose 3',
+			title: 'Cosplay Sucrose 2',
 			category: 'Cosplay',
 			orientation: 'portrait',
 			description: 'Cosplay Dari Anime Genshin Impact',
@@ -444,12 +444,12 @@
 			instagram: ''
 		},
 		{
-			id: 224,
+			id: 58,
 			src: '/images/photography/cosplay14.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay Sucrose 4',
+			title: 'Cosplay Sucrose 2',
 			category: 'Cosplay',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Cosplay Dari Anime Genshin Impact',
 			personName: '',
 			instagram: ''
@@ -520,23 +520,22 @@
 			personName: '',
 			instagram: ''
 		},
-
 		// ========================
 		// GRADUATION CATEGORY
 		// ========================
 		{
-			id: 331,
+			id: 32,
 			src: '/images/photography/graduation1.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation Day',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Moment wisuda bersama teman-teman',
 			personName: '',
 			instagram: ''
 		},
 		{
-			id: 332,
+			id: 33,
 			src: '/images/photography/graduation2.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation Celebration',
@@ -547,18 +546,18 @@
 			instagram: ''
 		},
 		{
-			id: 333,
+			id: 34,
 			src: '/images/photography/graduation3.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Group Graduation',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Foto bersama saat wisuda',
 			personName: '',
 			instagram: ''
 		},
 		{
-			id: 334,
+			id: 35,
 			src: '/images/photography/graduation4.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation Friends',
@@ -569,7 +568,7 @@
 			instagram: ''
 		},
 		{
-			id: 335,
+			id: 36,
 			src: '/images/photography/graduation5.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation with Family',
@@ -580,18 +579,18 @@
 			instagram: ''
 		},
 		{
-			id: 336,
+			id: 37,
 			src: '/images/photography/graduation6.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Family Graduation',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Foto keluarga saat wisuda',
 			personName: '',
 			instagram: ''
 		},
 		{
-			id: 337,
+			id: 38,
 			src: '/images/photography/graduation7.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation Kid',
@@ -602,7 +601,7 @@
 			instagram: ''
 		},
 		{
-			id: 338,
+			id: 39,
 			src: '/images/photography/graduation8.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 8',
@@ -613,7 +612,7 @@
 			instagram: ''
 		},
 		{
-			id: 339,
+			id: 40,
 			src: '/images/photography/graduation9.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 9',
@@ -624,7 +623,7 @@
 			instagram: ''
 		},
 		{
-			id: 440,
+			id: 41,
 			src: '/images/photography/graduation10.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 10',
@@ -635,29 +634,29 @@
 			instagram: ''
 		},
 		{
-			id: 441,
+			id: 42,
 			src: '/images/photography/graduation11.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 11',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Foto wisuda bersama keluarga',
 			personName: '',
 			instagram: ''
 		},
 		{
-			id: 442,
+			id: 43,
 			src: '/images/photography/graduation12.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 12',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Perayaan wisuda dengan teman-teman',
 			personName: '',
 			instagram: ''
 		},
 		{
-			id: 443,
+			id: 44,
 			src: '/images/photography/graduation13.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 13',
@@ -668,7 +667,7 @@
 			instagram: ''
 		},
 		{
-			id: 444,
+			id: 45,
 			src: '/images/photography/graduation14.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 14',
@@ -679,7 +678,7 @@
 			instagram: ''
 		},
 		{
-			id: 445,
+			id: 46,
 			src: '/images/photography/graduation15.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 15',
@@ -690,7 +689,7 @@
 			instagram: ''
 		},
 		{
-			id: 446,
+			id: 47,
 			src: '/images/photography/graduation16.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 16',
@@ -701,18 +700,18 @@
 			instagram: ''
 		},
 		{
-			id: 447,
+			id: 48,
 			src: '/images/photography/graduation17.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 17',
 			category: 'People',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Foto grup wisuda besar',
 			personName: '',
 			instagram: ''
 		},
 		{
-			id: 448,
+			id: 49,
 			src: '/images/photography/graduation18.jpeg',
 			alt: 'Graduation Ceremony',
 			title: 'Graduation 18',
@@ -727,7 +726,7 @@
 		// OTHERS CATEGORY
 		// ========================
 		{
-			id: 449,
+			id: 50,
 			src: '/images/photography/others1.jpeg',
 			alt: 'Cat Photo',
 			title: 'Cat 1',
@@ -736,7 +735,7 @@
 			description: 'Foto kucing peliharaan'
 		},
 		{
-			id: 550,
+			id: 51,
 			src: '/images/photography/others2.jpeg',
 			alt: 'Cat Photo',
 			title: 'Cat 2',
@@ -745,7 +744,7 @@
 			description: 'Foto kucing lucu'
 		},
 		{
-			id: 551,
+			id: 52,
 			src: '/images/photography/others3.jpeg',
 			alt: 'Cat Photo',
 			title: 'Cat 3',
@@ -754,7 +753,7 @@
 			description: 'Foto kucing di rumah'
 		},
 		{
-			id: 552,
+			id: 53,
 			src: '/images/photography/others5.jpeg',
 			alt: 'Nature Photo',
 			title: 'Nature Detail',
@@ -763,25 +762,25 @@
 			description: 'Foto close-up dedaunan hijau'
 		},
 		{
-			id: 553,
+			id: 54,
 			src: '/images/photography/others6.jpeg',
 			alt: 'Toy Car Photo',
 			title: 'Mini Car 1',
 			category: 'Others',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Mobil mainan hijau dengan bokeh'
 		},
 		{
-			id: 554,
+			id: 55,
 			src: '/images/photography/others4.jpeg',
 			alt: 'Toy Car Photo',
 			title: 'Mini Car 2',
 			category: 'Others',
-			orientation: 'portrait',
+			orientation: 'landscape',
 			description: 'Mobil mainan oranye dengan bokeh malam'
 		},
 		{
-			id: 555,
+			id: 56,
 			src: '/images/photography/others7.jpeg',
 			alt: 'Phone Photo',
 			title: 'Phone on Floor',
@@ -790,6 +789,7 @@
 			description: 'HP tergeletak di lantai kayu'
 		}
 	];
+
 	// ========================
 	// FILTER SETTINGS
 	// ========================
