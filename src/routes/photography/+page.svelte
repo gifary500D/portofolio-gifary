@@ -388,6 +388,28 @@
 			personName: '',
 			instagram: ''
 		},
+		{
+			id: 57,
+			src: '/images/photography/cosplay13.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay Sucrose 2',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay Dari Anime Genshin Impact',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 58,
+			src: '/images/photography/cosplay14.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay Sucrose 2',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay Dari Anime Genshin Impact',
+			personName: '',
+			instagram: ''
+		},
 
 		// ========================
 		// GRADUATION CATEGORY
