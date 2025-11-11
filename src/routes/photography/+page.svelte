@@ -267,12 +267,12 @@
 			id: 121,
 			src: '/images/photography/people21.jpeg',
 			alt: 'People Portrait',
-			title: 'Portrait 21',
+			title: 'Fiaa',
 			category: 'People',
 			orientation: 'portrait',
 			description: 'Potret dengan latar belakang natural',
-			personName: '',
-			instagram: ''
+			personName: 'Fiaa',
+			instagram: 'fifiaa_fia'
 		},
 		{
 			id: 122,
