@@ -502,12 +502,12 @@
 			id: 229,
 			src: '/images/photography/cosplay19.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay 19',
+			title: 'Xiuu ',
 			category: 'Cosplay',
 			orientation: 'portrait',
 			description: 'Cosplay dengan aksesoris lengkap',
-			personName: '',
-			instagram: ''
+			personName: 'Xiuu',
+			instagram: 'xiuu_cosu'
 		},
 		{
 			id: 330,
