@@ -212,23 +212,23 @@
 			id: 16,
 			src: '/images/photography/people16.jpeg',
 			alt: 'People Portrait',
-			title: 'Portrait 16',
+			title: 'Gitaris Man',
 			category: 'People',
 			orientation: 'portrait',
 			description: 'Potret casual indoor',
-			personName: '',
-			instagram: ''
+			personName: 'Femas',
+			instagram: 'pemas.z'
 		},
 		{
 			id: 17,
 			src: '/images/photography/people17.jpeg',
 			alt: 'People Portrait',
-			title: 'Portrait 17',
+			title: 'Bg Risky',
 			category: 'People',
 			orientation: 'landscape',
 			description: 'Potret casual indoor',
-			personName: '',
-			instagram: ''
+			personName: 'Risky',
+			instagram: 'riskymanik_'
 		},
 		{
 			id: 18,
@@ -278,12 +278,12 @@
 			id: 122,
 			src: '/images/photography/people22.jpeg',
 			alt: 'People Portrait',
-			title: 'Portrait 22',
+			title: 'Araa',
 			category: 'People',
 			orientation: 'portrait',
 			description: 'Potret candid outdoor',
-			personName: '',
-			instagram: ''
+			personName: 'Ara',
+			instagram: 'raax.a_'
 		},
 		{
 			id: 123,
@@ -315,12 +315,12 @@
 			id: 21,
 			src: '/images/photography/cosplay2.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay 2',
+			title: 'Fiaa Cosplay',
 			category: 'Cosplay',
 			orientation: 'portrait',
-			description: 'Cosplay karakter anime',
-			personName: '',
-			instagram: ''
+			description: 'Cosplay karakter Game',
+			personName: 'Fiaa',
+			instagram: 'fifiaa_fia'
 		},
 		{
 			id: 22,
