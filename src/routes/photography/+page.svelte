@@ -72,9 +72,9 @@
 			title: 'Portrait 3',
 			category: 'People',
 			orientation: 'portrait',
-			description: 'Foto portrait dengan pose',
-			personName: '',
-			instagram: ''
+			description: 'Foto Cosplayer',
+			personName: 'Litha',
+			instagram: 'arxxl_yn'
 		},
 		{
 			id: 4,
@@ -179,12 +179,12 @@
 			id: 13,
 			src: '/images/photography/people13.jpeg',
 			alt: 'People Portrait',
-			title: 'Lakeside Portrait',
+			title: 'Aldi D Pamah',
 			category: 'People',
 			orientation: 'portrait',
 			description: 'Potret pria duduk di pinggir danau',
-			personName: '',
-			instagram: ''
+			personName: 'Aldi Wiranata',
+			instagram: 'a.wiranataa_'
 		},
 		{
 			id: 14,
@@ -245,12 +245,12 @@
 			id: 119,
 			src: '/images/photography/people19.jpeg',
 			alt: 'People Portrait',
-			title: 'Portrait 19',
+			title: 'Foto Outdoor',
 			category: 'People',
 			orientation: 'portrait',
-			description: 'Potret close-up dengan ekspresi natural',
-			personName: '',
-			instagram: ''
+			description: 'Potret close-up Out Door',
+			personName: 'Kak Febry',
+			instagram: '@febryayuananda'
 		},
 		{
 			id: 120,
