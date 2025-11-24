@@ -1,8 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { fade, fly } from 'svelte/transition';
+	
+	import Navbar from '$lib/components/Navbar.svelte';
+	import HeroSection from '$lib/components/HeroSection.svelte';
+	import CategoryDropdown from '$lib/components/CategoryDropdown.svelte';
+	import PhotoGrid from '$lib/components/PhotoGrid.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 
-	// Ganti nomor WA kamu di sini (pakai format internasional tanpa +)
 	const whatsappNumber = '6285182748023';
 	const message = 'Halo, saya ingin konsultasi tentang jasa foto Anda 📸';
 	const whatsappLink = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
@@ -24,12 +29,6 @@
 		instagram?: string;
 	}
 
-	// utils untuk buat ID random
-	function randomId() {
-		return Math.floor(Math.random() * 10000);
-	}
-
-	// ✅ fungsi untuk mengacak array (Fisher-Yates shuffle)
 	function shuffleArray<T>(array: T[]): T[] {
 		let shuffled = [...array];
 		for (let i = shuffled.length - 1; i > 0; i--) {
@@ -39,7 +38,8 @@
 		return shuffled;
 	}
 
-	let photos: Photo[] = [
+
+let photos: Photo[] = [
 		// ========================
 		// PEOPLE CATEGORY
 		// ========================
@@ -790,11 +790,11 @@
 		}
 	];
 
-	// ========================
-	// FILTER SETTINGS
-	// ========================
+
+	// ✅ PERBAIKAN: Variabel yang sesuai dengan kode Anda
 	let selectedCategory = 'All';
 	let selectedOrientation = 'All';
+	let selectedCategories = ['All']; // ✅ Untuk CategoryDropdown
 	let selectedPhoto: Photo | null = null;
 	let filteredPhotos: Photo[] = photos;
 	let categories = ['All', 'People', 'Cosplay', 'Others'];
@@ -802,16 +802,32 @@
 	let isLoading = true;
 	let mobileMenuOpen = false;
 
-	// ✅ saat halaman dimuat, acak urutan foto
+	// ✅ Handler untuk CategoryDropdown
+	function handleCategoryChange(event: CustomEvent) {
+		selectedCategories = event.detail;
+		// Update selectedCategory untuk filter
+		if (selectedCategories.includes('All') || selectedCategories.length === 0) {
+			selectedCategory = 'All';
+		} else {
+			selectedCategory = selectedCategories[0]; // Atau logic lain sesuai kebutuhan
+		}
+	}
+
+	// ✅ Handler untuk PhotoGrid
+	function handlePhotoClick(event: CustomEvent<Photo>) {
+		openModal(event.detail);
+	}
+
+	// ✅ Acak foto saat mount
 	onMount(() => {
-		photos = shuffleArray(photos); // urutan acak tiap refresh
-		filteredPhotos = photos; // tampilkan hasil acak
+		photos = shuffleArray(photos);
+		filteredPhotos = photos;
 		setTimeout(() => {
 			isLoading = false;
 		}, 1000);
 	});
 
-	// ✅ jika kategori atau orientasi berubah, tetap ambil dari foto yang sudah diacak
+	// ✅ Reactive filter - HANYA SATU yang dipakai
 	$: {
 		filteredPhotos = photos.filter((photo) => {
 			const categoryMatch = selectedCategory === 'All' || photo.category === selectedCategory;
@@ -820,22 +836,6 @@
 			return categoryMatch && orientationMatch;
 		});
 	}
-
-	// Filter photos based on category and orientation
-	$: {
-		filteredPhotos = photos.filter((photo) => {
-			const categoryMatch = selectedCategory === 'All' || photo.category === selectedCategory;
-			const orientationMatch =
-				selectedOrientation === 'All' || photo.orientation === selectedOrientation.toLowerCase();
-			return categoryMatch && orientationMatch;
-		});
-	}
-
-	onMount(() => {
-		setTimeout(() => {
-			isLoading = false;
-		}, 1000);
-	});
 
 	function openModal(photo: Photo) {
 		selectedPhoto = photo;
@@ -860,897 +860,192 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<!-- Navbar -->
-<nav class="fixed top-0 right-0 left-0 z-40 bg-white/90 shadow-lg backdrop-blur-lg">
-	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="flex h-16 items-center justify-between">
-			<!-- Logo -->
-			<div class="flex-shrink-0">
-				<a href="/" class="flex items-center space-x-2">
-					<div
-						class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-sky-500 to-cyan-500"
-					>
-						<svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-							/>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-							/>
-						</svg>
-					</div>
-					<span class="text-xl font-bold text-gray-900">PhotoGallery</span>
-				</a>
-			</div>
+<Navbar bind:mobileMenuOpen />
 
-			<!-- Desktop Menu -->
-			<div class="hidden md:block">
-				<div class="ml-10 flex items-baseline space-x-4">
-					<a
-						href="#home"
-						class="px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:text-sky-600"
-						>Home</a
-					>
-					<a
-						href="#gallery"
-						class="px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:text-sky-600"
-						>Gallery</a
-					>
-					<a
-						href="#about"
-						class="px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:text-sky-600"
-						>About</a
-					>
-					<a
-						href="#contact"
-						class="px-3 py-2 text-sm font-medium text-gray-900 transition-colors hover:text-sky-600"
-						>Contact</a
-					>
-				</div>
-			</div>
-
-			<!-- Social Links -->
-			<div class="hidden items-center space-x-4 md:flex">
-				<a href="#" class="text-gray-400 transition-colors hover:text-sky-600">
-					<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-						<path
-							d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.083.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-12.014C24.007 5.367 18.641.001.012.017 0z"
-						/>
-					</svg>
-				</a>
-				<a href="#" class="text-gray-400 transition-colors hover:text-sky-600">
-					<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-						<path
-							d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
-						/>
-					</svg>
-				</a>
-				<a href="#" class="text-gray-400 transition-colors hover:text-sky-600">
-					<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-						<path
-							d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
-						/>
-					</svg>
-				</a>
-			</div>
-
-			<!-- Mobile menu button -->
-			<div class="md:hidden">
-				<button
-					type="button"
-					class="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:ring-2 focus:ring-sky-500 focus:outline-none"
-					on:click={toggleMobileMenu}
-				>
-					<svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-						{#if !mobileMenuOpen}
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M4 6h16M4 12h16M4 18h16"
-							/>
-						{:else}
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						{/if}
-					</svg>
-				</button>
-			</div>
-		</div>
-	</div>
-
-	<!-- Mobile menu -->
-	{#if mobileMenuOpen}
-		<div class="md:hidden" transition:fade={{ duration: 200 }}>
-			<div class="space-y-1 border-t bg-white px-2 pt-2 pb-3 sm:px-3">
-				<a
-					href="#home"
-					class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-sky-600"
-					>Home</a
-				>
-				<a
-					href="#gallery"
-					class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-sky-600"
-					>Gallery</a
-				>
-				<a
-					href="#about"
-					class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-sky-600"
-					>About</a
-				>
-				<a
-					href="#contact"
-					class="block px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-50 hover:text-sky-600"
-					>Contact</a
-				>
-
-				<!-- Mobile Social Links -->
-				<div class="flex space-x-4 px-3 py-2">
-					<a href="#" class="text-gray-400 transition-colors hover:text-sky-600">
-						<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-							<path
-								d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.222.083.343-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.75-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-12.014C24.007 5.367 18.641.001.012.017 0z"
-							/>
-						</svg>
-					</a>
-					<a href="#" class="text-gray-400 transition-colors hover:text-sky-600">
-						<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-							<path
-								d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
-							/>
-						</svg>
-					</a>
-					<a href="#" class="text-gray-400 transition-colors hover:text-sky-600">
-						<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-							<path
-								d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"
-							/>
-						</svg>
-					</a>
-				</div>
-			</div>
-		</div>
-	{/if}
-</nav>
-
-<!-- Main Content dengan padding top untuk navbar -->
 <div class="pt-16">
-	<!-- Wrapper dengan gradiasi langit dan awan background -->
-	<div
-		class="relative min-h-screen bg-[linear-gradient(to_bottom,#3AA7E0_0%,#54C2F0_50%,#9EE7FF_100%)]"
-		id="home"
-	>
-		<!-- Background awan yang repeat -->
-		<div
-			class="absolute inset-0 opacity-90"
-			style="background-image: url('/images/awan-bg.png'); background-size: 1200px auto; background-position: center top; background-repeat: repeat;"
-		></div>
+  <div class="relative min-h-screen bg-[linear-gradient(to_bottom,#3AA7E0_0%,#54C2F0_50%,#9EE7FF_100%)]">
+    <div
+      class="absolute inset-0 opacity-90"
+      style="background-image: url('/images/awan-bg.png'); background-size: 1200px auto; background-position: center top; background-repeat: repeat;"
+    />
 
-		<!-- Hero Section -->
-		<section class="relative z-10 overflow-hidden">
-			<div class="relative mx-auto max-w-7xl px-6 py-12 text-center lg:px-12 lg:py-20">
-				<!-- Judul Toy Story Style -->
-				<h1
-					class="mb-6 text-5xl leading-tight font-extrabold tracking-tight sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl"
-				>
-					<!-- Photography dengan stroke biru lebih tebal -->
-					<span
-						class="block font-['Luckiest_Guy'] text-[#FFD12D]
-					[text-shadow:_-5px_5px_0_#1E3A8A,_5px_5px_0_#1E3A8A,_5px_-5px_0_#1E3A8A,_-5px_-5px_0_#1E3A8A]"
-					>
-						Photography
-					</span>
+    <HeroSection />
 
-					<!-- Gallery tanpa border, ada jarak antar huruf -->
-					<span
-						class="mt-4 inline-block rounded-sm bg-[#D62828] px-6 py-2 font-['Luckiest_Guy'] tracking-[0.15em] text-[#FFD12D] drop-shadow-[4px_4px_0px_#00000055]"
-					>
-						Gallery
-					</span>
-				</h1>
+    {#if !isLoading}
+      <section
+        class="relative z-10 px-4 pb-8 sm:px-6 lg:px-8"
+        id="gallery"
+        in:fade={{ duration: 600, delay: 200 }}
+      >
+        <div class="mx-auto max-w-6xl rounded-2xl bg-white/20 p-6 shadow-lg backdrop-blur-lg">
+          <!-- Category Filter -->
+          <div class="mb-6">
+            <h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Categories</h3>
+            <div class="flex justify-center">
+              <CategoryDropdown 
+                {categories} 
+                bind:selectedCategories
+                on:change={handleCategoryChange}
+              />
+            </div>
+          </div>
 
-				<!-- Subtitle -->
-				<p
-					class="mx-auto max-w-xl text-base text-white drop-shadow-[2px_2px_4px_rgba(0,0,0,0.5)] sm:text-lg md:text-xl lg:text-2xl"
-				>
-					Capturing life's beautiful moments through my lens. Explore portraits, landscapes, and
-					creative stories frozen in time.
-				</p>
-			</div>
-		</section>
+          <!-- Orientation Filter -->
+          <div class="mb-4">
+            <h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Orientation</h3>
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+              {#each orientations as orientation}
+                <button
+                  class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedOrientation === orientation
+                    ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-lg shadow-blue-500/25'
+                    : 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
+                  on:click={() => (selectedOrientation = orientation)}
+                >
+                  {orientation}
+                </button>
+              {/each}
+            </div>
+          </div>
+        </div>
+      </section>
 
-		{#if !isLoading}
-			<!-- Filters -->
-			<section
-				class="relative z-10 px-4 pb-8 sm:px-6 lg:px-8"
-				id="gallery"
-				in:fade={{ duration: 600, delay: 200 }}
-			>
-				<div class="mx-auto max-w-6xl rounded-2xl bg-white/20 p-6 shadow-lg backdrop-blur-lg">
-					<!-- Category Filter -->
-					<div class="mb-6">
-						<h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Categories</h3>
-						<div class="flex flex-wrap justify-center gap-2 md:gap-4">
-							{#each categories as category}
-								<button
-									class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedCategory ===
-									category
-										? 'bg-gradient-to-r from-sky-600 to-cyan-500 text-white shadow-lg shadow-sky-500/25'
-										: 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
-									on:click={() => (selectedCategory = category)}
-								>
-									{category}
-								</button>
-							{/each}
-						</div>
-					</div>
+      <!-- Photo Grid dengan event handler -->
+      <PhotoGrid 
+        photos={filteredPhotos}
+        on:photoClick={handlePhotoClick}
+      />
+    {/if}
 
-					<!-- Orientation Filter -->
-					<div class="mb-4">
-						<h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Orientation</h3>
-						<div class="flex flex-wrap justify-center gap-2 md:gap-4">
-							{#each orientations as orientation}
-								<button
-									class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedOrientation ===
-									orientation
-										? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-lg shadow-blue-500/25'
-										: 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
-									on:click={() => (selectedOrientation = orientation)}
-								>
-									{orientation}
-								</button>
-							{/each}
-						</div>
-					</div>
-				</div>
-			</section>
+    <!-- Modal -->
+    {#if selectedPhoto}
+      <div
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
+        in:fade={{ duration: 300 }}
+        on:click={closeModal}
+        role="dialog"
+        aria-modal="true"
+      >
+        <div
+          class="relative max-h-[90vh] max-w-5xl overflow-auto rounded-2xl bg-white shadow-2xl"
+          on:click|stopPropagation
+        >
+          <button
+            class="absolute top-4 right-4 z-10 rounded-full bg-gray-900/80 p-2 text-white transition-colors hover:bg-gray-900"
+            on:click={closeModal}
+            aria-label="Close modal"
+          >
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
 
-			<!-- Photo Grid -->
-			<section class="relative z-10 px-4 pb-20 sm:px-6 lg:px-8">
-				<div class="mx-auto max-w-7xl">
-					<div class="photo-grid">
-						{#each filteredPhotos as photo, index (photo.id)}
-							<div
-								class="photo-item group relative cursor-pointer overflow-hidden rounded-xl bg-white shadow-lg transition-all duration-500 hover:scale-[1.02] hover:shadow-xl {photo.orientation ===
-								'portrait'
-									? 'aspect-[3/4]'
-									: 'aspect-[4/3]'}"
-								in:fly={{ y: 30, duration: 600, delay: index * 50 }}
-								on:click={() => openModal(photo)}
-							>
-								<img
-									src={photo.src}
-									alt={photo.alt}
-									class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-									loading="lazy"
-								/>
+          <div class="grid grid-cols-1 lg:grid-cols-3">
+            <div class="lg:col-span-2">
+              <img src={selectedPhoto.src} alt={selectedPhoto.alt} class="h-full w-full object-cover" />
+            </div>
 
-								<!-- Category Badge -->
-								<div class="absolute top-3 left-3">
-									<span
-										class="rounded-full bg-white/90 px-2 py-1 text-xs font-medium text-gray-800 backdrop-blur-sm md:px-3 md:text-sm"
-									>
-										{photo.category}
-									</span>
-								</div>
+            <div class="p-4 text-gray-800 lg:p-8">
+              <span class="mb-3 inline-block rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-3 py-1 text-sm font-medium text-white">
+                {selectedPhoto.category} • {selectedPhoto.orientation}
+              </span>
 
-								<!-- Hover Overlay -->
-								<div
-									class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-								>
-									<div class="absolute right-3 bottom-3 left-3 text-white">
-										<h3 class="mb-1 text-sm font-bold md:text-lg">{photo.title}</h3>
-										{#if photo.personName}
-											<p class="mb-1 text-xs text-gray-200 md:text-sm">{photo.personName}</p>
-										{/if}
-										{#if photo.instagram}
-											<p class="text-xs text-purple-300 md:text-sm">{photo.instagram}</p>
-										{/if}
-										{#if photo.location && !photo.personName}
-											<p class="text-xs text-gray-200 md:text-sm">{photo.location}</p>
-										{/if}
-									</div>
-								</div>
-							</div>
-						{/each}
-					</div>
-				</div>
-			</section>
-		{/if}
+              <h2 class="mb-4 text-xl font-bold text-gray-900 lg:text-2xl">{selectedPhoto.title}</h2>
+              <p class="mb-6 text-sm text-gray-600 lg:text-base">{selectedPhoto.description}</p>
 
-		<!-- Modal -->
-		{#if selectedPhoto}
-			<div
-				class="fixed inset-0 z-50 flex items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
-				in:fade={{ duration: 300 }}
-				on:click={closeModal}
-			>
-				<div
-					class="relative max-h-[90vh] max-w-5xl overflow-auto rounded-2xl bg-white shadow-2xl"
-					on:click|stopPropagation
-				>
-					<button
-						class="absolute top-4 right-4 z-10 rounded-full bg-gray-900/80 p-2 text-white transition-colors hover:bg-gray-900"
-						on:click={closeModal}
-					>
-						<svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M6 18L18 6M6 6l12 12"
-							/>
-						</svg>
-					</button>
+              {#if selectedPhoto.personName}
+                <div class="mb-4">
+                  <h3 class="mb-2 text-sm font-semibold text-purple-600">Subject</h3>
+                  <p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.personName}</p>
+                </div>
+              {/if}
 
-					<div class="grid grid-cols-1 lg:grid-cols-3">
-						<!-- Image -->
-						<div class="lg:col-span-2">
-							<img
-								src={selectedPhoto.src}
-								alt={selectedPhoto.alt}
-								class="h-full w-full object-cover"
-							/>
-						</div>
+              {#if selectedPhoto.instagram}
+                <div class="mb-4">
+                  <h3 class="mb-2 text-sm font-semibold text-purple-600">Instagram</h3>
+                  <a
+                    href="https://instagram.com/{selectedPhoto.instagram.replace('@', '')}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-sm text-purple-600 transition-colors hover:text-purple-800 lg:text-base"
+                  >
+                    {selectedPhoto.instagram}
+                  </a>
+                </div>
+              {/if}
 
-						<!-- Details -->
-						<div class="p-4 text-gray-800 lg:p-8">
-							<span
-								class="mb-3 inline-block rounded-full bg-gradient-to-r from-purple-600 to-pink-600 px-3 py-1 text-sm font-medium text-white"
-							>
-								{selectedPhoto.category} • {selectedPhoto.orientation}
-							</span>
+              {#if selectedPhoto.location}
+                <div class="mb-4">
+                  <h3 class="mb-2 text-sm font-semibold text-purple-600">Location</h3>
+                  <p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.location}</p>
+                </div>
+              {/if}
+            </div>
+          </div>
+        </div>
+      </div>
+    {/if}
+  </div>
 
-							<h2 class="mb-4 text-xl font-bold text-gray-900 lg:text-2xl">
-								{selectedPhoto.title}
-							</h2>
-							<p class="mb-6 text-sm text-gray-600 lg:text-base">{selectedPhoto.description}</p>
+  <!-- Consultation Section -->
+  <section class="relative overflow-hidden">
+    <div class="absolute inset-x-0 top-0 h-16 bg-white md:h-24">
+      <svg class="absolute bottom-0 h-16 w-full md:h-24" viewBox="0 0 1440 120" preserveAspectRatio="none">
+        <path d="M0,0 C480,120 960,120 1440,0 L1440,120 L0,120 Z" fill="url(#gradient)" />
+        <defs>
+          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#111827" />
+            <stop offset="100%" style="stop-color:#000000" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
 
-							{#if selectedPhoto.personName}
-								<div class="mb-4">
-									<h3 class="mb-2 text-sm font-semibold text-purple-600">Subject</h3>
-									<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.personName}</p>
-								</div>
-							{/if}
+    <div class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4 py-20 text-center text-white sm:px-6 md:py-24 lg:px-8 lg:py-28">
+      <div class="relative z-10 mx-auto max-w-4xl space-y-6 md:space-y-8">
+        <h2 class="px-4 text-3xl leading-tight font-extrabold sm:text-4xl md:text-5xl lg:text-6xl">
+          <span class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent">
+            Ingin Konsultasi atau Tanya
+          </span>
+          <br />
+          <span class="bg-gradient-to-r from-sky-400 to-cyan-500 bg-clip-text text-transparent">
+            Seputar Pemotretan?
+          </span>
+        </h2>
 
-							{#if selectedPhoto.instagram}
-								<div class="mb-4">
-									<h3 class="mb-2 text-sm font-semibold text-purple-600">Instagram</h3>
-									<a
-										href="https://instagram.com/{selectedPhoto.instagram.replace('@', '')}"
-										target="_blank"
-										rel="noopener noreferrer"
-										class="text-sm text-purple-600 transition-colors hover:text-purple-800 lg:text-base"
-									>
-										{selectedPhoto.instagram}
-									</a>
-								</div>
-							{/if}
+        <a
+          href={whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group relative inline-flex w-full transform items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 text-sm font-bold text-white shadow-2xl transition-all duration-300 hover:scale-105 sm:w-auto md:gap-3 md:px-8 md:py-5 md:text-base"
+        >
+          <span class="relative z-10">Chat Sekarang via WhatsApp</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-							{#if selectedPhoto.location}
-								<div class="mb-4">
-									<h3 class="mb-2 text-sm font-semibold text-purple-600">Location</h3>
-									<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.location}</p>
-								</div>
-							{/if}
-
-							{#if selectedPhoto.date}
-								<div class="mb-4">
-									<h3 class="mb-2 text-sm font-semibold text-purple-600">Date</h3>
-									<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.date}</p>
-								</div>
-							{/if}
-
-							{#if selectedPhoto.camera}
-								<div class="mb-4">
-									<h3 class="mb-2 text-sm font-semibold text-purple-600">Camera</h3>
-									<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.camera}</p>
-								</div>
-							{/if}
-
-							{#if selectedPhoto.lens}
-								<div class="mb-4">
-									<h3 class="mb-2 text-sm font-semibold text-purple-600">Lens</h3>
-									<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.lens}</p>
-								</div>
-							{/if}
-
-							{#if selectedPhoto.settings}
-								<div class="mb-4">
-									<h3 class="mb-2 text-sm font-semibold text-purple-600">Settings</h3>
-									<p class="text-sm text-gray-600 lg:text-base">{selectedPhoto.settings}</p>
-								</div>
-							{/if}
-						</div>
-					</div>
-				</div>
-			</div>
-		{/if}
-	</div>
+  <Footer />
 </div>
 
-<section class="relative overflow-hidden">
-	<!-- Curved top -->
-	<div class="absolute inset-x-0 top-0 h-16 bg-white md:h-24">
-		<svg
-			class="absolute bottom-0 h-16 w-full md:h-24"
-			viewBox="0 0 1440 120"
-			preserveAspectRatio="none"
-			xmlns="http://www.w3.org/2000/svg"
-		>
-			<path d="M0,0 C480,120 960,120 1440,0 L1440,120 L0,120 Z" fill="url(#gradient)" />
-			<defs>
-				<linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-					<stop offset="0%" style="stop-color:#111827" />
-					<stop offset="100%" style="stop-color:#000000" />
-				</linearGradient>
-			</defs>
-		</svg>
-	</div>
-
-	<!-- Main content -->
-	<div
-		class="relative bg-gradient-to-br from-gray-900 via-gray-800 to-black px-4 py-20 text-center text-white sm:px-6 md:py-24 lg:px-8 lg:py-28"
-	>
-		<!-- Animated background pattern -->
-		<div class="absolute inset-0 opacity-10">
-			<div class="absolute inset-0 bg-[url('/images/bg-consult.jpg')] bg-cover bg-center"></div>
-			<div
-				class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"
-			></div>
-		</div>
-
-		<!-- Decorative elements -->
-		<div
-			class="absolute top-10 left-5 h-24 w-24 animate-pulse rounded-full bg-sky-500/10 blur-3xl md:top-20 md:left-10 md:h-32 md:w-32"
-		></div>
-		<div
-			class="absolute right-5 bottom-10 h-32 w-32 animate-pulse rounded-full bg-cyan-500/10 blur-3xl delay-700 md:right-10 md:bottom-20 md:h-40 md:w-40"
-		></div>
-
-		<!-- Floating camera icons (hidden on mobile) -->
-		<div class="absolute top-32 right-1/4 hidden opacity-5 lg:block">
-			<svg
-				class="animate-float h-16 w-16 text-white"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-				/>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-				/>
-			</svg>
-		</div>
-		<div class="absolute bottom-32 left-1/4 hidden opacity-5 lg:block">
-			<svg
-				class="animate-float-delayed h-20 w-20 text-white"
-				fill="none"
-				stroke="currentColor"
-				viewBox="0 0 24 24"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-				/>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					stroke-width="2"
-					d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-				/>
-			</svg>
-		</div>
-
-		<div class="relative z-10 mx-auto max-w-4xl space-y-6 md:space-y-8">
-			<!-- Badge -->
-			<div
-				class="inline-flex items-center gap-2 rounded-full border border-sky-500/30 bg-sky-500/20 px-3 py-1.5 backdrop-blur-sm md:px-4 md:py-2"
-			>
-				<span class="relative flex h-2.5 w-2.5 md:h-3 md:w-3">
-					<span
-						class="absolute inline-flex h-full w-full animate-ping rounded-full bg-sky-400 opacity-75"
-					></span>
-					<span class="relative inline-flex h-2.5 w-2.5 rounded-full bg-sky-500 md:h-3 md:w-3"
-					></span>
-				</span>
-				<span class="text-xs font-medium text-sky-300 md:text-sm">Tersedia untuk Konsultasi</span>
-			</div>
-
-			<!-- Heading with gradient text -->
-			<h2 class="px-4 text-3xl leading-tight font-extrabold sm:text-4xl md:text-5xl lg:text-6xl">
-				<span
-					class="bg-gradient-to-r from-white via-gray-100 to-gray-300 bg-clip-text text-transparent"
-				>
-					Ingin Konsultasi atau Tanya
-				</span>
-				<br />
-				<span class="bg-gradient-to-r from-sky-400 to-cyan-500 bg-clip-text text-transparent">
-					Seputar Pemotretan?
-				</span>
-			</h2>
-
-			<p
-				class="mx-auto max-w-2xl px-4 text-base leading-relaxed text-gray-300 md:text-lg lg:text-xl"
-			>
-				Jangan ragu untuk menghubungi saya jika kamu ingin berdiskusi mengenai konsep foto, harga,
-				atau ingin memesan sesi pemotretan pribadi maupun event.
-			</p>
-
-			<!-- Services badges -->
-			<div class="flex flex-wrap justify-center gap-2 px-4 md:gap-3">
-				<span
-					class="inline-flex items-center gap-1.5 rounded-full border border-gray-700 bg-gray-800/50 px-3 py-1.5 text-xs text-gray-300 md:text-sm"
-				>
-					💒 Prewedding
-				</span>
-				<span
-					class="inline-flex items-center gap-1.5 rounded-full border border-gray-700 bg-gray-800/50 px-3 py-1.5 text-xs text-gray-300 md:text-sm"
-				>
-					📦 Foto Produk
-				</span>
-				<span
-					class="inline-flex items-center gap-1.5 rounded-full border border-gray-700 bg-gray-800/50 px-3 py-1.5 text-xs text-gray-300 md:text-sm"
-				>
-					🎭 Cosplay & Portrait
-				</span>
-				<span
-					class="inline-flex items-center gap-1.5 rounded-full border border-gray-700 bg-gray-800/50 px-3 py-1.5 text-xs text-gray-300 md:text-sm"
-				>
-					🎉 Event & Acara
-				</span>
-			</div>
-
-			<!-- Features grid -->
-			<div
-				class="mx-auto grid max-w-2xl grid-cols-1 gap-3 px-4 pt-4 pb-6 sm:grid-cols-3 md:gap-4 md:pb-8"
-			>
-				<div
-					class="flex items-center justify-center gap-2 text-xs text-gray-400 sm:justify-start md:text-sm"
-				>
-					<svg
-						class="h-4 w-4 flex-shrink-0 text-sky-500 md:h-5 md:w-5"
-						fill="currentColor"
-						viewBox="0 0 20 20"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					<span>Respons Cepat</span>
-				</div>
-				<div
-					class="flex items-center justify-center gap-2 text-xs text-gray-400 sm:justify-start md:text-sm"
-				>
-					<svg
-						class="h-4 w-4 flex-shrink-0 text-sky-500 md:h-5 md:w-5"
-						fill="currentColor"
-						viewBox="0 0 20 20"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					<span>Gratis Konsultasi</span>
-				</div>
-				<div
-					class="flex items-center justify-center gap-2 text-xs text-gray-400 sm:justify-start md:text-sm"
-				>
-					<svg
-						class="h-4 w-4 flex-shrink-0 text-sky-500 md:h-5 md:w-5"
-						fill="currentColor"
-						viewBox="0 0 20 20"
-					>
-						<path
-							fill-rule="evenodd"
-							d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-							clip-rule="evenodd"
-						/>
-					</svg>
-					<span>Profesional</span>
-				</div>
-			</div>
-
-			<!-- CTA Button with enhanced design -->
-			<div class="flex flex-col items-center justify-center gap-4 px-4">
-				<a
-					href={whatsappLink}
-					target="_blank"
-					rel="noopener noreferrer"
-					class="group relative inline-flex w-full transform items-center justify-center gap-2 overflow-hidden rounded-full bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 text-sm font-bold text-white shadow-2xl shadow-green-500/30 transition-all duration-300 hover:scale-105 hover:shadow-green-500/50 sm:w-auto md:gap-3 md:px-8 md:py-5 md:text-base"
-				>
-					<!-- Button shimmer effect -->
-					<div
-						class="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent transition-transform duration-1000 group-hover:translate-x-full"
-					></div>
-
-					<svg
-						xmlns="http://www.w3.org/2000/svg"
-						fill="currentColor"
-						viewBox="0 0 24 24"
-						class="relative z-10 h-5 w-5 flex-shrink-0 transition-transform duration-300 group-hover:rotate-12 md:h-6 md:w-6"
-					>
-						<path
-							d="M20.52 3.48A11.91 11.91 0 0 0 12 0C5.37 0 .05 5.32.05 11.88a11.8 11.8 0 0 0 1.6 6L0 24l6.33-1.64a11.95 11.95 0 0 0 5.67 1.46h.01c6.63 0 11.95-5.32 11.95-11.88a11.9 11.9 0 0 0-3.44-8.46Zm-8.52 18a9.94 9.94 0 0 1-5.06-1.38l-.36-.21-3.76.97 1-3.65-.24-.38a9.78 9.78 0 0 1-1.47-5.17C2.11 6.64 6.59 2.3 12 2.3a9.89 9.89 0 0 1 9.89 9.58c.21 5.46-4.33 10.01-9.89 10.6Zm5.44-7.47c-.3-.15-1.77-.86-2.05-.96-.27-.1-.47-.15-.67.15s-.77.96-.95 1.16-.35.22-.65.07a8.15 8.15 0 0 1-2.39-1.46 8.93 8.93 0 0 1-1.66-2.05c-.18-.3 0-.46.13-.61.13-.13.3-.35.45-.52s.2-.3.3-.5.05-.37-.02-.52c-.08-.15-.67-1.61-.91-2.21-.24-.58-.48-.5-.67-.5h-.57c-.18 0-.46.07-.7.35-.23.3-.9.88-.9 2.13s.93 2.47 1.06 2.64c.13.15 1.83 2.8 4.42 3.92a15.07 15.07 0 0 0 1.49.55c.62.2 1.18.17 1.63.1.5-.08 1.52-.62 1.74-1.22s.22-1.1.16-1.22-.26-.2-.56-.35Z"
-						/>
-					</svg>
-					<span class="relative z-10">Chat Sekarang via WhatsApp</span>
-					<svg
-						class="relative z-10 h-4 w-4 flex-shrink-0 transition-transform group-hover:translate-x-1 md:h-5 md:w-5"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="M17 8l4 4m0 0l-4 4m4-4H3"
-						/>
-					</svg>
-				</a>
-			</div>
-
-			<!-- Trust indicators -->
-			<p class="pt-2 text-xs text-gray-500 md:pt-4 md:text-sm">
-				💬 Biasanya merespon dalam beberapa menit
-			</p>
-		</div>
-	</div>
-
-	<!-- Bottom wave decoration -->
-	<div class="relative h-12 bg-gray-900 md:h-16">
-		<svg
-			class="absolute top-0 h-12 w-full md:h-16"
-			viewBox="0 0 1440 80"
-			preserveAspectRatio="none"
-			xmlns="http://www.w3.org/2000/svg"
-		>
-			<path d="M0,80 C480,0 960,0 1440,80 L1440,0 L0,0 Z" fill="url(#gradient-bottom)" />
-			<defs>
-				<linearGradient id="gradient-bottom" x1="0%" y1="0%" x2="100%" y2="100%">
-					<stop offset="0%" style="stop-color:#111827" />
-					<stop offset="100%" style="stop-color:#000000" />
-				</linearGradient>
-			</defs>
-		</svg>
-	</div>
-</section>
-
-<!-- Footer -->
-<footer class="bg-gray-900 text-white">
-	<div class="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-		<!-- Bagian atas (Logo, Quick Links, Info Jasa) -->
-		<div class="grid grid-cols-1 gap-12 md:grid-cols-3 lg:grid-cols-4">
-			<!-- Logo & Deskripsi -->
-			<div class="md:col-span-2">
-				<div class="mb-4 flex items-center space-x-2">
-					<div
-						class="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-r from-sky-500 to-cyan-500"
-					>
-						<svg class="h-5 w-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"
-							/>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"
-							/>
-						</svg>
-					</div>
-					<span class="text-xl font-bold">PhotoGallery</span>
-				</div>
-				<p class="mb-4 max-w-md text-gray-300">
-					Capturing life's beautiful moments through photography. Every image tells a story, every
-					frame holds a memory.
-				</p>
-				<div class="flex space-x-4">
-					<!-- Icon sosmed -->
-					{#each [{ icon: 'github', link: '#' }, { icon: 'instagram', link: '#' }, { icon: 'twitter', link: '#' }, { icon: 'facebook', link: '#' }] as soc}
-						<a href={soc.link} class="text-gray-400 transition-colors hover:text-white">
-							<i class="fa-brands fa-{soc.icon} text-xl"></i>
-						</a>
-					{/each}
-				</div>
-			</div>
-
-			<!-- Quick Links -->
-			<div>
-				<h3 class="mb-4 text-lg font-semibold">Quick Links</h3>
-				<ul class="space-y-2">
-					<li><a href="#home" class="text-gray-300 hover:text-white">Home</a></li>
-					<li><a href="#gallery" class="text-gray-300 hover:text-white">Gallery</a></li>
-					<li><a href="#about" class="text-gray-300 hover:text-white">About</a></li>
-					<li><a href="#contact" class="text-gray-300 hover:text-white">Contact</a></li>
-				</ul>
-			</div>
-
-			<!-- Info Jasa Foto -->
-			<div>
-				<h3 class="mb-4 text-lg font-semibold">Layanan Jasa Foto</h3>
-				<p class="mb-3 text-gray-300">
-					Saya membuka jasa pemotretan untuk berbagai keperluan seperti:
-				</p>
-				<ul class="mb-3 list-disc pl-5 text-gray-300">
-					<li>Prewedding</li>
-					<li>Foto produk / komersial</li>
-					<li>Cosplay & Portrait</li>
-					<li>Event / Acara pribadi</li>
-				</ul>
-				<p class="text-gray-300">
-					📸 Hubungi saya untuk menentukan konsep dan harga sesuai kebutuhanmu!
-				</p>
-			</div>
-		</div>
-
-		<!-- Contact Info -->
-		<div id="contact" class="mt-12 border-t border-gray-800 pt-8">
-			<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
-				<div class="flex items-center space-x-3">
-					<div class="rounded-lg bg-sky-500/20 p-2">
-						<svg class="h-5 w-5 text-sky-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2H5a2 2 0 01-2-2V5z"
-							/>
-						</svg>
-					</div>
-					<div>
-						<p class="text-sm text-gray-400">Telepon</p>
-						<p class="text-white">+62 851 8274 8023</p>
-					</div>
-				</div>
-
-				<div class="flex items-center space-x-3">
-					<div class="rounded-lg bg-green-500/20 p-2">
-						<svg
-							class="h-5 w-5 text-green-400"
-							fill="none"
-							stroke="currentColor"
-							viewBox="0 0 24 24"
-						>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-							/>
-						</svg>
-					</div>
-					<div>
-						<p class="text-sm text-gray-400">Email</p>
-						<p class="text-white">gifary024@gmail.com</p>
-					</div>
-				</div>
-
-				<div class="flex items-center space-x-3">
-					<div class="rounded-lg bg-red-500/20 p-2">
-						<svg class="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-							/>
-							<path
-								stroke-linecap="round"
-								stroke-linejoin="round"
-								stroke-width="2"
-								d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-							/>
-						</svg>
-					</div>
-					<div>
-						<p class="text-sm text-gray-400">Lokasi</p>
-						<p class="text-white">Binjai, Sumatera Utara</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<!-- Copyright -->
-		<div
-			class="mt-8 flex flex-col items-center justify-between border-t border-gray-800 pt-6 md:flex-row"
-		>
-			<p class="text-sm text-gray-400">© 2025 PhotoGallery. All rights reserved.</p>
-			<div class="mt-4 flex space-x-6 md:mt-0">
-				<a href="#" class="text-sm text-gray-400 hover:text-white">Privacy Policy</a>
-				<a href="#" class="text-sm text-gray-400 hover:text-white">Terms of Service</a>
-				<a href="#" class="text-sm text-gray-400 hover:text-white">Cookie Policy</a>
-			</div>
-		</div>
-	</div>
-</footer>
-
 <style>
-	.photo-grid {
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 0.75rem;
-	}
+  html {
+    scroll-behavior: smooth;
+  }
 
-	@media (min-width: 640px) {
-		.photo-grid {
-			grid-template-columns: repeat(2, 1fr);
-			gap: 1rem;
-		}
-	}
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
 
-	@media (min-width: 768px) {
-		.photo-grid {
-			grid-template-columns: repeat(3, 1fr);
-			gap: 1.25rem;
-		}
-	}
+  ::-webkit-scrollbar-track {
+    background: #1f2937;
+  }
 
-	@media (min-width: 1024px) {
-		.photo-grid {
-			grid-template-columns: repeat(4, 1fr);
-			gap: 1.5rem;
-		}
-	}
+  ::-webkit-scrollbar-thumb {
+    background: #374151;
+    border-radius: 4px;
+  }
 
-	@media (min-width: 1280px) {
-		.photo-grid {
-			grid-template-columns: repeat(5, 1fr);
-		}
-	}
-
-	.photo-item {
-		width: 100%;
-	}
-
-	/* Smooth scrolling untuk anchor links */
-	html {
-		scroll-behavior: smooth;
-	}
-
-	/* Custom scrollbar */
-	::-webkit-scrollbar {
-		width: 8px;
-	}
-
-	::-webkit-scrollbar-track {
-		background: #1f2937;
-	}
-
-	::-webkit-scrollbar-thumb {
-		background: #374151;
-		border-radius: 4px;
-	}
-
-	::-webkit-scrollbar-thumb:hover {
-		background: #4b5563;
-	}
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4b5563;
+  }
 </style>
