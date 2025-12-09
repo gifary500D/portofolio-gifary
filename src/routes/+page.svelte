@@ -346,7 +346,7 @@
 
 	// Sample data - ganti dengan data Anda yang sebenarnya
 	const profileData = {
-		name: 'Muhammad Gifary',
+		name: 'Gifary',
 		title: 'Web & Mobile Developer • Barista • Photographer',
 		description:
 			'A passionate web & mobile developer who creates innovative digital solutions, a skilled barista crafting the perfect cup, and a photographer who captures stories through every frame.',
