@@ -872,42 +872,44 @@ let photos: Photo[] = [
     <HeroSection />
 
     {#if !isLoading}
-      <section
-        class="relative z-10 px-4 pb-8 sm:px-6 lg:px-8"
-        id="gallery"
-        in:fade={{ duration: 600, delay: 200 }}
-      >
-        <div class="mx-auto max-w-6xl rounded-2xl bg-white/20 p-6 shadow-lg backdrop-blur-lg">
-          <!-- Category Filter -->
-          <div class="mb-6">
-            <h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Categories</h3>
-            <div class="flex justify-center">
-              <CategoryDropdown 
-                {categories} 
-                bind:selectedCategories
-                on:change={handleCategoryChange}
-              />
-            </div>
-          </div>
+      <!-- Update bagian section filter Anda dengan ini: -->
 
-          <!-- Orientation Filter -->
-          <div class="mb-4">
-            <h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Orientation</h3>
-            <div class="flex flex-wrap justify-center gap-2 md:gap-4">
-              {#each orientations as orientation}
-                <button
-                  class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedOrientation === orientation
-                    ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-lg shadow-blue-500/25'
-                    : 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
-                  on:click={() => (selectedOrientation = orientation)}
-                >
-                  {orientation}
-                </button>
-              {/each}
-            </div>
-          </div>
-        </div>
-      </section>
+<section
+  class="relative z-50 px-4 pb-8 sm:px-6 lg:px-8"
+  id="gallery"
+  in:fade={{ duration: 600, delay: 200 }}
+>
+  <div class="mx-auto max-w-6xl rounded-2xl bg-white/20 p-6 shadow-lg backdrop-blur-lg">
+    <!-- Category Filter -->
+    <div class="relative z-50 mb-6">
+      <h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Kategori</h3>
+      <div class="flex justify-center">
+        <CategoryDropdown 
+          {categories} 
+          bind:selectedCategories
+          on:change={handleCategoryChange}
+        />
+      </div>
+    </div>
+
+    <!-- Orientation Filter -->
+    <div class="relative z-10 mb-4">
+      <h3 class="mb-3 text-center text-sm font-semibold text-gray-700">Orientasi</h3>
+      <div class="flex flex-wrap justify-center gap-2 md:gap-4">
+        {#each orientations as orientation}
+          <button
+            class="rounded-full px-4 py-2 text-xs font-semibold transition-all duration-300 md:px-6 md:py-3 md:text-sm {selectedOrientation === orientation
+              ? 'bg-gradient-to-r from-blue-600 to-sky-500 text-white shadow-lg shadow-blue-500/25'
+              : 'bg-white text-gray-700 shadow-md hover:bg-gray-50 hover:shadow-lg'}"
+            on:click={() => (selectedOrientation = orientation)}
+          >
+            {orientation}
+          </button>
+        {/each}
+      </div>
+    </div>
+  </div>
+</section>
 
       <!-- Photo Grid dengan event handler -->
       <PhotoGrid 
