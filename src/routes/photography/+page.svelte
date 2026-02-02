@@ -874,8 +874,9 @@ let photos: Photo[] = [
     {#if !isLoading}
       <!-- Update bagian section filter Anda dengan ini: -->
 
+
 <section
-  class="relative z-50 px-4 pb-8 sm:px-6 lg:px-8"
+  class="relative z-40 px-4 pb-8 pt-20 sm:px-6 lg:px-8"
   id="gallery"
   in:fade={{ duration: 600, delay: 200 }}
 >
