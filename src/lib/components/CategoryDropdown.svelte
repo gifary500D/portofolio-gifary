@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount, onDestroy } from 'svelte';
-  import { fade } from 'svelte/transition';
+  import { createEventDispatcher } from 'svelte';
 
   export let categories: string[] = [];
   export let selectedCategories: string[] = [];
@@ -9,11 +8,13 @@
   let dropdownRef: HTMLDivElement;
   const dispatch = createEventDispatcher();
 
-  function toggleDropdown() {
+  function toggleDropdown(e: Event) {
+    e.stopPropagation();
     isOpen = !isOpen;
   }
 
-  function toggleCategory(category: string) {
+  function toggleCategory(category: string, e: Event) {
+    e.stopPropagation();
     if (selectedCategories.includes(category)) {
       selectedCategories = selectedCategories.filter(c => c !== category);
     } else {
@@ -27,80 +28,51 @@
       isOpen = false;
     }
   }
-
-  // Hanya attach listener ketika dropdown terbuka
-  $: if (isOpen) {
-    setTimeout(() => document.addEventListener('click', handleClickOutside), 0);
-  } else {
-    document.removeEventListener('click', handleClickOutside);
-  }
-
-  onDestroy(() => {
-    document.removeEventListener('click', handleClickOutside);
-  });
 </script>
 
-<div class="dropdown-wrapper relative inline-block w-full sm:w-80" bind:this={dropdownRef}>
-  <!-- Dropdown Button - Sky theme -->
+<svelte:window on:click={handleClickOutside} />
+
+<div class="dropdown-wrapper" bind:this={dropdownRef}>
+  <!-- Button -->
   <button
     type="button"
-    on:click|stopPropagation={toggleDropdown}
-    class="flex w-full items-center justify-between rounded-lg border-2 border-sky-400 bg-white/90 backdrop-blur-sm px-4 py-2.5 text-left shadow-md transition-all duration-200 hover:border-sky-500 hover:shadow-lg hover:bg-white active:scale-[0.98]"
-    aria-expanded={isOpen}
-    aria-haspopup="listbox"
+    on:click={toggleDropdown}
+    class="dropdown-btn"
   >
-    <span class="text-sm font-medium text-gray-700">
-      {#if selectedCategories.length === 0}
-        Pilih genre
-      {:else if selectedCategories.length === 1}
-        1 genre dipilih
-      {:else}
-        {selectedCategories.length} genre dipilih
-      {/if}
+    <span class="dropdown-text">
+      {selectedCategories.length > 0 ? `${selectedCategories.length} genre dipilih` : 'Pilih genre'}
     </span>
     <svg
-      class="h-4 w-4 text-sky-600 transition-transform duration-200 {isOpen ? 'rotate-180' : ''}"
+      class="dropdown-icon {isOpen ? 'rotate' : ''}"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"
-      aria-hidden="true"
     >
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
     </svg>
   </button>
 
-  <!-- Dropdown Menu - Optimized -->
+  <!-- Menu -->
   {#if isOpen}
-    <div
-      transition:fade={{ duration: 150 }}
-      class="absolute left-0 right-0 z-50 mt-1.5 w-full rounded-lg border border-sky-200 bg-white/95 backdrop-blur-sm shadow-xl"
-      role="listbox"
-    >
-      <div class="max-h-72 overflow-y-auto overscroll-contain p-1.5">
-        {#each categories as category (category)}
-          <button
-            type="button"
-            on:click|stopPropagation={() => toggleCategory(category)}
-            class="flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-left transition-colors duration-150 hover:bg-sky-50 active:bg-sky-100"
-            role="option"
-            aria-selected={selectedCategories.includes(category)}
-          >
-            <!-- Checkbox - Simplified -->
-            <div 
-              class="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded border-2 transition-colors duration-150 {selectedCategories.includes(category) 
-                ? 'border-sky-500 bg-sky-500' 
-                : 'border-gray-300 bg-white'}"
-            >
+    <div class="dropdown-menu">
+      <div class="dropdown-scroll">
+        {#each categories as category}
+          <label class="dropdown-item">
+            <input
+              type="checkbox"
+              checked={selectedCategories.includes(category)}
+              on:change={(e) => toggleCategory(category, e)}
+              class="dropdown-checkbox"
+            />
+            <span class="checkmark {selectedCategories.includes(category) ? 'checked' : ''}">
               {#if selectedCategories.includes(category)}
-                <svg class="h-3.5 w-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
                 </svg>
               {/if}
-            </div>
-            
-            <!-- Label -->
-            <span class="text-sm font-medium text-gray-700 select-none">{category}</span>
-          </button>
+            </span>
+            <span class="dropdown-label">{category}</span>
+          </label>
         {/each}
       </div>
     </div>
@@ -109,33 +81,149 @@
 
 <style>
   .dropdown-wrapper {
-    -webkit-tap-highlight-color: transparent;
-    contain: layout style paint;
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    max-width: 20rem;
   }
 
-  /* Smooth scrolling untuk mobile */
-  .overflow-y-auto {
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(125 211 252) rgb(240 249 255);
+  /* Button */
+  .dropdown-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.625rem 1rem;
+    background: rgba(255, 255, 255, 0.9);
+    border: 2px solid #38bdf8;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
   }
 
-  /* Custom scrollbar untuk webkit browsers */
-  .overflow-y-auto::-webkit-scrollbar {
-    width: 6px;
+  .dropdown-btn:hover {
+    border-color: #0ea5e9;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 
-  .overflow-y-auto::-webkit-scrollbar-track {
-    background: rgb(240 249 255);
-    border-radius: 3px;
+  .dropdown-text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
   }
 
-  .overflow-y-auto::-webkit-scrollbar-thumb {
-    background: rgb(125 211 252);
-    border-radius: 3px;
+  .dropdown-icon {
+    width: 1rem;
+    height: 1rem;
+    color: #0ea5e9;
+    transition: transform 0.2s ease;
   }
 
-  .overflow-y-auto::-webkit-scrollbar-thumb:hover {
-    background: rgb(56 189 248);
+  .dropdown-icon.rotate {
+    transform: rotate(180deg);
+  }
+
+  /* Menu */
+  .dropdown-menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 0.375rem);
+    z-index: 50;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid #bae6fd;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.15s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .dropdown-scroll {
+    max-height: 18rem;
+    overflow-y: auto;
+    padding: 0.375rem;
+  }
+
+  /* Scrollbar minimal */
+  .dropdown-scroll::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .dropdown-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .dropdown-scroll::-webkit-scrollbar-thumb {
+    background: #bae6fd;
+    border-radius: 2px;
+  }
+
+  /* Item */
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+    user-select: none;
+  }
+
+  .dropdown-item:hover {
+    background: #f0f9ff;
+  }
+
+  .dropdown-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .checkmark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    border: 2px solid #d1d5db;
+    border-radius: 0.25rem;
+    background: white;
+    transition: all 0.1s ease;
+  }
+
+  .checkmark.checked {
+    background: #0ea5e9;
+    border-color: #0ea5e9;
+  }
+
+  .checkmark svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    color: white;
+  }
+
+  .dropdown-label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  /* Mobile optimization */
+  @media (max-width: 640px) {
+    .dropdown-wrapper {
+      max-width: 100%;
+    }
   }
 </style>
