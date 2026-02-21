@@ -1466,7 +1466,7 @@
 	</div>
 </section>
 
-<!-- Certificates Section -->
+<!-- Certificates Section - OPTIMIZED -->
 <section
 	id="certificates"
 	class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 py-20"
@@ -1484,25 +1484,16 @@
 		</svg>
 	</div>
 
-	<!-- Animated background elements -->
-	<div class="absolute inset-0">
-		<div
-			class="absolute top-1/4 left-10 h-64 w-64 animate-pulse rounded-full bg-blue-500/10 blur-3xl"
-		></div>
-		<div
-			class="absolute right-10 bottom-1/4 h-80 w-80 animate-pulse rounded-full bg-indigo-500/10 blur-3xl"
-			style="animation-delay: 2s;"
-		></div>
-		<div
-			class="absolute top-1/2 left-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 transform animate-pulse rounded-full bg-purple-500/5 blur-3xl"
-			style="animation-delay: 4s;"
-		></div>
+	<!-- Static background - NO ANIMATION -->
+	<div class="absolute inset-0 pointer-events-none">
+		<div class="absolute top-1/4 left-10 h-64 w-64 rounded-full bg-blue-500/5"></div>
+		<div class="absolute right-10 bottom-1/4 h-80 w-80 rounded-full bg-indigo-500/5"></div>
 	</div>
 
 	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="mb-20 text-center">
+		<div class="mb-16 text-center">
 			<div
-				class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/20 px-4 py-2 text-blue-300 backdrop-blur-sm"
+				class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-blue-300"
 			>
 				<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
 					<path
@@ -1513,132 +1504,74 @@
 				</svg>
 				<span class="text-sm font-medium">Achievements</span>
 			</div>
-			<h2 class="mb-6 text-5xl font-bold text-white sm:text-6xl">
+			<h2 class="mb-4 text-4xl font-bold text-white sm:text-5xl">
 				<span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
 					>Certificates</span
 				> & Achievements
 			</h2>
-			<p class="mx-auto max-w-3xl text-xl leading-relaxed text-gray-300">
-				Certificates and achievements throughout my career journey, showcasing continuous learning
-				and professional growth.
+			<p class="mx-auto max-w-2xl text-lg text-gray-300">
+				Certificates and achievements throughout my career journey
 			</p>
-			<div
-				class="mx-auto mt-8 h-1 w-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500"
-			></div>
 		</div>
 
-		<!-- Desktop: 2 columns grid | Mobile: Featured + Grid -->
 		<!-- Mobile Layout -->
 		<div class="block sm:hidden">
 			{#if certificates.length > 0}
-				<!-- Featured large certificate -->
-				<div
-					class="group relative mb-6 overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-sm transition-all duration-500 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10"
-				>
-					<!-- Certificate image with enhanced overlay -->
-					<div class="relative h-64 overflow-hidden">
+				<!-- Featured certificate -->
+				<div class="cert-card mb-6">
+					<div class="cert-img-wrapper">
 						<img
 							src={certificates[0].url}
 							alt={certificates[0].title}
-							class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+							class="cert-img"
+							loading="lazy"
 						/>
-						<div
-							class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"
-						></div>
+						<div class="cert-overlay"></div>
 
 						<!-- Year badge -->
-						<div
-							class="absolute top-4 right-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 text-sm font-bold text-white shadow-lg"
-						>
+						<div class="cert-year">
 							{certificates[0].year}
 						</div>
 
-						<!-- Achievement icon -->
-						<div class="absolute top-4 left-4 rounded-full bg-white/20 p-2 backdrop-blur-sm">
-							<svg class="h-6 w-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+						<!-- Star icon -->
+						<div class="cert-star">
+							<svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
 								<path
 									d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
 								/>
 							</svg>
 						</div>
 
-						<!-- Featured label -->
-						<div class="absolute bottom-4 left-4">
-							<span
-								class="rounded-full bg-gradient-to-r from-yellow-600 to-orange-600 px-3 py-1 text-xs font-bold text-white shadow-lg"
-							>
-								Featured
-							</span>
-						</div>
+						<!-- Featured badge -->
+						<div class="cert-featured">Featured</div>
 					</div>
 
-					<!-- Certificate details -->
-					<div class="p-6">
-						<h3
-							class="mb-3 text-xl font-bold text-white transition-colors duration-300 group-hover:text-blue-400"
-						>
-							{certificates[0].title}
-						</h3>
-						<p class="mb-4 font-semibold text-gray-300">{certificates[0].issuer}</p>
-
-						<!-- Progress indicator -->
-						<div class="flex items-center gap-2 text-sm text-gray-400">
-							<div class="h-1 flex-1 overflow-hidden rounded-full bg-gray-700">
-								<div
-									class="h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000 group-hover:w-full"
-									style="width: 100%"
-								></div>
-							</div>
-							<span class="font-medium text-blue-400">Verified</span>
+					<div class="cert-content">
+						<h3 class="cert-title">{certificates[0].title}</h3>
+						<p class="cert-issuer">{certificates[0].issuer}</p>
+						<div class="cert-verified">
+							<span class="text-xs text-blue-400">Verified</span>
 						</div>
 					</div>
-
-					<!-- Hover effect overlay -->
-					<div
-						class="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-					></div>
 				</div>
 
-				<!-- Small certificates grid -->
+				<!-- Small certificates -->
 				{#if certificates.length > 1}
-					<div class="grid grid-cols-1 gap-4">
-						{#each certificates.slice(1) as cert, index}
-							<div
-								class="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-sm transition-all duration-500 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10"
-							>
-								<div class="flex">
-									<!-- Certificate image -->
-									<div class="relative h-24 w-24 flex-shrink-0 overflow-hidden">
-										<img
-											src={cert.url}
-											alt={cert.title}
-											class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-										/>
-										<div
-											class="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"
-										></div>
-									</div>
-
-									<!-- Certificate details -->
-									<div class="flex-1 p-4">
-										<h3
-											class="mb-1 text-sm font-bold text-white transition-colors duration-300 group-hover:text-blue-400"
-										>
-											{cert.title}
-										</h3>
-										<p class="mb-2 text-xs text-gray-300">{cert.issuer}</p>
-
-										<div class="flex items-center justify-between">
-											<span class="text-xs font-medium text-blue-400">{cert.year}</span>
-											<span class="text-xs font-medium text-green-400">Verified</span>
-										</div>
-									</div>
+					<div class="space-y-4">
+						{#each certificates.slice(1) as cert}
+							<div class="cert-card-small">
+								<div class="cert-thumb">
+									<img src={cert.url} alt={cert.title} loading="lazy" />
 								</div>
 
-								<!-- Hover effect overlay -->
-								<div
-									class="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-600/10 to-purple-600/10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-								></div>
+								<div class="flex-1 p-4">
+									<h3 class="text-sm font-bold text-white mb-1">{cert.title}</h3>
+									<p class="text-xs text-gray-300 mb-2">{cert.issuer}</p>
+									<div class="flex items-center justify-between text-xs">
+										<span class="text-blue-400">{cert.year}</span>
+										<span class="text-green-400">✓ Verified</span>
+									</div>
+								</div>
 							</div>
 						{/each}
 					</div>
@@ -1648,33 +1581,17 @@
 
 		<!-- Desktop Layout -->
 		<div class="hidden sm:block">
-			<div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
-				{#each certificates as cert, index}
-					<div
-						class="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 shadow-2xl backdrop-blur-sm transition-all duration-500 hover:scale-[1.02] hover:border-white/20 hover:bg-white/10"
-						style="animation-delay: {index * 0.1}s"
-					>
-						<!-- Certificate image with enhanced overlay -->
-						<div class="relative h-64 overflow-hidden">
-							<img
-								src={cert.url}
-								alt={cert.title}
-								class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
-							/>
-							<div
-								class="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"
-							></div>
+			<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+				{#each certificates as cert}
+					<div class="cert-card">
+						<div class="cert-img-wrapper">
+							<img src={cert.url} alt={cert.title} class="cert-img" loading="lazy" />
+							<div class="cert-overlay"></div>
 
-							<!-- Year badge -->
-							<div
-								class="absolute top-4 right-4 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 text-sm font-bold text-white shadow-lg"
-							>
-								{cert.year}
-							</div>
-
-							<!-- Achievement icon -->
-							<div class="absolute top-4 left-4 rounded-full bg-white/20 p-2 backdrop-blur-sm">
-								<svg class="h-6 w-6 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+							<div class="cert-year">{cert.year}</div>
+							
+							<div class="cert-star">
+								<svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
 									<path
 										d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
 									/>
@@ -1682,31 +1599,13 @@
 							</div>
 						</div>
 
-						<!-- Certificate details -->
-						<div class="p-8">
-							<h3
-								class="mb-3 text-2xl font-bold text-white transition-colors duration-300 group-hover:text-blue-400"
-							>
-								{cert.title}
-							</h3>
-							<p class="mb-4 font-semibold text-gray-300">{cert.issuer}</p>
-
-							<!-- Progress indicator -->
-							<div class="flex items-center gap-2 text-sm text-gray-400">
-								<div class="h-1 flex-1 overflow-hidden rounded-full bg-gray-700">
-									<div
-										class="h-full rounded-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-1000 group-hover:w-full"
-										style="width: {(index + 1) * 20}%"
-									></div>
-								</div>
-								<span class="font-medium text-blue-400">Verified</span>
+						<div class="cert-content">
+							<h3 class="cert-title">{cert.title}</h3>
+							<p class="cert-issuer">{cert.issuer}</p>
+							<div class="cert-verified">
+								<span class="text-sm text-blue-400">✓ Verified</span>
 							</div>
 						</div>
-
-						<!-- Hover effect overlay -->
-						<div
-							class="absolute inset-0 rounded-3xl bg-gradient-to-r from-blue-600/20 to-purple-600/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-						></div>
 					</div>
 				{/each}
 			</div>
@@ -2085,5 +1984,144 @@
 
 	:global(::-webkit-scrollbar-thumb:hover) {
 		background: #2563eb;
+	}
+
+		/* Certificate Cards */
+	.cert-card {
+		position: relative;
+		overflow: hidden;
+		border-radius: 1.5rem;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(255, 255, 255, 0.05);
+		transition: transform 0.2s ease, border-color 0.2s ease;
+	}
+
+	.cert-card:hover {
+		transform: translateY(-4px);
+		border-color: rgba(255, 255, 255, 0.2);
+	}
+
+	.cert-img-wrapper {
+		position: relative;
+		height: 16rem;
+		overflow: hidden;
+	}
+
+	.cert-img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		will-change: transform;
+		transition: transform 0.3s ease;
+	}
+
+	.cert-card:hover .cert-img {
+		transform: scale(1.05);
+	}
+
+	.cert-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(to top, rgba(15, 23, 42, 0.9), transparent);
+	}
+
+	.cert-year {
+		position: absolute;
+		top: 1rem;
+		right: 1rem;
+		padding: 0.5rem 1rem;
+		border-radius: 9999px;
+		background: linear-gradient(to right, #2563eb, #7c3aed);
+		font-size: 0.875rem;
+		font-weight: 700;
+		color: white;
+	}
+
+	.cert-star {
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		padding: 0.5rem;
+		border-radius: 9999px;
+		background: rgba(255, 255, 255, 0.2);
+	}
+
+	.cert-featured {
+		position: absolute;
+		bottom: 1rem;
+		left: 1rem;
+		padding: 0.25rem 0.75rem;
+		border-radius: 9999px;
+		background: linear-gradient(to right, #d97706, #ea580c);
+		font-size: 0.75rem;
+		font-weight: 700;
+		color: white;
+	}
+
+	.cert-content {
+		padding: 1.5rem;
+	}
+
+	.cert-title {
+		margin-bottom: 0.75rem;
+		font-size: 1.25rem;
+		font-weight: 700;
+		color: white;
+		transition: color 0.2s ease;
+	}
+
+	.cert-card:hover .cert-title {
+		color: #60a5fa;
+	}
+
+	.cert-issuer {
+		margin-bottom: 1rem;
+		font-weight: 600;
+		color: #d1d5db;
+	}
+
+	.cert-verified {
+		padding-top: 0.75rem;
+		border-top: 1px solid rgba(255, 255, 255, 0.1);
+	}
+
+	/* Small cards for mobile */
+	.cert-card-small {
+		display: flex;
+		overflow: hidden;
+		border-radius: 1rem;
+		border: 1px solid rgba(255, 255, 255, 0.1);
+		background: rgba(255, 255, 255, 0.05);
+		transition: transform 0.2s ease;
+	}
+
+	.cert-card-small:hover {
+		transform: translateX(4px);
+	}
+
+	.cert-thumb {
+		position: relative;
+		width: 6rem;
+		height: 6rem;
+		flex-shrink: 0;
+		overflow: hidden;
+	}
+
+	.cert-thumb img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	/* Performance optimizations */
+	.cert-card,
+	.cert-card-small {
+		contain: layout style paint;
+	}
+
+	@media (max-width: 640px) {
+		.cert-img-wrapper {
+			height: 14rem;
+		}
 	}
 </style>
