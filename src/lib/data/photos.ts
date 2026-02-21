@@ -163,12 +163,12 @@ export const photos: Photo[] = [
 			id: 14,
 			src: '/images/photography/people14.jpeg',
 			alt: 'People Portrait',
-			title: 'Portrait 14',
+			title: 'Mizly',
 			category: 'People',
 			orientation: 'portrait',
-			description: 'Potret casual outdoor',
-			personName: '',
-			instagram: ''
+			description: 'Foto Sore di Kaputama',
+			personName: 'Mizly',
+			instagram: '@mzly_fskaa'
 		},
 		{
 			id: 15,
@@ -310,23 +310,23 @@ export const photos: Photo[] = [
 			id: 23,
 			src: '/images/photography/cosplay4.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay 4',
+			title: 'Cosplay Klee',
 			category: 'Cosplay',
 			orientation: 'portrait',
-			description: 'Cosplay colorful di event mall',
-			personName: '',
-			instagram: ''
+			description: 'Cosplay Klee dari Genshin Impact',
+			personName: 'Fiaa',
+			instagram: '@fifiaa_fia'
 		},
 		{
 			id: 24,
 			src: '/images/photography/cosplay5.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay 5',
+			title: 'Cosplay Gaeul',
 			category: 'Cosplay',
 			orientation: 'portrait',
-			description: 'Cosplay karakter dengan topeng',
-			personName: '',
-			instagram: ''
+			description: 'Cosplay Gaeul dari How to Fight',
+			personName: 'Fiaa',
+			instagram: '@fifiaa_fia'
 		},
 		{
 			id: 25,
@@ -343,12 +343,12 @@ export const photos: Photo[] = [
 			id: 26,
 			src: '/images/photography/cosplay7.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay 7',
+			title: 'Female Nanami Cosplay',
 			category: 'Cosplay',
 			orientation: 'portrait',
-			description: 'Cosplay dengan properti lengkap',
-			personName: '',
-			instagram: ''
+			description: 'Cosplay dari Jujutsu Kaisen dengan kostum karakter Nanami',
+			personName: 'Fiaa',
+			instagram: '@fifiaa_fia'
 		},
 		{
 			id: 27,
@@ -365,12 +365,12 @@ export const photos: Photo[] = [
 			id: 28,
 			src: '/images/photography/cosplay9.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay 9',
+			title: 'Cosplay Nero',
 			category: 'Cosplay',
 			orientation: 'portrait',
-			description: 'Cosplay dengan gaya unik',
-			personName: '',
-			instagram: ''
+			description: 'Cosplay From Anime Black Clover',
+			personName: 'Araa',
+			instagram: '@raax.a_'
 		},
 		{
 			id: 29,
@@ -387,23 +387,24 @@ export const photos: Photo[] = [
 			id: 30,
 			src: '/images/photography/cosplay11.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay Zani ',
+			title: 'Cosplay Sucrose',
 			category: 'Cosplay',
 			orientation: 'portrait',
 			description: 'Cosplay Dari Anime Genshin Impact',
-				personName: 'Xiuu',
-			instagram: '@xiuu_cosu'
+				personName: 'Araa',
+			instagram: '@raxx.a_'
 		},
 		{
 			id: 31,
 			src: '/images/photography/cosplay12.jpeg',
 			alt: 'Cosplay Portrait',
-				title: 'Cosplay Zani ',
+			title: 'Cosplay Sucrose',
 			category: 'Cosplay',
 			orientation: 'portrait',
-			description: 'Cosplay dari Anime Genshin Impact',
-			personName: 'Xiuu',
-			instagram: '@xiuu_cosu'
+			description: 'Cosplay Dari Anime Genshin Impact',
+				personName: 'Araa',
+			instagram: '@raxx.a_'
+	
 		},
 		{
 			id: 57,
@@ -486,12 +487,12 @@ export const photos: Photo[] = [
 			id: 330,
 			src: '/images/photography/cosplay20.jpeg',
 			alt: 'Cosplay Portrait',
-			title: 'Cosplay 20',
+			title: 'Cosplay Nezuko',
 			category: 'Cosplay',
 			orientation: 'portrait',
-			description: 'Cosplay karakter populer',
-			personName: '',
-			instagram: ''
+			description: 'Cosplay From Demon Slayer',
+			personName: '???',
+			instagram: '???'
 		},
 		// ========================
 		// GRADUATION CATEGORY
