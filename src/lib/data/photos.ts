@@ -572,6 +572,37 @@ export const photos: Photo[] = [
 			personName: 'Xiuu',
 			instagram: '@xiuu_cosu'
 		},
+		{
+			id: 334,
+			src: '/images/photography/cosplay24.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay ',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay',
+			personName: '???',
+			instagram: '???'
+		},{
+			id: 335,
+			src: '/images/photography/cosplay25.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay ',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay ',
+			personName: '???',
+			instagram: '???'
+		},{
+			id: 336,
+			src: '/images/photography/cosplay26.jpeg',
+			alt: '??',
+			title: 'Cosplay ',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay ',
+			personName: '???',
+			instagram: '???'
+		},
 		// ========================
 		// GRADUATION CATEGORY
 		// ========================
