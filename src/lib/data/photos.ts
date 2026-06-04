@@ -269,6 +269,17 @@ export const photos: Photo[] = [
 			personName: '',
 			instagram: ''
 		},
+		{
+			id: 124,
+			src: '/images/photography/people24.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 24',
+			category: 'People',
+			orientation: 'portrait',
+			description: 'Potret casual dengan pencahayaan natural',
+			personName: '',
+			instagram: ''
+		},
 
 		// ========================
 		// COSPLAY CATEGORY
@@ -494,6 +505,39 @@ export const photos: Photo[] = [
 			personName: '???',
 			instagram: '???'
 		},
+		{
+			id: 231,
+			src: '/images/photography/cosplay21.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay Zani ',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay dari Anime Genshin Impact',
+			personName: 'Xiuu',
+			instagram: '@xiuu_cosu'
+		},
+		{
+			id: 232,
+			src: '/images/photography/cosplay22.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay Zani ',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay dari Anime Genshin Impact',
+			personName: 'Xiuu',
+			instagram: '@xiuu_cosu'
+		},
+		{
+			id: 233,
+			src: '/images/photography/cosplay23.jpeg',
+			alt: 'Cosplay Portrait',
+			title: 'Cosplay Zani ',
+			category: 'Cosplay',
+			orientation: 'portrait',
+			description: 'Cosplay dari Anime Genshin Impact',
+			personName: 'Xiuu',
+			instagram: '@xiuu_cosu'
+		},
 		// ========================
 		// GRADUATION CATEGORY
 		// ========================
@@ -695,6 +739,8 @@ export const photos: Photo[] = [
 			personName: '',
 			instagram: ''
 		},
+	
+		
 
 		// ========================
 		// OTHERS CATEGORY
