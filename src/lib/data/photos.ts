@@ -280,6 +280,40 @@ export const photos: Photo[] = [
 			personName: '',
 			instagram: ''
 		},
+			{
+			id: 125,
+			src: '/images/photography/people25.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 25',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Potret casual dengan pencahayaan natural',
+			personName: '',
+			instagram: ''
+		},
+	{
+			id: 126,
+			src: '/images/photography/people26.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 26',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Potret casual dengan pencahayaan natural',
+			personName: '',
+			instagram: ''
+		},
+		{
+			id: 127,
+			src: '/images/photography/people27.jpeg',
+			alt: 'People Portrait',
+			title: 'Portrait 27',
+			category: 'People',
+			orientation: 'landscape',
+			description: 'Potret casual dengan pencahayaan natural',
+			personName: '',
+			instagram: ''
+		},
+
 
 		// ========================
 		// COSPLAY CATEGORY
