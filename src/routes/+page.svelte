@@ -822,7 +822,7 @@
 							<!-- Inner photo -->
 							<div class="h-full w-full overflow-hidden rounded-full">
 								<img
-									src="/images/foto.JPG"
+									src="/images/gifary-profil.jpeg"
 									alt="Profile"
 									class="pointer-events-none h-full w-full object-cover object-[center_80%]"
 									draggable="false"
@@ -1041,7 +1041,7 @@
 
 				<div class="group relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl">
 					<img
-						src="/images/photography/cosplay6.jpeg"
+						src="/images/photography/cosplay21.jpeg"
 						alt="Cosplayer photography"
 						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 					/>
@@ -1056,7 +1056,7 @@
 
 				<div class="group relative aspect-square overflow-hidden rounded-xl sm:rounded-2xl">
 					<img
-						src="/images/photography/people2.jpeg"
+						src="/images/photography/people17.jpeg"
 						alt="People photography"
 						class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 					/>
@@ -1107,7 +1107,7 @@
 					<!-- Large featured photo (left) - takes 2 columns -->
 					<div class="group relative col-span-2 aspect-[4/3] overflow-hidden rounded-2xl">
 						<img
-							src="/images/photography/graduation5.jpeg"
+							src="/images/photography/people26.jpeg"
 							alt="Featured graduation photography"
 							class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 						/>
@@ -1124,7 +1124,7 @@
 					<!-- Portrait photo (right) - takes 1 column -->
 					<div class="group relative aspect-[3/5] overflow-hidden rounded-2xl">
 						<img
-							src="/images/photography/cosplay6.jpeg"
+							src="/images/photography/cosplay21.jpeg"
 							alt="Cosplayer photography"
 							class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 						/>
@@ -1142,7 +1142,7 @@
 				<div class="grid grid-cols-3 gap-6">
 					<div class="group relative aspect-square overflow-hidden rounded-2xl">
 						<img
-							src="/images/photography/people2.jpeg"
+							src="/images/photography/people17.jpeg"
 							alt="People photography"
 							class="h-full w-full object-cover transition-all duration-700 group-hover:scale-110"
 						/>
