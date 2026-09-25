@@ -1,47 +1,110 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { goto } from '$app/navigation';
-
+ 
 	let activeSection = 'hero';
 	let mounted = false;
 	let container: HTMLDivElement | null = null;
 	let containerRect: DOMRect | null = null;
-
-	// Thunder positions - posisi awal yang aman dengan margin
-	let x1 = 50,
-		y1 = 40;
-	let x2 = 350,
-		y2 = 240;
-
-	// Drag state
-	let offsetX1 = 0,
-		offsetY1 = 0,
-		dragging1 = false;
-	let offsetX2 = 0,
-		offsetY2 = 0,
-		dragging2 = false;
-
-	// Photo drag state
+ 
+	let x1 = 50, y1 = 40;
+	let x2 = 350, y2 = 240;
+ 
+	let offsetX1 = 0, offsetY1 = 0, dragging1 = false;
+	let offsetX2 = 0, offsetY2 = 0, dragging2 = false;
+ 
 	let photoDragging = false;
-	let photoStartX = 0,
-		photoStartY = 0;
-	let photoOffsetX = 0,
-		photoOffsetY = 0;
-	// Ukuran elemen thunder (dengan margin safety)
-	const thunder1Size = 160; // sebelumnya 112px (w-40 h-40)
-	const thunder2Size = 128; // sebelumnya 96px (w-32 h-32)
-	const safetyMargin = 20; // margin agar tidak terpotong
-
+	let photoStartX = 0, photoStartY = 0;
+	let photoOffsetX = 0, photoOffsetY = 0;
+ 
+	const thunder1Size = 160;
+	const thunder2Size = 128;
+	const safetyMargin = 20;
+ 
+	// ── Certificates Carousel ──
+	let certTrack: HTMLDivElement;
+	let certIsDown = false;
+	let certIsDragging = false;
+	let certStartX = 0;
+	let certScrollLeft = 0;
+	let certAutoScrollInterval: ReturnType<typeof setInterval> | null = null;
+	let certIsPaused = false;
+	let certTouchStartX = 0;
+	let certTouchScrollLeft = 0;
+	const CERT_SCROLL_SPEED = 1.2;
+	const CERT_TICK_MS = 16;
+ 
+	function certStartAutoScroll() {
+		if (certAutoScrollInterval) return;
+		certAutoScrollInterval = setInterval(() => {
+			if (!certTrack || certIsPaused) return;
+			certTrack.scrollLeft += CERT_SCROLL_SPEED;
+			if (certTrack.scrollLeft >= certTrack.scrollWidth - certTrack.clientWidth - 2) {
+				certTrack.scrollLeft = 0;
+			}
+		}, CERT_TICK_MS);
+	}
+ 
+	function certStopAutoScroll() {
+		if (certAutoScrollInterval) {
+			clearInterval(certAutoScrollInterval);
+			certAutoScrollInterval = null;
+		}
+	}
+ 
+	function certOnMouseDown(e: MouseEvent) {
+		certIsDown = true;
+		certIsDragging = true;
+		certIsPaused = true;
+		certStartX = e.pageX - certTrack.offsetLeft;
+		certScrollLeft = certTrack.scrollLeft;
+	}
+ 
+	function certOnMouseLeave() {
+		certIsDown = false;
+		certIsDragging = false;
+		certIsPaused = false;
+	}
+ 
+	function certOnMouseUp() {
+		certIsDown = false;
+		certIsDragging = false;
+		setTimeout(() => { certIsPaused = false; }, 1500);
+	}
+ 
+	function certOnMouseMove(e: MouseEvent) {
+		if (!certIsDown) return;
+		e.preventDefault();
+		const x = e.pageX - certTrack.offsetLeft;
+		const walk = (x - certStartX) * 1.5;
+		certTrack.scrollLeft = certScrollLeft - walk;
+	}
+ 
+	function certOnTouchStart(e: TouchEvent) {
+		certIsPaused = true;
+		certTouchStartX = e.touches[0].pageX;
+		certTouchScrollLeft = certTrack.scrollLeft;
+	}
+ 
+	function certOnTouchMove(e: TouchEvent) {
+		const x = e.touches[0].pageX;
+		const walk = (certTouchStartX - x) * 1.2;
+		certTrack.scrollLeft = certTouchScrollLeft + walk;
+	}
+ 
+	function certOnTouchEnd() {
+		setTimeout(() => { certIsPaused = false; }, 1500);
+	}
+	// ── End Certificates Carousel ──
+ 
 	function updateContainerRect() {
 		if (container) {
 			containerRect = container.getBoundingClientRect();
-			// Reset posisi jika melebihi batas container baru dengan safety margin
 			if (containerRect) {
 				const maxX1 = containerRect.width - thunder1Size - safetyMargin;
 				const maxY1 = containerRect.height - thunder1Size - safetyMargin;
 				const maxX2 = containerRect.width - thunder2Size - safetyMargin;
 				const maxY2 = containerRect.height - thunder2Size - safetyMargin;
-
 				x1 = Math.min(Math.max(x1, safetyMargin), maxX1);
 				y1 = Math.min(Math.max(y1, safetyMargin), maxY1);
 				x2 = Math.min(Math.max(x2, safetyMargin), maxX2);
@@ -49,62 +112,56 @@
 			}
 		}
 	}
-
+ 
 	function handleMouseDown1(event: MouseEvent) {
 		event.preventDefault();
 		event.stopPropagation();
 		dragging1 = true;
-
 		if (containerRect) {
 			offsetX1 = event.clientX - containerRect.left - x1;
 			offsetY1 = event.clientY - containerRect.top - y1;
 		}
 	}
-
+ 
 	function handleMouseDown2(event: MouseEvent) {
 		event.preventDefault();
 		event.stopPropagation();
 		dragging2 = true;
-
 		if (containerRect) {
 			offsetX2 = event.clientX - containerRect.left - x2;
 			offsetY2 = event.clientY - containerRect.top - y2;
 		}
 	}
-
-	// Touch events untuk mobile
+ 
 	function handleTouchStart1(event: TouchEvent) {
 		event.preventDefault();
 		event.stopPropagation();
 		dragging1 = true;
-
 		if (containerRect && event.touches[0]) {
 			const touch = event.touches[0];
 			offsetX1 = touch.clientX - containerRect.left - x1;
 			offsetY1 = touch.clientY - containerRect.top - y1;
 		}
 	}
-
+ 
 	function handleTouchStart2(event: TouchEvent) {
 		event.preventDefault();
 		event.stopPropagation();
 		dragging2 = true;
-
 		if (containerRect && event.touches[0]) {
 			const touch = event.touches[0];
 			offsetX2 = touch.clientX - containerRect.left - x2;
 			offsetY2 = touch.clientY - containerRect.top - y2;
 		}
 	}
-
-	// Photo drag handlers
+ 
 	function handlePhotoMouseDown(event: MouseEvent) {
 		event.preventDefault();
 		photoDragging = true;
 		photoStartX = event.clientX;
 		photoStartY = event.clientY;
 	}
-
+ 
 	function handlePhotoTouchStart(event: TouchEvent) {
 		event.preventDefault();
 		if (event.touches[0]) {
@@ -113,238 +170,146 @@
 			photoStartY = event.touches[0].clientY;
 		}
 	}
+ 
 	function handleKeyDown1(event: KeyboardEvent) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
 			dragging1 = !dragging1;
 		}
-
-		// Arrow keys untuk kontrol keyboard
 		if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
 			event.preventDefault();
 			const step = 5;
 			if (containerRect) {
 				const maxX = containerRect.width - thunder1Size - safetyMargin;
 				const maxY = containerRect.height - thunder1Size - safetyMargin;
-
 				switch (event.key) {
-					case 'ArrowUp':
-						y1 = Math.max(safetyMargin, y1 - step);
-						break;
-					case 'ArrowDown':
-						y1 = Math.min(maxY, y1 + step);
-						break;
-					case 'ArrowLeft':
-						x1 = Math.max(safetyMargin, x1 - step);
-						break;
-					case 'ArrowRight':
-						x1 = Math.min(maxX, x1 + step);
-						break;
+					case 'ArrowUp':    y1 = Math.max(safetyMargin, y1 - step); break;
+					case 'ArrowDown':  y1 = Math.min(maxY, y1 + step); break;
+					case 'ArrowLeft':  x1 = Math.max(safetyMargin, x1 - step); break;
+					case 'ArrowRight': x1 = Math.min(maxX, x1 + step); break;
 				}
 			}
 		}
 	}
-
+ 
 	function handleKeyDown2(event: KeyboardEvent) {
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
 			dragging2 = !dragging2;
 		}
-
 		if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.key)) {
 			event.preventDefault();
 			const step = 5;
 			if (containerRect) {
 				const maxX = containerRect.width - thunder2Size - safetyMargin;
 				const maxY = containerRect.height - thunder2Size - safetyMargin;
-
 				switch (event.key) {
-					case 'ArrowUp':
-						y2 = Math.max(safetyMargin, y2 - step);
-						break;
-					case 'ArrowDown':
-						y2 = Math.min(maxY, y2 + step);
-						break;
-					case 'ArrowLeft':
-						x2 = Math.max(safetyMargin, x2 - step);
-						break;
-					case 'ArrowRight':
-						x2 = Math.min(maxX, x2 + step);
-						break;
+					case 'ArrowUp':    y2 = Math.max(safetyMargin, y2 - step); break;
+					case 'ArrowDown':  y2 = Math.min(maxY, y2 + step); break;
+					case 'ArrowLeft':  x2 = Math.max(safetyMargin, x2 - step); break;
+					case 'ArrowRight': x2 = Math.min(maxX, x2 + step); break;
 				}
 			}
 		}
 	}
-
+ 
 	function handleMouseMove(event: MouseEvent) {
 		if (!containerRect) return;
-
-		// Handle photo dragging (visual effect only)
 		if (photoDragging) {
 			const deltaX = event.clientX - photoStartX;
 			const deltaY = event.clientY - photoStartY;
-
-			// Limit movement to small range for elastic effect
 			photoOffsetX = Math.max(-10, Math.min(10, deltaX * 0.1));
 			photoOffsetY = Math.max(-10, Math.min(10, deltaY * 0.1));
 		}
-
 		updateDragPosition(event.clientX, event.clientY);
 	}
-
+ 
 	function handleTouchMove(event: TouchEvent) {
 		if (!containerRect || !event.touches[0]) return;
-
-		// hanya block scroll kalau sedang drag
 		if (dragging1 || dragging2 || photoDragging) {
 			event.preventDefault();
 		}
-
 		const touch = event.touches[0];
-
-		// Handle photo dragging (visual effect only)
 		if (photoDragging) {
 			const deltaX = touch.clientX - photoStartX;
 			const deltaY = touch.clientY - photoStartY;
-
-			// Limit movement to small range for elastic effect
 			photoOffsetX = Math.max(-10, Math.min(10, deltaX * 0.1));
 			photoOffsetY = Math.max(-10, Math.min(10, deltaY * 0.1));
 		}
-
 		updateDragPosition(touch.clientX, touch.clientY);
 	}
-
+ 
 	function updateDragPosition(clientX: number, clientY: number) {
 		if (!containerRect) return;
-
 		const containerX = containerRect.left;
 		const containerY = containerRect.top;
-
 		if (dragging1) {
 			let newX = clientX - containerX - offsetX1;
 			let newY = clientY - containerY - offsetY1;
-
-			// Batasi dalam container bounds dengan safety margin
 			const maxX = containerRect.width - thunder1Size - safetyMargin;
 			const maxY = containerRect.height - thunder1Size - safetyMargin;
-
-			newX = Math.max(safetyMargin, Math.min(newX, maxX));
-			newY = Math.max(safetyMargin, Math.min(newY, maxY));
-
-			x1 = newX;
-			y1 = newY;
+			x1 = Math.max(safetyMargin, Math.min(newX, maxX));
+			y1 = Math.max(safetyMargin, Math.min(newY, maxY));
 		}
-
 		if (dragging2) {
 			let newX = clientX - containerX - offsetX2;
 			let newY = clientY - containerY - offsetY2;
-
-			// Batasi dalam container bounds dengan safety margin
 			const maxX = containerRect.width - thunder2Size - safetyMargin;
 			const maxY = containerRect.height - thunder2Size - safetyMargin;
-
-			newX = Math.max(safetyMargin, Math.min(newX, maxX));
-			newY = Math.max(safetyMargin, Math.min(newY, maxY));
-
-			x2 = newX;
-			y2 = newY;
+			x2 = Math.max(safetyMargin, Math.min(newX, maxX));
+			y2 = Math.max(safetyMargin, Math.min(newY, maxY));
 		}
 	}
-
+ 
 	function handleMouseUp() {
 		dragging1 = false;
 		dragging2 = false;
-
-		// Reset photo position with smooth animation
 		if (photoDragging) {
 			photoDragging = false;
-			// Smooth return to original position
 			const returnDuration = 300;
 			const startTime = Date.now();
 			const startX = photoOffsetX;
 			const startY = photoOffsetY;
-
 			const animateReturn = () => {
 				const elapsed = Date.now() - startTime;
 				const progress = Math.min(elapsed / returnDuration, 1);
 				const easeOut = 1 - Math.pow(1 - progress, 3);
-
 				photoOffsetX = startX * (1 - easeOut);
 				photoOffsetY = startY * (1 - easeOut);
-
-				if (progress < 1) {
-					requestAnimationFrame(animateReturn);
-				} else {
-					photoOffsetX = 0;
-					photoOffsetY = 0;
-				}
+				if (progress < 1) requestAnimationFrame(animateReturn);
+				else { photoOffsetX = 0; photoOffsetY = 0; }
 			};
-
 			requestAnimationFrame(animateReturn);
 		}
 	}
-
+ 
 	function handleTouchEnd() {
 		dragging1 = false;
 		dragging2 = false;
-
-		// Reset photo position with smooth animation
 		if (photoDragging) {
 			photoDragging = false;
 			const returnDuration = 300;
 			const startTime = Date.now();
 			const startX = photoOffsetX;
 			const startY = photoOffsetY;
-
 			const animateReturn = () => {
 				const elapsed = Date.now() - startTime;
 				const progress = Math.min(elapsed / returnDuration, 1);
 				const easeOut = 1 - Math.pow(1 - progress, 3);
-
 				photoOffsetX = startX * (1 - easeOut);
 				photoOffsetY = startY * (1 - easeOut);
-
-				if (progress < 1) {
-					requestAnimationFrame(animateReturn);
-				} else {
-					photoOffsetX = 0;
-					photoOffsetY = 0;
-				}
+				if (progress < 1) requestAnimationFrame(animateReturn);
+				else { photoOffsetX = 0; photoOffsetY = 0; }
 			};
-
 			requestAnimationFrame(animateReturn);
 		}
 	}
-
+ 
 	function scrollToSection(sectionId: string) {
 		const element = document.getElementById(sectionId);
-		if (element) {
-			element.scrollIntoView({ behavior: 'smooth' });
-		}
+		if (element) element.scrollIntoView({ behavior: 'smooth' });
 	}
-
-	onMount(() => {
-		mounted = true;
-		updateContainerRect();
-
-		// Event listeners
-		window.addEventListener('mousemove', handleMouseMove, { passive: false });
-		window.addEventListener('mouseup', handleMouseUp);
-		window.addEventListener('touchmove', handleTouchMove, { passive: false });
-		window.addEventListener('touchend', handleTouchEnd);
-		window.addEventListener('resize', updateContainerRect);
-
-		return () => {
-			window.removeEventListener('mousemove', handleMouseMove);
-			window.removeEventListener('mouseup', handleMouseUp);
-			window.removeEventListener('touchmove', handleTouchMove);
-			window.removeEventListener('touchend', handleTouchEnd);
-			window.removeEventListener('resize', updateContainerRect);
-		};
-	});
-
-	// Sample data - ganti dengan data Anda yang sebenarnya
+ 
 	const profileData = {
 		name: 'Muhammad Gifary',
 		title: 'Web & Mobile Developer • Barista • Photographer',
@@ -353,40 +318,19 @@
 		email: 'gifary024@email.com',
 		phone: '+62 851-8274-8023'
 	};
-
+ 
 	const coffeePhotos = [
-		{
-			id: 4,
-			url: '/images/latte1.jpeg',
-			alt: 'Latte Art ',
-			caption: 'Latte Art'
-		},
-		{
-			id: 2,
-			url: '/images/latte2.jpeg',
-			alt: 'Latte Art Rosetta',
-			caption: 'Latte Art'
-		},
-		{
-			id: 3,
-			url: '/images/latte3.jpeg',
-			alt: 'Latte Art Rosetta',
-			caption: 'Latte Art'
-		},
-		{
-			id: 1,
-			url: '/images/blkk.jpeg',
-			alt: 'Coffee Training',
-			caption: 'Barista Training'
-		}
+		{ id: 4, url: '/images/latte1.jpeg', alt: 'Latte Art ', caption: 'Latte Art' },
+		{ id: 2, url: '/images/latte2.jpeg', alt: 'Latte Art Rosetta', caption: 'Latte Art' },
+		{ id: 3, url: '/images/latte3.jpeg', alt: 'Latte Art Rosetta', caption: 'Latte Art' },
+		{ id: 1, url: '/images/blkk.jpeg', alt: 'Coffee Training', caption: 'Barista Training' }
 	];
-
+ 
 	const websites = [
 		{
 			id: 1,
 			title: 'Undangan Pernikahan Digital',
-			description:
-				'Digital wedding invitation with elegant design, countdown timer, and Google Maps integration.',
+			description: 'Digital wedding invitation with elegant design, countdown timer, and Google Maps integration.',
 			image: '/images/web-undangan-digital.png',
 			technologies: ['SvelteKit', 'TypeScript', 'Tailwind CSS'],
 			liveUrl: 'https://undangan-digital-topaz.vercel.app',
@@ -395,8 +339,7 @@
 		{
 			id: 2,
 			title: 'AM Sports Flooring Company',
-			description:
-				'Company profile website for sports flooring business with modern responsive design.',
+			description: 'Company profile website for sports flooring business with modern responsive design.',
 			image: '/images/amflooring-web.png',
 			technologies: ['SvelteKit', 'TypeScript', 'Tailwind CSS'],
 			liveUrl: 'https://amflooring.vercel.app',
@@ -408,23 +351,23 @@
 			description: 'Coffee shop website – currently under maintenance.',
 			image: '/images/tvb-web.png',
 			technologies: ['Bootstrap', 'CSS', 'MySql', 'PHP'],
-			liveUrl: '', // kosong biar tidak bisa diklik
+			liveUrl: '',
 			category: 'Web App',
-			maintenance: true // flag tambahan
+			maintenance: true
 		}
 	];
-
+ 
 	const certificates = [
 		{
 			id: 1,
-			title: 'Barista Certification BNSP 2024 ',
+			title: 'Sertifikat BNSP Barista 2024',
 			issuer: 'Badan Nasional Sertifikasi Profesi',
 			year: '2024',
 			url: '/images/serti1.jpeg'
 		},
 		{
 			id: 2,
-			title: 'Barista Certification BLKK 2024  ',
+			title: 'Sertifikat Barista BLKK 2024',
 			issuer: 'BLKK Yayasan Sahabat Anak Bangsa',
 			year: '2024',
 			url: '/images/serti2.jpeg'
@@ -435,9 +378,30 @@
 			issuer: 'Universitas Sumatra Utara',
 			year: '2025',
 			url: '/images/serti3.jpeg'
+		},
+		{
+			id: 4,
+			title: 'Sertifikat Ambasador STMIK Kaputama',
+			issuer: 'Sertifikat Ambasador STMIK Kaputama',
+			year: '2026',
+			url: '/images/sertifikat-ba-kaputama.png'
+		},
+		{
+			id: 5,
+			title: 'Sertifikat Google Gemini Developer',
+			issuer: 'Sertifikat Google Gemini Developer program magang Lastmile Dari SMARTBRIDGE',
+			year: '2026',
+			url: '/images/sertifikat-lastmile.png'
+		},
+		{
+			id: 6,
+			title: 'Sertifikat Content Creator',
+			issuer: 'Sertifikat Content Creator dari KOMDIGI',
+			year: '2026',
+			url: '/images/sertifikat-contencreator.png'
 		}
 	];
-
+ 
 	const skills = [
 		{
 			category: 'Development',
@@ -479,115 +443,125 @@
 			]
 		}
 	];
-
+ 
 	let mobileMenuOpen = false;
-
+ 
 	function toggleMobileMenu() {
 		mobileMenuOpen = !mobileMenuOpen;
 	}
-
+ 
 	function scrollToSectionMobile(sectionId: string): void {
 		scrollToSection(sectionId);
-		mobileMenuOpen = false; // Close menu after clicking
+		mobileMenuOpen = false;
 	}
-
+ 
 	onMount(() => {
 		mounted = true;
-
-		// Update container bounds
+		updateContainerRect();
+ 
+		window.addEventListener('mousemove', handleMouseMove, { passive: false });
+		window.addEventListener('mouseup', handleMouseUp);
+		window.addEventListener('touchmove', handleTouchMove, { passive: false });
+		window.addEventListener('touchend', handleTouchEnd);
+		window.addEventListener('resize', updateContainerRect);
+ 
+		return () => {
+			window.removeEventListener('mousemove', handleMouseMove);
+			window.removeEventListener('mouseup', handleMouseUp);
+			window.removeEventListener('touchmove', handleTouchMove);
+			window.removeEventListener('touchend', handleTouchEnd);
+			window.removeEventListener('resize', updateContainerRect);
+		};
+	});
+ 
+	onMount(() => {
 		function updateBounds() {
-			if (container) {
-				containerRect = container.getBoundingClientRect();
-			}
+			if (container) containerRect = container.getBoundingClientRect();
 		}
-
 		updateBounds();
-
-		// Add event listeners
+ 
 		window.addEventListener('mousemove', handleMouseMove);
 		window.addEventListener('mouseup', handleMouseUp);
 		window.addEventListener('resize', updateBounds);
-
-		// Intersection Observer untuk mendeteksi section yang aktif
+ 
 		const observer = new IntersectionObserver(
 			(entries) => {
 				entries.forEach((entry) => {
-					if (entry.isIntersecting) {
-						activeSection = entry.target.id;
-					}
+					if (entry.isIntersecting) activeSection = entry.target.id;
 				});
 			},
 			{ threshold: 0.5 }
 		);
-
+ 
 		document.querySelectorAll('section[id]').forEach((section) => {
 			observer.observe(section);
 		});
-
-		// Cleanup
+ 
+		certStartAutoScroll();
+ 
 		return () => {
 			window.removeEventListener('mousemove', handleMouseMove);
 			window.removeEventListener('mouseup', handleMouseUp);
 			window.removeEventListener('resize', updateBounds);
 			observer.disconnect();
+			certStopAutoScroll();
 		};
 	});
-
+ 
 	function getSkillColors(iconName: string): { default: string; hover: string } {
 		const colorMap: Record<string, { default: string; hover: string }> = {
-			flutter: { default: 'bg-blue-100', hover: 'group-hover:bg-blue-200' },
-			dart: { default: 'bg-cyan-100', hover: 'group-hover:bg-cyan-200' },
-			android: { default: 'bg-green-100', hover: 'group-hover:bg-green-200' },
-			ios: { default: 'bg-gray-100', hover: 'group-hover:bg-gray-200' },
-			svelte: { default: 'bg-orange-100', hover: 'group-hover:bg-orange-200' },
-			typescript: { default: 'bg-blue-100', hover: 'group-hover:bg-blue-200' },
-			tailwind: { default: 'bg-teal-100', hover: 'group-hover:bg-teal-200' },
-			laravel: { default: 'bg-red-100', hover: 'group-hover:bg-red-200' },
-			php: { default: 'bg-purple-100', hover: 'group-hover:bg-purple-200' },
-			postgresql: { default: 'bg-indigo-100', hover: 'group-hover:bg-indigo-200' },
-			laragon: { default: 'bg-indigo-100', hover: 'group-hover:bg-indigo-200' },
-			git: { default: 'bg-orange-100', hover: 'group-hover:bg-orange-200' },
-			vscode: { default: 'bg-blue-100', hover: 'group-hover:bg-blue-200' },
-			camera: { default: 'bg-gray-100', hover: 'group-hover:bg-gray-200' },
-			edit: { default: 'bg-green-100', hover: 'group-hover:bg-green-200' },
-			lightroom: { default: 'bg-purple-100', hover: 'group-hover:bg-purple-200' },
-			capcut: { default: 'bg-pink-100', hover: 'group-hover:bg-pink-200' },
-			coffee: { default: 'bg-amber-100', hover: 'group-hover:bg-amber-200' }
+			flutter:    { default: 'bg-blue-100',   hover: 'group-hover:bg-blue-200' },
+			dart:       { default: 'bg-cyan-100',    hover: 'group-hover:bg-cyan-200' },
+			android:    { default: 'bg-green-100',   hover: 'group-hover:bg-green-200' },
+			ios:        { default: 'bg-gray-100',    hover: 'group-hover:bg-gray-200' },
+			svelte:     { default: 'bg-orange-100',  hover: 'group-hover:bg-orange-200' },
+			typescript: { default: 'bg-blue-100',    hover: 'group-hover:bg-blue-200' },
+			tailwind:   { default: 'bg-teal-100',    hover: 'group-hover:bg-teal-200' },
+			laravel:    { default: 'bg-red-100',     hover: 'group-hover:bg-red-200' },
+			php:        { default: 'bg-purple-100',  hover: 'group-hover:bg-purple-200' },
+			postgresql: { default: 'bg-indigo-100',  hover: 'group-hover:bg-indigo-200' },
+			laragon:    { default: 'bg-indigo-100',  hover: 'group-hover:bg-indigo-200' },
+			git:        { default: 'bg-orange-100',  hover: 'group-hover:bg-orange-200' },
+			vscode:     { default: 'bg-blue-100',    hover: 'group-hover:bg-blue-200' },
+			camera:     { default: 'bg-gray-100',    hover: 'group-hover:bg-gray-200' },
+			edit:       { default: 'bg-green-100',   hover: 'group-hover:bg-green-200' },
+			lightroom:  { default: 'bg-purple-100',  hover: 'group-hover:bg-purple-200' },
+			capcut:     { default: 'bg-pink-100',    hover: 'group-hover:bg-pink-200' },
+			coffee:     { default: 'bg-amber-100',   hover: 'group-hover:bg-amber-200' }
 		};
 		return colorMap[iconName] || { default: 'bg-gray-100', hover: 'group-hover:bg-gray-200' };
 	}
-
+ 
 	function getSkillIconColors(iconName: string): { default: string; hover: string } {
 		const iconColorMap: Record<string, { default: string; hover: string }> = {
-			flutter: { default: 'text-blue-600', hover: 'group-hover:text-blue-700' },
-			dart: { default: 'text-cyan-600', hover: 'group-hover:text-cyan-700' },
-			android: { default: 'text-green-600', hover: 'group-hover:text-green-700' },
-			ios: { default: 'text-gray-600', hover: 'group-hover:text-gray-700' },
-			svelte: { default: 'text-orange-600', hover: 'group-hover:text-orange-700' },
-			typescript: { default: 'text-blue-600', hover: 'group-hover:text-blue-700' },
-			tailwind: { default: 'text-teal-600', hover: 'group-hover:text-teal-700' },
-			laravel: { default: 'text-red-600', hover: 'group-hover:text-red-700' },
-			php: { default: 'text-purple-600', hover: 'group-hover:text-purple-700' },
+			flutter:    { default: 'text-blue-600',   hover: 'group-hover:text-blue-700' },
+			dart:       { default: 'text-cyan-600',   hover: 'group-hover:text-cyan-700' },
+			android:    { default: 'text-green-600',  hover: 'group-hover:text-green-700' },
+			ios:        { default: 'text-gray-600',   hover: 'group-hover:text-gray-700' },
+			svelte:     { default: 'text-orange-600', hover: 'group-hover:text-orange-700' },
+			typescript: { default: 'text-blue-600',   hover: 'group-hover:text-blue-700' },
+			tailwind:   { default: 'text-teal-600',   hover: 'group-hover:text-teal-700' },
+			laravel:    { default: 'text-red-600',    hover: 'group-hover:text-red-700' },
+			php:        { default: 'text-purple-600', hover: 'group-hover:text-purple-700' },
 			postgresql: { default: 'text-indigo-600', hover: 'group-hover:text-indigo-700' },
-			laragon: { default: 'text-indigo-600', hover: 'group-hover:text-indigo-700' },
-			git: { default: 'text-orange-600', hover: 'group-hover:text-orange-700' },
-			vscode: { default: 'text-blue-600', hover: 'group-hover:text-blue-700' },
-			camera: { default: 'text-gray-600', hover: 'group-hover:text-gray-700' },
-			edit: { default: 'text-green-600', hover: 'group-hover:text-green-700' },
-			lightroom: { default: 'text-purple-600', hover: 'group-hover:text-purple-700' },
-			capcut: { default: 'text-pink-600', hover: 'group-hover:text-pink-700' },
-			coffee: { default: 'text-amber-600', hover: 'group-hover:text-amber-700' }
+			laragon:    { default: 'text-indigo-600', hover: 'group-hover:text-indigo-700' },
+			git:        { default: 'text-orange-600', hover: 'group-hover:text-orange-700' },
+			vscode:     { default: 'text-blue-600',   hover: 'group-hover:text-blue-700' },
+			camera:     { default: 'text-gray-600',   hover: 'group-hover:text-gray-700' },
+			edit:       { default: 'text-green-600',  hover: 'group-hover:text-green-700' },
+			lightroom:  { default: 'text-purple-600', hover: 'group-hover:text-purple-700' },
+			capcut:     { default: 'text-pink-600',   hover: 'group-hover:text-pink-700' },
+			coffee:     { default: 'text-amber-600',  hover: 'group-hover:text-amber-700' }
 		};
-		return (
-			iconColorMap[iconName] || { default: 'text-gray-600', hover: 'group-hover:text-gray-700' }
-		);
+		return iconColorMap[iconName] || { default: 'text-gray-600', hover: 'group-hover:text-gray-700' };
 	}
-
+ 
 	function getSkillIcon(iconName: string): string {
 		const icons: Record<string, string> = {
 			flutter:
 				'M14.314 0L2.3 12 6 15.7 21.684.013h-7.357zm.014 11.072L7.857 17.53l6.47 6.47H21.7l-6.46-6.468 6.46-6.46h-7.37z',
-			dart: 'M4.105 4.105S9.158 1.58 11.684.316a3.079 3.079 0 0 1 1.481-.315c.766.047 1.677.788 1.677.788L24 9.948v9.789h-4.263V24H9.789l-9-9C.303 14.5 0 13.795 0 13.105c0-.319.18-.818.316-1.105L4.105 4.105z',
+			dart:
+				'M4.105 4.105S9.158 1.58 11.684.316a3.079 3.079 0 0 1 1.481-.315c.766.047 1.677.788 1.677.788L24 9.948v9.789h-4.263V24H9.789l-9-9C.303 14.5 0 13.795 0 13.105c0-.319.18-.818.316-1.105L4.105 4.105z',
 			android:
 				'M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993.0001.5511-.4482.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1518-.5972.416.416 0 00-.5972.1518l-2.0223 3.5046C15.5027 8.2006 13.8018 7.6739 12.0001 7.6739c-1.8017 0-3.5026.5267-4.6187 1.3085L5.3591 5.5488a.4162.4162 0 00-.5972-.1518.4162.4162 0 00-.1518.5972L6.5954 9.321C3.5465 11.1013 1.4499 14.215 1.4499 17.8146c0 .1626.1184.2939.2824.2939h20.5355c.1641 0 .2824-.1313.2824-.2939 0-3.5996-2.0966-6.7133-5.1454-8.4936',
 			svelte:
@@ -600,12 +574,14 @@
 				'M23.111 6.366c0-.455-.465-.82-1.037-.82h-.477C21.114 3.174 19.395 2 17.5 2c-1.895 0-3.614 1.174-4.097 3.546h-.477c-.572 0-1.037.365-1.037.82 0 .277.152.52.382.675v8.959c0 1.38 1.12 2.5 2.5 2.5h3.458c1.38 0 2.5-1.12 2.5-2.5V7.041c.23-.155.382-.398.382-.675zM17.5 4c.827 0 1.5.673 1.5 1.5S18.327 7 17.5 7 16 6.327 16 5.5 16.673 4 17.5 4zm1.229 13H15.27c-.966 0-1.75-.784-1.75-1.75V8h5.959v7.25c0 .966-.784 1.75-1.75 1.75z',
 			laragon:
 				'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z',
-			git: 'M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.713.713 1.87 0 2.583-.714.714-1.87.714-2.584 0-.714-.714-.714-1.87 0-2.584.177-.177.378-.314.598-.421V8.743c-.22-.105-.42-.242-.598-.421-.542-.544-.676-1.342-.402-2.009L7.617 3.56.45 10.724c-.603.605-.603 1.582 0 2.187l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187',
+			git:
+				'M23.546 10.93L13.067.452c-.604-.603-1.582-.603-2.188 0L8.708 2.627l2.76 2.76c.645-.215 1.379-.07 1.889.441.516.515.658 1.258.438 1.9l2.658 2.66c.645-.223 1.387-.078 1.9.435.721.72.721 1.884 0 2.604-.719.719-1.881.719-2.6 0-.539-.541-.674-1.337-.404-1.996L12.86 8.955v6.525c.176.086.342.203.488.348.713.713.713 1.87 0 2.583-.714.714-1.87.714-2.584 0-.714-.714-.714-1.87 0-2.584.177-.177.378-.314.598-.421V8.743c-.22-.105-.42-.242-.598-.421-.542-.544-.676-1.342-.402-2.009L7.617 3.56.45 10.724c-.603.605-.603 1.582 0 2.187l10.48 10.477c.604.604 1.582.604 2.186 0l10.43-10.43c.605-.603.605-1.582 0-2.187',
 			vscode:
 				'M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .326 8.74L3.899 12 .326 15.26a1 1 0 0 0 .001 1.479L1.65 17.94a.999.999 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352z',
 			camera:
 				'M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z M15 13a3 3 0 11-6 0 3 3 0 016 0z',
-			edit: 'M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7 m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
+			edit:
+				'M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7 m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z',
 			lightroom:
 				'M6 2a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H6zm0 2h12v16H6V4zm2 2v12h2V8h4v8h2V6H8z',
 			capcut:
@@ -1471,147 +1447,127 @@
 	id="certificates"
 	class="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-900 to-slate-800 py-20"
 >
-	<!-- Top Border -->
+	<!-- Top border wave -->
 	<div class="absolute top-0 left-0 w-full overflow-hidden">
 		<svg
 			viewBox="0 0 1200 120"
 			preserveAspectRatio="none"
 			class="relative block h-12 w-full fill-current text-amber-50 sm:h-16"
 		>
-			<path
-				d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"
-			></path>
+			<path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
 		</svg>
 	</div>
-
-	<!-- Static background - NO ANIMATION -->
+ 
+	<!-- Bg blobs -->
 	<div class="absolute inset-0 pointer-events-none">
 		<div class="absolute top-1/4 left-10 h-64 w-64 rounded-full bg-blue-500/5"></div>
 		<div class="absolute right-10 bottom-1/4 h-80 w-80 rounded-full bg-indigo-500/5"></div>
 	</div>
-
+ 
 	<div class="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<div class="mb-16 text-center">
-			<div
-				class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-blue-300"
-			>
+ 
+		<!-- Header -->
+		<div class="mb-12 text-center">
+			<div class="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-400/30 bg-blue-500/10 px-4 py-2 text-blue-300">
 				<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-					<path
-						fill-rule="evenodd"
-						d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-						clip-rule="evenodd"
-					/>
+					<path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
 				</svg>
 				<span class="text-sm font-medium">Achievements</span>
 			</div>
 			<h2 class="mb-4 text-4xl font-bold text-white sm:text-5xl">
-				<span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent"
-					>Certificates</span
-				> & Achievements
+				<span class="bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">Certificates</span>
+				&amp; Achievements
 			</h2>
 			<p class="mx-auto max-w-2xl text-lg text-gray-300">
 				Certificates and achievements throughout my career journey
 			</p>
 		</div>
-
-		<!-- Mobile Layout -->
-		<div class="block sm:hidden">
-			{#if certificates.length > 0}
-				<!-- Featured certificate -->
-				<div class="cert-card mb-6">
-					<div class="cert-img-wrapper">
-						<img
-							src={certificates[0].url}
-							alt={certificates[0].title}
-							class="cert-img"
-							loading="lazy"
-						/>
-						<div class="cert-overlay"></div>
-
-						<!-- Year badge -->
-						<div class="cert-year">
-							{certificates[0].year}
-						</div>
-
-						<!-- Star icon -->
-						<div class="cert-star">
-							<svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-								<path
-									d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-								/>
-							</svg>
-						</div>
-
-						<!-- Featured badge -->
-						<div class="cert-featured">Featured</div>
-					</div>
-
-					<div class="cert-content">
-						<h3 class="cert-title">{certificates[0].title}</h3>
-						<p class="cert-issuer">{certificates[0].issuer}</p>
-						<div class="cert-verified">
-							<span class="text-xs text-blue-400">Verified</span>
-						</div>
-					</div>
-				</div>
-
-				<!-- Small certificates -->
-				{#if certificates.length > 1}
-					<div class="space-y-4">
-						{#each certificates.slice(1) as cert}
-							<div class="cert-card-small">
-								<div class="cert-thumb">
-									<img src={cert.url} alt={cert.title} loading="lazy" />
-								</div>
-
-								<div class="flex-1 p-4">
-									<h3 class="text-sm font-bold text-white mb-1">{cert.title}</h3>
-									<p class="text-xs text-gray-300 mb-2">{cert.issuer}</p>
-									<div class="flex items-center justify-between text-xs">
-										<span class="text-blue-400">{cert.year}</span>
-										<span class="text-green-400">✓ Verified</span>
-									</div>
-								</div>
-							</div>
-						{/each}
-					</div>
-				{/if}
-			{/if}
-		</div>
-
-		<!-- Desktop Layout -->
-		<div class="hidden sm:block">
-			<div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+ 
+		<!-- Hint scroll -->
+		<p class="mb-4 text-center text-xs text-blue-300/60 select-none">← Geser atau seret untuk melihat semua →</p>
+ 
+		<!-- Carousel wrapper -->
+		<div class="relative">
+ 
+			<!-- Fade kiri -->
+			<div
+				class="absolute left-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
+				style="background: linear-gradient(to right, rgb(15 23 42 / 0.9), transparent);"
+				aria-hidden="true"
+			></div>
+ 
+			<!-- Fade kanan -->
+			<div
+				class="absolute right-0 top-0 bottom-0 w-16 z-10 pointer-events-none"
+				style="background: linear-gradient(to left, rgb(15 23 42 / 0.9), transparent);"
+				aria-hidden="true"
+			></div>
+ 
+			<!-- Track -->
+			<!-- svelte-ignore a11y-no-static-element-interactions -->
+			<div
+				bind:this={certTrack}
+				on:mousedown={certOnMouseDown}
+				on:mouseleave={certOnMouseLeave}
+				on:mouseup={certOnMouseUp}
+				on:mousemove={certOnMouseMove}
+				on:touchstart={certOnTouchStart}
+				on:touchmove={certOnTouchMove}
+				on:touchend={certOnTouchEnd}
+				class="flex gap-5 overflow-x-scroll overflow-y-hidden select-none pb-4 pt-2"
+				style="
+					cursor: {certIsDragging ? 'grabbing' : 'grab'};
+					scroll-behavior: {certIsDragging ? 'auto' : 'smooth'};
+					scrollbar-width: none;
+					-ms-overflow-style: none;
+					-webkit-overflow-scrolling: touch;
+				"
+			>
 				{#each certificates as cert}
-					<div class="cert-card">
-						<div class="cert-img-wrapper">
-							<img src={cert.url} alt={cert.title} class="cert-img" loading="lazy" />
-							<div class="cert-overlay"></div>
-
-							<div class="cert-year">{cert.year}</div>
-							
-							<div class="cert-star">
-								<svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-									<path
-										d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
-									/>
-								</svg>
+					<div class="flex-none" style="width: clamp(260px, 28vw, 320px);">
+						<div class="group rounded-2xl overflow-hidden bg-white/[0.04] border border-white/[0.08] backdrop-blur-sm h-full transition-transform duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-black/40">
+ 
+							<!-- Gambar -->
+							<div class="relative overflow-hidden" style="aspect-ratio: 4/3;">
+								<img
+									src={cert.url}
+									alt={cert.title}
+									class="w-full h-full object-cover pointer-events-none transition-transform duration-500 group-hover:scale-105"
+									loading="lazy"
+									draggable="false"
+								/>
+								<!-- Overlay -->
+								<div
+									class="absolute inset-0"
+									style="background: linear-gradient(to top, rgb(15 23 42 / 0.85) 0%, transparent 60%);"
+								></div>
+								<!-- Year badge -->
+								<span class="absolute top-3 left-3 bg-blue-500/80 backdrop-blur-sm text-white text-[0.65rem] font-semibold px-2.5 py-0.5 rounded-full tracking-wide">
+									{cert.year}
+								</span>
+								<!-- Star -->
+								<div class="absolute top-3 right-3 bg-slate-900/60 backdrop-blur-sm rounded-full p-1.5">
+									<svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+										<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+									</svg>
+								</div>
 							</div>
-						</div>
-
-						<div class="cert-content">
-							<h3 class="cert-title">{cert.title}</h3>
-							<p class="cert-issuer">{cert.issuer}</p>
-							<div class="cert-verified">
-								<span class="text-sm text-blue-400">✓ Verified</span>
+ 
+							<!-- Konten -->
+							<div class="px-4 py-3.5">
+								<h3 class="text-sm font-bold text-white leading-snug mb-1 line-clamp-2">{cert.title}</h3>
+								<p class="text-xs text-slate-400 mb-2.5">{cert.issuer}</p>
+								<span class="text-[0.7rem] text-blue-400">✓ Verified</span>
 							</div>
 						</div>
 					</div>
 				{/each}
 			</div>
 		</div>
+ 
 	</div>
 </section>
+ 
 
 <!-- Skill Section-->
 <section id="skills" class="bg-white py-20">
